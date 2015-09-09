@@ -1,0 +1,26 @@
+site_name: CIRCexplorer2
+repo_url: https://github.com/YangLab/CIRCexplorer2
+site_description: Documents for CIRCexplorer2
+site_author: Xiao-Ou Zhang
+copyright: Copyright (C) 2015 YangLab
+pages:
+    - Home: 'index.md'
+    - Tutorial:
+        - 'Installation and Setup': 'tutorial/setup.md'
+        - 'Circular RNA Identification (without de novo assembly)': 'tutorial/circ.md'
+        - 'Circular RNA Identification (with de novo assembly)': 'tutorial/novel_circ.md'
+        - 'Characterization of Circular RNA Alternative Splicing': 'tutorial/as.md'
+        - 'Complementary Score': 'tutorial/cs.md'
+    - Modules:
+        - 'Align': 'modules/align.md'
+        - 'Parse': 'modules/parse.md'
+        - 'Annotate': 'modules/annotate.md'
+        - 'Assemble': 'modules/assemble.md'
+        - 'Denovo': 'modules/denovo.md'
+        - 'CS': 'modules/cs.md'
+    - Anout:
+        - 'Citation': 'about/citation.md'
+        - 'FAQ': 'about/faq.md'
+        - 'Release Notes': 'about/changelog.md'
+        - 'License': 'about/license.md'
+theme: 'readthedocs'

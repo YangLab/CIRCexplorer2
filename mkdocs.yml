@@ -17,7 +17,6 @@ pages:
         - 'Annotate': 'modules/annotate.md'
         - 'Assemble': 'modules/assemble.md'
         - 'Denovo': 'modules/denovo.md'
-        - 'CS': 'modules/cs.md'
     - Anout:
         - 'Citation': 'about/citation.md'
         - 'FAQ': 'about/faq.md'

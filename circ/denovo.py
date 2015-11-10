@@ -8,6 +8,8 @@ Options:
     --as                           Detect alternative splicing.
     -a PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for pAplus RNA-seq.
     -g GENOME --genome=GENOME      Genome FASTA file.
+    --tophat-dir=TOPHAT_DIR        TopHat mapping directory for pAminus \
+RNA-seq.
     --no-fix                       No-fix mode (useful for species \
 with poor gene annotations)
     --rpkm                         Calculate RPKM for specific exons.
@@ -18,8 +20,8 @@ import os.path
 import time
 from collections import defaultdict, deque
 from annotate import annotate_fusion, fix_fusion
-from file_parse import parse_junc
-from file_convert import fetch_psi, fetch_read, Expression
+from parser import parse_junc
+from helper import fetch_psi, fetch_read, Expression
 from dir_func import check_dir, create_dir
 import pysam
 from scipy.stats import fisher_exact, binom
@@ -35,6 +37,11 @@ def denovo(options):
     print('Start CIRCexplorer2 denovo at %s' % local_time)
     # check output directory
     out_dir = check_dir(options['<circ_dir>'])
+    # check tophat results
+    if options['--tophat-dir']:
+        tophat_dir = check_dir(options['--tophat-dir'])
+    else:
+        tophat_dir = check_dir(out_dir + '/tophat')
     # prepare denovo directory
     denovo_dir = '%s/denovo' % out_dir
     create_dir(denovo_dir)
@@ -61,13 +68,15 @@ def denovo(options):
     # extract novel circRNAs
     extract_novel_circ(denovo_dir, options['--ref'])
     if options['--as']:
-        if not options['--pAplus']:
+        if options['--pAplus'] and os.path.isdir(options['--pAplus']):
+            pAplus_dir = os.path.abspath(options['--pAplus'])
+        else:
             sys.exit('You should offer --pAplus option in --as mode!')
         # extract specific exons
-        extract_specific_exon(denovo_dir, options['--pAplus'],
+        extract_specific_exon(denovo_dir, tophat_dir, pAplus_dir,
                               options['--rpkm'])
         # extract retained introns
-        extract_retained_intron(denovo_dir, options['--pAplus'])
+        extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir)
     local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
     print('End CIRCexplorer2 denovo at %s' % local_time)
 
@@ -129,7 +138,7 @@ def extract_novel_circ(denovo_dir, ref_path):
     print('Fetch %d circular RNAs!' % novel_circ_num)
 
 
-def extract_specific_exon(denovo_dir, pAplus_dir, rpkm_flag):
+def extract_specific_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):
     """
     1. Check each exon and fetch PSI
     2. Calculate RPKM if needed
@@ -139,7 +148,7 @@ def extract_specific_exon(denovo_dir, pAplus_dir, rpkm_flag):
     exons = {}
     # set path
     fusion_f = '%s/circ_fusion.txt' % denovo_dir
-    pAminus_junc_f = '%s/../tophat/junctions.bed' % denovo_dir
+    pAminus_junc_f = tophat_dir + '/junctions.bed'
     (pAminus_junc,
      pAminus_left_junc,
      pAminus_right_junc) = parse_junc(pAminus_junc_f, 1)
@@ -148,7 +157,7 @@ def extract_specific_exon(denovo_dir, pAplus_dir, rpkm_flag):
      pAplus_left_junc,
      pAplus_right_junc) = parse_junc(pAplus_junc_f, 1)
     if rpkm_flag:
-        pAminus_bam = Expression('%s/../tophat/accepted_hits.bam' % denovo_dir)
+        pAminus_bam = Expression('%s/accepted_hits.bam' % tophat_dir)
         pAplus_bam = Expression('%s/accepted_hits.bam' % pAplus_dir)
     with open(fusion_f, 'r') as f:
         for line in f:
@@ -223,7 +232,6 @@ def extract_specific_exon(denovo_dir, pAplus_dir, rpkm_flag):
                             circ_exp = pAminus_bam.rpkm(chrom, *exon_deque[1])
                             linear_exp = pAplus_bam.rpkm(chrom, *exon_deque[1])
                             info += '\t%.3f\t%.3f' % (circ_exp, linear_exp)
-                        info += '\t%s\t%s' % (max_left_circ, max_right_circ)
                         exons[exon_info] = [gene_info, reads, info]
     output_f = '%s/all_exon_info.txt' % denovo_dir
     with open(output_f, 'w') as output:
@@ -235,7 +243,7 @@ def extract_specific_exon(denovo_dir, pAplus_dir, rpkm_flag):
     print('Complete parsing circular RNA exons!')
 
 
-def extract_retained_intron(denovo_dir, pAplus_dir):
+def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir):
     """
     Check each intron and fetch PIR
     Modified from Braunschweig et al., Genome Research, 2014, gr-177790.
@@ -243,9 +251,9 @@ def extract_retained_intron(denovo_dir, pAplus_dir):
     print('Start to parse circular RNA introns...')
     # set path
     fusion_f = '%s/circ_fusion.txt' % denovo_dir
-    pAminus_junc_f = '%s/../tophat/junctions.bed' % denovo_dir
+    pAminus_junc_f = tophat_dir + '/junctions.bed'
     pAminus_junc = parse_junc(pAminus_junc_f)
-    pAminus_bam_f = '%s/../tophat/accepted_hits.bam' % denovo_dir
+    pAminus_bam_f = tophat_dir + '/accepted_hits.bam'
     pAminus_bam = pysam.AlignmentFile(pAminus_bam_f, 'rb')
     pAplus_junc_f = '%s/junctions.bed' % pAplus_dir
     pAplus_junc = parse_junc(pAplus_junc_f)

@@ -1,3 +1,4 @@
+import sys
 import os.path
 import math
 from collections import defaultdict
@@ -316,25 +317,6 @@ def fetch_anchor(fa, chrom, start, end, strand):
     return seq
 
 
-def fetch_fa(seq, pos, strand):
-    # read(index)/+: --------+++++++++++++++
-    #                        |pos
-    #                | seq1  |    seq2     |
-    if strand == '+':
-        seq1 = seq[:pos]
-        seq2 = seq[pos:]
-    # read(index)/-: --------+++++++++++++++
-    #                        |anchor|pos
-    #                |    seq2      | seq1 |
-    else:
-        table = maketrans('ATCG', 'TAGC')
-        seq1 = seq[pos:]
-        seq2 = seq[:pos]
-        seq1 = seq1.translate(table)[::-1]
-        seq2 = seq2.translate(table)[::-1]
-    return (seq1, seq2)
-
-
 def fetch_read(bam, chrom, start, end, flag=1):
     region_length = end - start
     reads = 0
@@ -347,3 +329,33 @@ def fetch_read(bam, chrom, start, end, flag=1):
     if not flag:
         reads /= region_length
     return reads
+
+
+def link_index(i, index_file, out_dir):
+    if i == 1:  # bowtie1 index
+        suffix = ['.1.ebwt', '.2.ebwt', '.3.ebwt', '.4.ebwt', '.rev.1.ebwt',
+                  '.rev.2.ebwt']
+    else:  # bowtie2 index
+        suffix = ['.1.bt2', '.2.bt2', '.3.bt2', '.4.bt2', '.rev.1.bt2',
+                  '.rev.2.bt2']
+    prefix = os.path.split(index_file)[1]
+    for s in suffix:
+        f_abs = os.path.abspath(index_file + s)
+        f_name = prefix + s
+        if os.path.isfile(f_abs):
+            os.symlink(f_abs, '%s/bowtie%d_index/%s' % (out_dir, i, f_name))
+        else:
+            sys.exit('Error: lack index file %s!' % f_name)
+    return prefix
+
+
+def build_index(i, genome_file, prefix, out_dir):
+    if i == 1:
+        v = ''
+    else:
+        v = 2
+    index_file = '%s/bowtie%d_index/%s' % (out_dir, i, prefix)
+    return_code = os.system('bowtie%s-build %s %s > %s/bowtie%d_index.log' %
+                            (v, genome_file, index_file, out_dir, i)) >> 8
+    if return_code:
+        sys.exit('Error: cannot build index for bowtie%d!' % i)

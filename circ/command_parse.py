@@ -7,9 +7,9 @@ Usage: CIRCexplorer2 (<command> | --help | --version)
 
 from docopt import docopt
 import sys
+from version import __version__
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
-__version__ = '2.0.0'
 
 help_doc = '''
    ______________  ______                __
@@ -27,7 +27,6 @@ Circular RNA Command:
     annotate         Annotate circular RNA junction reads with gene annotations
     assemble         Assemble transcriptome for circular RNAs
     denovo           Fetch de novo circular RNA isoforms
-    cs               Calculate complementary scores
 '''
 
 
@@ -37,24 +36,26 @@ def main():
         sys.exit(help_doc)
     elif sys.argv[1] == '--version' or sys.argv[1] == '-v':
         sys.exit(__version__)
-    elif sys.argv[1] == 'map':
+    elif sys.argv[1] == 'align':
+        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import align
         align.align(docopt(align.__doc__, version=__version__))
     elif sys.argv[1] == 'parse':
+        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import parse
         parse.parse(docopt(parse.__doc__, version=__version__))
     elif sys.argv[1] == 'annotate':
+        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import annotate
         annotate.annotate(docopt(annotate.__doc__, version=__version__))
     elif sys.argv[1] == 'assemble':
+        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import assemble
         assemble.assemble(docopt(assemble.__doc__, version=__version__))
     elif sys.argv[1] == 'denovo':
+        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import denovo
         denovo.denovo(docopt(denovo.__doc__, version=__version__))
-    elif sys.argv[1] == 'cs':
-        import cs
-        cs.cs(docopt(cs.__doc__, version=__version__))
     else:
         sys.exit(help_doc)
 

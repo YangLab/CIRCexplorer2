@@ -8,7 +8,12 @@ This part will guide you to install CIRCexploer2 and setup all the required stuf
     - TopHat & TopHat-Fusion
         + [TopHat](http://ccb.jhu.edu/software/tophat/index.shtml) (>=2.0.9)
         + [TopHat-Fusion](http://ccb.jhu.edu/software/tophat/fusion_index.html) (included in TopHat)
-    - STAR or segemehl or MapSplice (optional)
+    - [UCSC Utilities](http://hgdownload.soe.ucsc.edu/admin/exe/)
+        + genePredToGtf
+        + gtfToGenePred
+        + bedGraphToBigWig (*optional*)
+        + bedToBigBed (*optional*)
+    - STAR or segemehl or MapSplice (*optional*)
         + [STAR](https://github.com/alexdobin/STAR) (>=2.4.0j)
         + [segemehl](http://www.bioinf.uni-leipzig.de/Software/segemehl) (>=0.2.0)
         + [MapSplice](http://www.netlab.uky.edu/p/bioinfo/MapSplice2) (>=2.1.9)
@@ -16,6 +21,7 @@ This part will guide you to install CIRCexploer2 and setup all the required stuf
     - [pysam](http://pysam.readthedocs.org/en/latest/) (>=0.8.2)
     - [pybedtools](https://pythonhosted.org/pybedtools)
     - [scipy](http://www.scipy.org)
+    - [docopt](http://docopt.org)
 
 ### RNA-seq
 

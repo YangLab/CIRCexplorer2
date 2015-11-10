@@ -12,8 +12,8 @@ with poor gene annotations)
 
 import time
 from genomic_interval import Interval
-from file_parse import parse_ref, parse_bed, check_fasta
-from file_convert import map_fusion_to_iso, fix_bed, generate_bed
+from parser import parse_ref, parse_bed, check_fasta
+from helper import map_fusion_to_iso, fix_bed, generate_bed
 from dir_func import check_dir, create_dir
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'

@@ -19,13 +19,13 @@ Options:
 import sys
 import os
 import os.path
-import shutil
-import glob
 import time
 from collections import defaultdict
 import pysam
 import pybedtools
-from file_parse import parse_fusion_bam
+from parser import parse_fusion_bam
+from helper import link_index, build_index
+from dir_func import create_dir
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
@@ -36,14 +36,13 @@ def align(options):
     local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
     print('Start CIRCexplorer2 align at %s' % local_time)
     # check output directory
-    check_outdir(options['--output'])
-    out_dir = os.path.abspath(options['--output'])
+    out_dir = check_outdir(options['--output'])
     # check index files
     if options['--genome']:  # build index
-        prefix1, prefix2 = check_index(0, out_dir, options['--genome'])
+        prefix1, prefix2 = check_index(False, out_dir, options['--genome'])
     else:  # index exist
-        prefix1, prefix2 = check_index(1, out_dir, (options['--bowtie1'],
-                                                    options['--bowtie2']))
+        prefix1, prefix2 = check_index(True, out_dir, (options['--bowtie1'],
+                                                       options['--bowtie2']))
     # tophat2 mapping
     tophat_map(options['--gtf'], out_dir, prefix2, options['<fastq>'],
                options['--thread'], bw=options['--bw'],
@@ -62,68 +61,38 @@ def check_outdir(out_dir):
     '''
     print('Check output directory...')
     # clear output directory if not empty
-    if os.path.isdir(out_dir):
-        if os.listdir(out_dir):
-            print('Warning: the output directory %s is not empty!' % out_dir)
-        shutil.rmtree(out_dir)
+    create_dir(out_dir)
+    dir_path = os.path.abspath(out_dir)
     # create essential subdirectories
-    os.mkdir(out_dir)
-    os.mkdir(out_dir + '/bowtie1_index')
-    os.mkdir(out_dir + '/bowtie2_index')
-    os.mkdir(out_dir + '/tophat')
-    os.mkdir(out_dir + '/tophat_fusion')
+    os.mkdir(dir_path + '/bowtie1_index')
+    os.mkdir(dir_path + '/bowtie2_index')
+    os.mkdir(dir_path + '/tophat')
+    os.mkdir(dir_path + '/tophat_fusion')
+    return dir_path
 
 
-def check_index(index_flag, out_dir, file):
+def check_index(index_flag, out_dir, index_file):
     '''
     1. Build index for Bowtie1 and Bowtie2 if not exist
     2. Links index files if exist
     '''
     print('Check index files....')
-    if index_flag:  # index exist
+    if index_flag:  # index files exist
         # link index files for bowtie1
         print('Link index files for Bowtie1...')
-        index1_flag = False
-        for f in glob.glob(file[0] + '*'):
-            f_abs = os.path.abspath(f)
-            f_name = os.path.split(f_abs)[1]
-            if f_name.endswith('.rev.1.ebwt'):
-                prefix1 = f_name.rsplit('.', 3)[0]
-                index1_flag = True
-            os.symlink(f_abs, '%s/bowtie1_index/%s' % (out_dir, f_name))
-        if not index1_flag:
-            sys.exit('Error: your bowtie1_index %s is wrong!' % file[0])
+        prefix1 = link_index(1, index_file[0], out_dir)
         # link index files for bowtie2
         print('Link index files for Bowtie2...')
-        index2_flag = False
-        for f in glob.glob(file[1] + '*'):
-            f_abs = os.path.abspath(f)
-            f_name = os.path.split(f_abs)[1]
-            if f_name.endswith('.rev.1.bt2'):
-                prefix2 = f_name.rsplit('.', 3)[0]
-                index2_flag = True
-            os.symlink(f_abs, '%s/bowtie2_index/%s' % (out_dir, f_name))
-        if not index2_flag:
-            sys.exit('Error: your bowtie2_index %s is wrong!' % file[1])
+        prefix2 = link_index(2, index_file[1], out_dir)
         return (prefix1, prefix2)
-    else:  # index not exist
-        prefix = os.path.split(file)[1]
+    else:  # index files not exist
+        prefix = os.path.split(index_file)[1]
         # build index for bowtie1
         print('Build index for Bowtie1...')
-        index_dir = '%s/bowtie1_index/%s' % (out_dir, prefix)
-        return_code = os.system('bowtie-build %s %s > %s/bowtie1_index.log' %
-                                (file, index_dir, out_dir)) >> 8
-        if return_code:
-            sys.exit('Error: cannot build index for bowtie1!')
-        os.symlink(file, index_dir)
+        build_index(1, index_file, prefix, out_dir)
         # build index for bowtie2
         print('Build index for Bowtie2...')
-        index_dir = '%s/bowtie2_index/%s' % (out_dir, prefix)
-        return_code = os.system('bowtie2-build %s %s > %s/bowtie2_index.log' %
-                                (file, index_dir, out_dir)) >> 8
-        if return_code:
-            sys.exit('Error: cannot build index for bowtie2!')
-        os.symlink(file, index_dir)
+        build_index(2, index_file, prefix, out_dir)
         return (prefix, prefix)
 
 

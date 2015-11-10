@@ -12,7 +12,7 @@ import time
 import sys
 import os.path
 from collections import defaultdict
-from dir_func import check_dir
+from dir_func import create_dir
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
@@ -22,11 +22,12 @@ __all__ = ['parse']
 def parse(options):
     aliger = set(['STAR', 'MapSplice', 'segemehl'])
     if options['-t'] not in aliger:
-        sys.exit('Error: CIRCexplorer2 only support ' + ' or '.join(aliger))
+        sys.exit('Error: CIRCexplorer2 parse does not support %s!' %
+                 options['-t'])
     local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
     print('Start CIRCexplorer2 parse at %s' % local_time)
     # check output directory
-    check_dir(options['--output'])
+    create_dir(options['--output'])
     out_dir = os.path.abspath(options['--output'])
     out = out_dir + '/fusion_junction.bed'
     # parse fusion junctions from other aligers

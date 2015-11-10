@@ -7,6 +7,7 @@ Options:
     -r REF --ref=REF               Gene annotation file.
     -p THREAD --thread=THREAD      Running threads. [default: 10]
     --bb                           Convert assembly results to BigBed.
+    --tophat-dir=TOPHAT_DIR        TopHat mapping directory.
     --chrom-size=CHROM_SIZE        Chrom size file for converting to BigBed.
     --remove-rRNA                  Ignore rRNA during assembling (only for \
 human hg19).
@@ -17,8 +18,8 @@ import sys
 import time
 import os
 import os.path
-from file_parse import parse_junc
-from file_convert import genepred_to_bed
+from parser import parse_junc
+from helper import genepred_to_bed
 from dir_func import check_dir, create_dir
 import pybedtools
 import pysam
@@ -33,13 +34,18 @@ def assemble(options):
     print('Start CIRCexplorer2 assemble at %s' % local_time)
     # check output directory
     out_dir = check_dir(options['<circ_dir>'])
+    # check tophat results
+    if options['--tophat-dir']:
+        tophat_dir = check_dir(options['--tophat-dir'])
+    else:
+        tophat_dir = check_dir(out_dir + '/tophat')
     # prepare cufflinks directory
-    cufflinks_dir = '%s/cufflinks' % out_dir
+    cufflinks_dir = out_dir + '/cufflinks'
     create_dir(cufflinks_dir)
     # filter ref file
-    ref_filter(options['--ref'], out_dir)
+    ref_filter(options['--ref'], tophat_dir, out_dir)
     # assemble with cufflinks
-    cufflinks_assemble(out_dir, cufflinks_dir, options['--thread'],
+    cufflinks_assemble(out_dir, tophat_dir, cufflinks_dir, options['--thread'],
                        options['--remove-rRNA'], options['--max-bundle-frags'])
     # convert assembly results
     convert_assembly_gtf(out_dir, cufflinks_dir, options['--ref'],
@@ -48,14 +54,14 @@ def assemble(options):
     print('End CIRCexplorer2 assemble at %s' % local_time)
 
 
-def ref_filter(ref, out_dir):
+def ref_filter(ref, tophat_dir, out_dir):
     '''
     Extract isoform with at least two supported junction reads for each
     junction
     '''
     print('Read gene annotations...')
     # read junction information
-    junction_f = '%s/tophat/junctions.bed' % out_dir
+    junction_f = tophat_dir + '/junctions.bed'
     junc = parse_junc(junction_f)
     print('Filter gene annotations with junction information...')
     # filter out gene annotations using junction reads
@@ -78,15 +84,16 @@ def ref_filter(ref, out_dir):
         sys.exit('Error: cannot convert GenePred to GTF!')
 
 
-def cufflinks_assemble(out_dir, cufflinks_dir, thread, flag_rRNA, fragments):
+def cufflinks_assemble(out_dir, tophat_dir, cufflinks_dir, thread, flag_rRNA,
+                       fragments):
     '''
     Cufflinks RABT assembly
     '''
     # prepare cufflinks command
     gtf_path = '%s/cufflinks/filtered_junction.gtf' % out_dir
-    bam_path = '%s/tophat/accepted_hits.bam' % out_dir
+    bam_path = tophat_dir + '/accepted_hits.bam'
     if flag_rRNA:  # remove rRNA
-        new_bam_path = '%s/tophat/accepted_hits_no_rRNA.bam' % out_dir
+        new_bam_path = '%s/tophat_no_rRNA.bam' % out_dir
         previous_bam = pysam.AlignmentFile(bam_path, 'rb')
         new_bam = pysam.AlignmentFile(new_bam_path, 'wb',
                                       template=previous_bam)

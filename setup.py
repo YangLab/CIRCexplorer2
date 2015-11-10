@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
+from circ.version import __version__
 
 setup(name='CIRCexplorer2',
-      version='2.0.0',
+      version=__version__,
       description='Circular RNA analysis toolkits',
       author='Xiao-Ou Zhang',
       author_email='zhangxiaoou@picb.ac.cn',
@@ -29,6 +30,7 @@ setup(name='CIRCexplorer2',
           'pysam>=0.8.2',
           'pybedtools',
           'scipy',
+          'docopt'
       ],
       entry_points={
           'console_scripts': [

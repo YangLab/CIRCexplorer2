@@ -1,9 +1,24 @@
 import sys
+import os
 import os.path
 import math
 from collections import defaultdict
 from string import maketrans
 import pysam
+
+
+def which(program):
+    '''
+    Check the path of external programs, and source codes are modified from
+    https://github.com/infphilo/tophat/blob/master/src/tophat.py.
+    '''
+    def is_executable(fpath):
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+    for path in os.environ["PATH"].split(os.pathsep):
+        progpath = os.path.join(path, program)
+        if is_executable(progpath):
+            return progpath
+    return None
 
 
 class Expression(object):
@@ -353,9 +368,12 @@ def build_index(i, genome_file, prefix, out_dir):
     if i == 1:
         v = ''
     else:
-        v = 2
+        v = '2'
+    prog = 'bowtie%s-build' % v
+    if which(prog) is None:
+        sys.exit('%s is required to build index!' % prog)
     index_file = '%s/bowtie%d_index/%s' % (out_dir, i, prefix)
-    return_code = os.system('bowtie%s-build %s %s > %s/bowtie%d_index.log' %
-                            (v, genome_file, index_file, out_dir, i)) >> 8
+    return_code = os.system('%s %s %s > %s/bowtie%d_index.log' %
+                            (prog, genome_file, index_file, out_dir, i)) >> 8
     if return_code:
         sys.exit('Error: cannot build index for bowtie%d!' % i)

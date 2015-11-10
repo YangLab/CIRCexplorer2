@@ -19,7 +19,7 @@ import time
 import os
 import os.path
 from parser import parse_junc
-from helper import genepred_to_bed
+from helper import which, genepred_to_bed
 from dir_func import check_dir, create_dir
 import pybedtools
 import pysam
@@ -39,6 +39,15 @@ def assemble(options):
         tophat_dir = check_dir(options['--tophat-dir'])
     else:
         tophat_dir = check_dir(out_dir + '/tophat')
+    # check cufflinks
+    if which('cufflinks') is None:
+        sys.exit('Cufflinks is required for CIRCexplorer2 assemble!')
+    # check genePredToGtf
+    if which('genePredToGtf') is None:
+        sys.exit('genePredToGtf is required for CIRCexplorer2 assemble!')
+    # check gtfToGenePred
+    if which('gtfToGenePred') is None:
+        sys.exit('gtfToGenePred is required for CIRCexplorer2 assemble!')
     # prepare cufflinks directory
     cufflinks_dir = out_dir + '/cufflinks'
     create_dir(cufflinks_dir)
@@ -144,7 +153,7 @@ def convert_assembly_gtf(out_dir, cufflinks_dir, ref, bb, chrom_size):
             symbol = gene_symbol[iso] if iso in gene_symbol else iso
             ref_f.write(symbol + '\t' + line)
     # convert to bigbed if needed
-    if bb:
+    if bb and which('bedToBigBed') is not None:
         print('Convert to BigBed file...')
         if not chrom_size:  # no chrom size file, search it in tophat folder
             chrom_size = '%s/tophat/chrom.size' % out_dir
@@ -161,3 +170,5 @@ def convert_assembly_gtf(out_dir, cufflinks_dir, ref, bb, chrom_size):
                                 (sorted_bed_path, chrom_size, bb_path)) >> 8
         if return_code:
             sys.exit('Error: cannot convert bed to BigBed!')
+    else:
+        print('Could not find bedToBigBed, so skip this step!')

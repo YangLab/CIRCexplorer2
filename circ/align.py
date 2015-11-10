@@ -24,7 +24,7 @@ from collections import defaultdict
 import pysam
 import pybedtools
 from parser import parse_fusion_bam
-from helper import link_index, build_index
+from helper import which, link_index, build_index
 from dir_func import create_dir
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
@@ -37,6 +37,9 @@ def align(options):
     print('Start CIRCexplorer2 align at %s' % local_time)
     # check output directory
     out_dir = check_outdir(options['--output'])
+    # check tophat
+    if which('tophat2') is None:
+        sys.exit('TopHat2 is required for CIRCexplorer2 align!')
     # check index files
     if options['--genome']:  # build index
         prefix1, prefix2 = check_index(False, out_dir, options['--genome'])
@@ -121,7 +124,7 @@ def tophat_map(gtf, out_dir, prefix, fastq, thread, bw=False, scale=False,
     unmapped_bam = pybedtools.BedTool('%s/tophat/unmapped.bam' % out_dir)
     unmapped_bam.bam_to_fastq(fq='%s/tophat/unmapped.fastq' % out_dir)
     # create Bigwig file if needed
-    if bw:
+    if bw and which('bedGraphToBigWig') is not None:
         print('Create BigWig file...')
         map_bam_fname = '%s/tophat/accepted_hits.bam' % out_dir
         # index bam if not exist
@@ -154,6 +157,8 @@ def tophat_map(gtf, out_dir, prefix, fastq, thread, bw=False, scale=False,
                                  bigwig_fname)) >> 8
         if return_code:
             sys.exit('Error: cannot convert bedGraph to BigWig!')
+    else:
+        print('Could not find bedGraphToBigWig, so skip this step!')
 
 
 def tophat_fusion_map(out_dir, prefix, thread):

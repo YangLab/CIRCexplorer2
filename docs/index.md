@@ -15,14 +15,15 @@ CIRCexplorer2 is a comprehensive and integrated circular RNA analysis toolset. I
 We have developed a fairly comprehensive tutorial that demonstrates how CIRCexplorer2 helps you to promote your research in circular RNA identification and characterization. Please check it below!
 
 * [Installation and Setup](tutorial/setup.md)
-* [Circular RNA Identification (**without** *de novo* assembly)](tutorial/circ.md)
-* [Circular RNA Identification (**with** *de novo* assembly)](tutorial/novel_circ.md)
-* [Characterization of Circular RNA Alternative Splicing](tutorial/as.md)
-* [Complementary Score](tutorial/cs.md)
+* [Pipeline](tutorial/pipeline.md)
+* [Alignment](tutorial/alignment.md)
+* [Annotating](tutorial/annotating.md)
+* [Assembly](tutorial/assembly.md)
+* [Alternative Splicing](tutorial/as.md)
 
 ## Modules
 
-CIRCexplorer2 contains 6 modules. Each module functions as an independent component owning its distinctive duty. Meanwhile, they inteact with each other, and different circular RNA analysis pipelines are derived from different combinations of several modules. Understanding the detailed mechanism of each module could facilitate your circular RNA research.
+CIRCexplorer2 contains 5 modules. Each module functions as an independent component owning its distinctive duty. Meanwhile, they inteact with each other, and different circular RNA analysis pipelines are derived from different combinations of several modules. Understanding the detailed mechanism of each module could facilitate your circular RNA research.
 
 List of Modules:
 
@@ -31,4 +32,3 @@ List of Modules:
 * [Annotate](modules/annotate.md)
 * [Assemble](modules/assemble.md)
 * [Denovo](modules/denovo.md)
-* [CS](modules/cs.md)

@@ -1,6 +1,6 @@
 '''
 genomic_interval.py
-copied from https://github.com/kepbod/interval
+cloned from https://github.com/kepbod/interval
 author: Xiao-Ou Zhang <zhangxiaoou@picb.ac.cn>
 version: 1.0
 '''

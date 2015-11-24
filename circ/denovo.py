@@ -77,6 +77,8 @@ def denovo(options):
                               options['--rpkm'])
         # extract retained introns
         extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir)
+        # characterize A5SS and A3SS
+        parse_splice_site(denovo_dir, tophat_dir, pAplus_dir)
     local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
     print('End CIRCexplorer2 denovo at %s' % local_time)
 
@@ -373,3 +375,100 @@ def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir):
                                     strand, other_info, info]))
             output.write('\n')
     print('Complete parsing circular RNA introns!')
+
+
+def parse_splice_site(denovo_dir, tophat_dir, pAplus_dir):
+    """
+    Characterize all the alternative splice site selections.
+    """
+    print('Start to parse alternative splice sites...')
+    splice_site_5 = set()
+    splice_site_3 = set()
+    # set path
+    fusion_f = '%s/circ_fusion.txt' % denovo_dir
+    pAminus_junc_f = tophat_dir + '/junctions.bed'
+    (pAminus_junc,
+     pAminus_left_junc,
+     pAminus_right_junc) = parse_junc(pAminus_junc_f, 2)
+    pAplus_junc_f = '%s/junctions.bed' % pAplus_dir
+    (pAplus_junc,
+     pAplus_left_junc,
+     pAplus_right_junc) = parse_junc(pAplus_junc_f, 2)
+    with open(fusion_f, 'r') as f:
+        for line in f:
+            circ_type = line.split()[13]
+            if circ_type == 'ciRNA':  # not check ciRNAs
+                continue
+            chrom = line.split()[0]
+            start = int(line.split()[1])
+            strand = line.split()[5]
+            sizes = [int(x) for x in line.split()[10].split(',')]
+            offsets = [int(x) for x in line.split()[11].split(',')]
+            starts, ends = [], []
+            for s, o in zip(sizes, offsets):
+                starts.append(start + o)
+                ends.append(start + o + s)
+            starts = starts[1:]
+            ends = ends[:-1]
+            for s, e in zip(ends, starts):
+                loc = '%s\t%d\t%d' % (chrom, s, e)
+                left_id = '%s\t%d' % (chrom, s)
+                right_id = '%s\t%d' % (chrom, e)
+                if loc in pAminus_junc:
+                    pAminus_reads = pAminus_junc[loc]
+                else:  # circ_pcu=0
+                    continue
+                if loc in pAplus_junc:
+                    pAplus_reads = pAplus_junc[loc]
+                else:
+                    pAplus_reads = 0
+                if pAminus_left_junc[left_id] != 0:
+                    pAminus_left_total = pAminus_left_junc[left_id]
+                    pAminus_left_psu = (pAminus_reads * 100.0 /
+                                        pAminus_left_total)
+                    pAplus_left_total = pAplus_left_junc[left_id]
+                    if pAplus_left_total != 0:
+                        pAplus_left_psu = (pAplus_reads * 100.0 /
+                                           pAplus_left_total)
+                    else:
+                        pAplus_left_psu = 0.0
+                else:  # circ_left_total_reads=0
+                    continue
+                if pAminus_right_junc[right_id] != 0:
+                    pAminus_right_total = pAminus_right_junc[right_id]
+                    pAminus_right_psu = (pAminus_reads * 100.0 /
+                                         pAminus_right_total)
+                    pAplus_right_total = pAplus_right_junc[right_id]
+                    if pAplus_right_total != 0:
+                        pAplus_right_psu = (pAplus_reads * 100.0 /
+                                            pAplus_right_total)
+                    else:
+                        pAplus_right_psu = 0.0
+                else:  # circ_right_total_reads=0
+                    continue
+                f = '%s\t%s\t%d\t%d\t%f\t%d\t%d\t%f\n'
+                left_info = f % (loc, strand, pAminus_reads,
+                                 pAminus_left_total, pAminus_left_psu,
+                                 pAplus_reads, pAplus_left_total,
+                                 pAplus_left_psu)
+                right_info = f % (loc, strand, pAminus_reads,
+                                  pAminus_right_total, pAminus_right_psu,
+                                  pAplus_reads, pAplus_right_total,
+                                  pAplus_right_psu)
+                if strand == '+':
+                    if pAminus_left_psu != 100:
+                        splice_site_3.add(left_info)
+                    if pAminus_right_psu != 100:
+                        splice_site_5.add(right_info)
+                else:
+                    if pAminus_left_psu != 100:
+                        splice_site_5.add(left_info)
+                    if pAminus_right_psu != 100:
+                        splice_site_3.add(right_info)
+    output_f = '%s/all_A5SS_info.txt' % denovo_dir
+    with open(output_f, 'w') as output:
+        output.write(''.join(splice_site_5))
+    output_f = '%s/all_A3SS_info.txt' % denovo_dir
+    with open(output_f, 'w') as output:
+        output.write(''.join(splice_site_3))
+    print('Complete parsing alternative splice sites!')

@@ -81,9 +81,12 @@ def parse_bed(fus):
 
 def parse_junc(junc_f, flag=0):
     junc = defaultdict(int)
-    if flag:
+    if flag == 1:
         left_junc = defaultdict(list)
         right_junc = defaultdict(list)
+    elif flag == 2:
+        left_junc = defaultdict(int)
+        right_junc = defaultdict(int)
     with open(junc_f, 'r') as f:
         f.readline()  # skip header
         for line in f:
@@ -96,11 +99,16 @@ def parse_junc(junc_f, flag=0):
             right = str(start + offset)
             junc_id = '\t'.join([chrom, left, right])
             junc[junc_id] += reads
-            if flag:
+            if flag == 1:
                 left_junc_id = '\t'.join([chrom, left])
                 right_junc_id = '\t'.join([chrom, right])
                 left_junc[left_junc_id].append([right, reads])
                 right_junc[right_junc_id].append([left, reads])
+            if flag == 2:
+                left_junc_id = '\t'.join([chrom, left])
+                right_junc_id = '\t'.join([chrom, right])
+                left_junc[left_junc_id] += reads
+                right_junc[right_junc_id] += reads
     if flag:
         return (junc, left_junc, right_junc)
     else:

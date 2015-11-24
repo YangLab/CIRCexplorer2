@@ -8,3 +8,5 @@
 \____/___/_/ |_|\____/\___/_/|_/ .___/_/\____/_/   \___/_/
                               /_/
 ```
+
+CIRCexplorer2 is the successor of [CIRCexplorer](http://yanglab.github.io/CIRCexplorer/) with plenty of new features to facilitate circular RNA identification and characterization.

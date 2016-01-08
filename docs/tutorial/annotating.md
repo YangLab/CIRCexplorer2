@@ -4,7 +4,7 @@ This step is a clone and integration of [CIRCexplorer](http://yanglab.github.io/
 
 ## Command
 
-```bash
+```
 CIRCexplorer2 annotate -r hg19_ref_all.txt -g hg19.fa circ_out > CIRCexplorer2_annotate.log
 ```
 

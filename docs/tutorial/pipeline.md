@@ -7,7 +7,7 @@ CIRCexplorer2 contains two main pipelines for circular RNA identification and ch
 
 ## Annotating pipeline
 
-This pipeline is derived from [CIRCexplorer](http://yanglab.github.io/CIRCexplorer/) which was employed in our previous [Cell paper](http://www.sciencedirect.com/science/article/pii/S0092867414011118), and has been proven to be one of the most reliable bioinformatic tools for circRNA prediction (Hansen, 2015). It is a integrated strategy to identify fusion junction reads from back spliced exons and intron lariats, and annotates these fusion junction reads to correct gene annotations with elaborately designed realignment script. In CIRCexplorer2, we extended this pipeline to support more aligners (including STAR, segemehl and MapSplice) for satisfying different requirements for circular RNA alignments and data mining.
+This pipeline is derived from [CIRCexplorer](http://yanglab.github.io/CIRCexplorer/) which was employed in our previous [Cell paper](http://www.sciencedirect.com/science/article/pii/S0092867414011118), and has been proven to be one of the most reliable bioinformatic tools for circRNA prediction ([Hansen, et al., *Nucleic Acids Res*, 2015](http://nar.oxfordjournals.org/content/early/2015/12/09/nar.gkv1458.full)). It is a integrated strategy to identify fusion junction reads from back spliced exons and intron lariats, and annotates these fusion junction reads to correct gene annotations with elaborately designed realignment script. In CIRCexplorer2, we extended this pipeline to support more aligners (including STAR, segemehl and MapSplice) for satisfying different requirements for circular RNA alignments and data mining.
 
 ### Schematic flow
 
@@ -23,7 +23,7 @@ This pipeline is derived from [CIRCexplorer](http://yanglab.github.io/CIRCexplor
 ### Steps
 
 * Circular RNA fusion junction read alignment and parsing ([Alignment](../tutorial/alignment.md))
-* Circular RNA fusion junction read annotating and realignment ([Identification](../tutorial/identification.md))
+* Circular RNA fusion junction read annotating and realignment ([Annotating](../tutorial/annotating.md))
 
 ## Characterization pipeline
 

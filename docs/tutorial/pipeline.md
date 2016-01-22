@@ -15,7 +15,7 @@ This pipeline is derived from [CIRCexplorer](http://yanglab.github.io/CIRCexplor
 
 ### Features
 
-* It relies on existing gene annotations, and it only reports circular RNAs owning exactly the same boundaries with existing gene annotations. This criterion enable this pipeline to have high accuracy in circular RNA prediction. If you want to identify circular RNAs with inaccurate boundaries, please see more information of [annotate module](../modules/annotate.md), but it may induce many false positives.
+* It relies on existing gene annotations, and it only reports circular RNAs owning exactly the same boundaries with existing gene annotations. This criterion enables this pipeline to have high accuracy in circular RNA prediction. If you want to identify circular RNAs with inaccurate boundaries, please see more information of [annotate module](../modules/annotate.md), but it may induce many false positives.
 * It supports multiple aligners ([TopHat2](http://ccb.jhu.edu/software/tophat/index.shtml)/[TopHat-Fusion](http://ccb.jhu.edu/software/tophat/fusion_index.html), [STAR](https://github.com/alexdobin/STAR), [segemehl](http://www.bioinf.uni-leipzig.de/Software/segemehl) and [MapSplice](http://www.netlab.uky.edu/p/bioinfo/MapSplice2)).
 * It is very convenient. You only need to run two simple commands to complete this pipeline without any additional manipulations, and CIRCexplorer2 would prepare all you need in following circular RNA analysis.
 * It is sufficient for general circular RNA identification.

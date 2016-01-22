@@ -10,6 +10,8 @@ This part will guide you to install CIRCexploer2 and setup all the required stuf
     - TopHat & TopHat-Fusion
         + [TopHat](http://ccb.jhu.edu/software/tophat/index.shtml) (>=2.0.9)
         + [TopHat-Fusion](http://ccb.jhu.edu/software/tophat/fusion_index.html) (included in TopHat)
+    - Cufflinks
+        + [Cufflinks](http://cole-trapnell-lab.github.io/cufflinks/) (>=2.1.1)
     - [UCSC Utilities](http://hgdownload.soe.ucsc.edu/admin/exe/)
         + genePredToGtf
         + gtfToGenePred
@@ -22,8 +24,8 @@ This part will guide you to install CIRCexploer2 and setup all the required stuf
 * Package
     - [pysam](http://pysam.readthedocs.org/en/latest/) (>=0.8.2)
     - [pybedtools](https://pythonhosted.org/pybedtools)
-    - [scipy](http://www.scipy.org)
     - [docopt](http://docopt.org)
+    - [scipy](http://www.scipy.org) (only used in [denovo](../modules/denovo.md) module)
 
 ### RNA-seq
 
@@ -47,7 +49,7 @@ cd CIRCexplorer2
 python setup.py install
 ```
 
-Or install CIRCexplorer2 from PyPI:
+Or install CIRCexplorer2 from [PyPI](https://pypi.python.org/pypi):
 ```
 pip install CIRCexplorer2
 ```
@@ -56,33 +58,33 @@ pip install CIRCexplorer2
 
 We will use `fetch_ucsc.py` script to download all the essential gene annotation and reference genome sequence files for circular RNA identification.
 
-`fetch_ucsc.py` is a small python script included in CIRCexplorer2 to help users to prepare relevant stuff for CIRCexplorer2. It could download and format the gene annotation file (RefSeq, KnownGenes or Ensembl) and the reference genome sequence file for two species (Human: hg19, Mouse: mm10). All these files will be fetched from the latest release of [UCSC](http://hgdownload.soe.ucsc.edu/downloads.html).
+`fetch_ucsc.py` is a small python script included in CIRCexplorer2 to help users to prepare relevant stuff for CIRCexplorer2. It could download and format the gene annotation file (RefSeq, KnownGenes or Ensembl) and the reference genome sequence file for two species (Human: hg19, hg38 Mouse: mm10). All these files will be fetched from the latest release of [UCSC](http://hgdownload.soe.ucsc.edu/downloads.html).
 
 Command line of `fetch_ucsc.py`:
 ```
-fetch_ucsc.py human/mouse ref/kg/ens/fa out
+fetch_ucsc.py hg19/hg38/mm10 ref/kg/ens/fa out
 ```
 
 Examples:
 
 1 Download human RefSeq gene annotation file
 ```
-fetch_ucsc.py human ref hg19_ref.txt
+fetch_ucsc.py hg19 ref hg19_ref.txt
 ```
 
 2 Download human KnownGenes gene annotation file
 ```
-fetch_ucsc.py human kg hg19_kg.txt
+fetch_ucsc.py hg19 kg hg19_kg.txt
 ```
 
 3 Download human Ensembl gene annotation file
 ```
-fetch_ucsc.py human ens hg19_ens.txt
+fetch_ucsc.py hg19 ens hg19_ens.txt
 ```
 
 4 Download human reference genome sequence file
 ```
-fetch_ucsc.py human fa hg19.fa
+fetch_ucsc.py hg19 fa hg19.fa
 ```
 
 5 Convert gene annotation file to GTF format (require [genePredToGtf](http://hgdownload.soe.ucsc.edu/admin/exe/))
@@ -96,12 +98,14 @@ cut -f2-11 hg19_ens.txt|genePredToGtf file stdin hg19_ens.gtf
 
 ###Notes:
 
-1 You could select one gene annotation file among `hg19_ref.txt`, `hg19_kg.txt` or `hg19_ens.txt` at your choice. In addition, you could concatenate all these gene annotation file as a single file for CIRCexplorer2.
+1 hg38 only has RefSeq and KnownGenes (GENCODE) gene annotations, and does not support Ensembl gene annotations.
+
+2 You could select one gene annotation file among `hg19_ref.txt`, `hg19_kg.txt` or `hg19_ens.txt` at your choice. In addition, you could concatenate all these gene annotation file as a single file for CIRCexplorer2.
 ```
 cat hg19_ref.txt hg19_kg.txt hg19_ens.txt > hg19_ref_all.txt
 ```
 
-2 CIRCexploer2 TopHat2/TopHat-Fusion pipeline requires [Bowtie](http://bowtie-bio.sourceforge.net/index.shtml) and [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) index files for reference genome. You could use `bowtie-build` and `bowtie2-build` to index relevant genome. Or you could use `CIRCexplorer2 align` to automatically index the genome file (See [Alignment](../tutorial/alignment.md)).
+3 CIRCexploer2 TopHat2/TopHat-Fusion pipeline requires [Bowtie](http://bowtie-bio.sourceforge.net/index.shtml) and [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) index files for reference genome. You could use `bowtie-build` and `bowtie2-build` to index relevant genome. Or you could use `CIRCexplorer2 align` to automatically index the genome file (See [Alignment](../tutorial/alignment.md)).
 ```
 # index genome for Bowtie
 bowtie-build hg19.fa bowtie1_index
@@ -109,14 +113,14 @@ bowtie-build hg19.fa bowtie1_index
 bowtie2-build hg19.fa bowtie2_index
 ```
 
-3 If you analyze circular RNAs in mouse, you should download mouse relevant files.
+4 If you analyze circular RNAs in mouse, you should download mouse relevant files.
 ```
 # mouse RefSeq gene annotation file
-fetch_ucsc.py mouse ref mm10_ref.txt
+fetch_ucsc.py mm10 ref mm10_ref.txt
 # mouse KnownGenes gene annotation file
-fetch_ucsc.py mouse kg mm10_kg.txt
+fetch_ucsc.py mm10 kg mm10_kg.txt
 # mouse Ensembl gene annotation file
-fetch_ucsc.py mouse ens mm10_ens.txt
+fetch_ucsc.py mm10 ens mm10_ens.txt
 # mouse reference genome sequence file
-fetch_ucsc.py mouse fa mm10.fa
+fetch_ucsc.py mm10 fa mm10.fa
 ```

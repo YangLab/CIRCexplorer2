@@ -2,7 +2,7 @@
 Usage: CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 
 Options:
-    -h --help                      Show this screen.
+    -h --help                      Show help message.
     --version                      Show version.
     -r REF --ref=REF               Gene annotation.
     -g GENOME --genome=GENOME      Genome FASTA file.
@@ -127,8 +127,15 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, denovo_flag=0):
             name = 'circular_RNA/' + reads
             gene, iso, chrom, strand, index = fus.split()
             starts, ends = ref['\t'.join([gene, iso, chrom, strand])]
+            exon_num = len(starts)
+            intron_num = exon_num - 1
             if ',' in index:  # back spliced exons
                 s, e = [int(x) for x in index.split(',')]
+                if strand == '+':
+                    index_info = ','.join(str(x + 1) for x in xrange(s, e + 1))
+                else:
+                    index_info = ','.join(str(exon_num - x)
+                                          for x in xrange(s, e + 1))
                 start = str(starts[s])
                 end = str(ends[e])
                 length = str(e - s + 1)
@@ -150,7 +157,8 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, denovo_flag=0):
                 intron = '|'.join([left_intron, right_intron])
                 bed = '\t'.join([chrom, start, end, name, fixed, strand, start,
                                  start, '0,0,0', length, sizes, offsets,
-                                 reads, 'circRNA', gene, iso, intron])
+                                 reads, 'circRNA', gene, iso, index_info,
+                                 intron])
             else:  # ciRNAs
                 index, start, end = index.split('|')
                 size = str(int(end) - int(start))
@@ -159,10 +167,15 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, denovo_flag=0):
                 if denovo_flag and annotation_info in annotations:
                     continue
                 index = int(index)
+                if strand == '+':
+                    index_info = str(index + 1)
+                else:
+                    index_info = str(intron_num - index)
                 intron = '%s:%d-%d' % (chrom, ends[index], starts[index + 1])
                 bed = '\t'.join([chrom, start, end, name, fixed, strand, start,
                                  start, '0,0,0', '1', size, '0',
-                                 reads, 'ciRNA', gene, iso, intron])
+                                 reads, 'ciRNA', gene, iso, index_info,
+                                 intron])
             if denovo_flag:  # in denovo mode
                 annotations.add(annotation_info)
             outf.write(bed + '\n')

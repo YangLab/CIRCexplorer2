@@ -6,13 +6,13 @@
 
 ### Usage:
 
-```bash
+```
 CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2) <fastq>...
 ```
 
 ### Options:
 
-```bash
+```
 -h --help                      Show help message.
 -v --version                   Show version.
 -G GTF --gtf=GTF               Annotation GTF file.
@@ -25,3 +25,48 @@ CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2) <fastq>..
 --scale                        Scale to HPB.
 --no-tophat-fusion             No TopHat-Fusion mapping.
 ```
+
+## Notes about options
+
+1. When offering reference genome, you could use genome sequence file (`-g GENOME`) or genome index files of bowtie1 and bowtie2 (`-i INDEX1` and `-j INDEX2`).
+2. If you set `--bw` option, [BigWig](http://genome.ucsc.edu/FAQ/FAQformat.html#format6.1) file of TopHat2 alignment would be created automatically for visualization. It will not consider strand information of read alignment.
+3. If you set `--scale` option, expression levels (for BigWig file) would be scaled to HPB (Hits per billion-mapped-bases
+). More information about HPB could be found in [this paper](http://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-14-206).
+4. If you set `--no-tophat-fusion`, TopHat-Fusion align
+would be skipped. It is useful for poly(A)+ RNA-seq.
+5. You could offer multiple fastq files (or compressed files) separated by spaces.
+6. Only single-end RNA-seq is supported. It is recommended to convert paired-end RNA-seq to single-end RNA-seq before alignment.
+
+## Output
+
+`CIRCexplorer2 align` will create multiple folders and log files under `circ_out` (you could change output folder using `-o`) folder. The `fusion_junction.bed` would be used by other modules of CIRCexplorer2 to further annotate and characterize circular RNAs.
+
+```
+circ_out
+├── bowtie1_index/
+├── bowtie2_index/
+├── tophat/
+├── tophat_fusion/
+├── fusion_junction.bed
+├── tophat.log
+└── tophat_fusion.log
+```
+
+* `bowtie1_index`: Index file folder for Bowtie1.
+* `bowtie2_index`: Index file folder for Bowtie2.
+* `tophat`: TopHat2 alignment folder.
+* `tophat_fusion`: TopHat-Fusion alignment folder.
+* `fusion_junction.bed`: Fusion junction information file.
+* `tophat.log`: Log file of TopHat2 alignment.
+* `tophat_fusion.log`: Log file of TopHat-Fusion alignment.
+
+*Format of `fusion_junction.bed`:*
+
+| Field       | Description              |
+| :---------- | :----------------------- |
+| chrom       | Chromosome               |
+| start       | Start of fusion junction |
+| end         | End of fusion junction   |
+| name        | Fusion id/Junction reads |
+| score       | No meaning               |
+| strand      | No meaning               |

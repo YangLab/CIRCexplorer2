@@ -2,7 +2,7 @@
 Usage: CIRCexplorer2 denovo [options] -r REF -g GENOME <circ_dir>
 
 Options:
-    -h --help                      Show this screen.
+    -h --help                      Show help message.
     --version                      Show version.
     -r REF --ref=REF               Gene annotation.
     --as                           Detect alternative splicing.
@@ -96,9 +96,8 @@ def extract_novel_circ(denovo_dir, ref_path):
             circ_type = line.split()[13]
             if circ_type == 'ciRNA':  # not fetch ciRNAs
                 continue
-            chrom, start, end = line.split()[:3]
-            reads = line.split()[12]
-            circ_id = '\t'.join([chrom, start, end, reads])
+            chrom, start, end, name, score, strand = line.split()[:6]
+            circ_id = '\t'.join([chrom, start, end, name, score, strand])
             iso = line.split()[14]
             if circ_id in all_circ:
                 if all_circ[circ_id].startswith('CUFF'):
@@ -121,7 +120,7 @@ def extract_novel_circ(denovo_dir, ref_path):
         for circ_id in all_circ:
             if all_circ[circ_id].startswith('CUFF'):
                 novel_circ_num += 1
-                chrom, start, end, reads = circ_id.split()
+                chrom, start, end, name, score, strand = circ_id.split()
                 left_id = '\t'.join([chrom, start])
                 right_id = '\t'.join([chrom, end])
                 if left_id in ref_left:

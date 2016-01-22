@@ -6,14 +6,14 @@
 
 ### Usage:
 
-```bash
+```
 CIRCexplorer2 denovo [options] -r REF -g GENOME <circ_dir>
 ```
 
 ### Options:
 
-```bash
--h --help                      Show this screen.
+```
+-h --help                      Show help message.
 --version                      Show version.
 -r REF --ref=REF               Gene annotation.
 --as                           Detect alternative splicing.

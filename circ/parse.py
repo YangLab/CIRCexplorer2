@@ -2,7 +2,7 @@
 Usage: CIRCexplorer2 parse [options] -t ALIGNER <fusion>
 
 Options:
-    -h --help                      Show this screen.
+    -h --help                      Show help message.
     --version                      Show version.
     -t ALIGNER                     Aligner (STAR, MapSplice, segemehl).
     -o OUT --output=OUT            Output directory. [default: circ_out]

@@ -69,7 +69,8 @@ def main():
         with tarfile.open('chromFa.tar.gz', 'r:gz') as seq:
             with open(sys.argv[3], 'w') as outf:
                 for f in seq:
-                    outf.write(seq.extractfile(f).read())
+                    if f.isfile():
+                        outf.write(seq.extractfile(f).read())
         pysam.faidx(sys.argv[3])
     else:
         sys.exit('Only support ref/kg/ens/fa!')

@@ -23,7 +23,7 @@ CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 ## Notes about options
 
 1. It would randomly report one circular RNA isoform for each back-splicing junction based on existed gene annotations.
-2. If you set `--no-fix` options, [realignment step of fusion junction reads](http://www.sciencedirect.com/science/article/pii/S0092867414011118) will be skipped. It is useful for species with poor gene annotations, but the accuracy of circular RNA predication would decrease.
+2. If you set `--no-fix` options, [realignment step of fusion junction reads](http://www.sciencedirect.com/science/article/pii/S0092867414011118) will be skipped. It is useful for species with poor gene annotations, but the accuracy of circular RNA prediction would decrease.
 
 ## Output
 

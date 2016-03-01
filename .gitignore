@@ -61,5 +61,6 @@ target/
 *.fuse*
 *.nfs*
 *.DS_Store
+tags
 .tags*
 .idea

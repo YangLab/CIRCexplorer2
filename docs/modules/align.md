@@ -36,6 +36,7 @@ CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2) <fastq>..
 would be skipped. It is useful for poly(A)+ RNA-seq.
 5. You could offer multiple fastq files (or compressed files) separated by spaces.
 6. Only single-end RNA-seq is supported. It is recommended to convert paired-end RNA-seq to single-end RNA-seq before alignment.
+7. It will overwrite the output directory automatically, so please be careful when setting the path of output directory.
 
 ## Output
 

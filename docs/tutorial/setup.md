@@ -1,6 +1,6 @@
 # Installation and Setup for CIRCexplorer2
 
-This part will guide you to install CIRCexploer2 and setup all the required stuff step by step.
+This part will guide you to install CIRCexplorer2 and setup all the required stuff step by step.
 
 ## Prerequisites
 
@@ -17,10 +17,10 @@ This part will guide you to install CIRCexploer2 and setup all the required stuf
         + gtfToGenePred
         + bedGraphToBigWig (*optional*)
         + bedToBigBed (*optional*)
-    - STAR or segemehl or MapSplice (*optional*)
+    - STAR or MapSplice or segemehl (*optional*)
         + [STAR](https://github.com/alexdobin/STAR) (>=2.4.0j)
-        + [segemehl](http://www.bioinf.uni-leipzig.de/Software/segemehl) (>=0.2.0)
         + [MapSplice](http://www.netlab.uky.edu/p/bioinfo/MapSplice2) (>=2.1.9)
+        + [segemehl](http://www.bioinf.uni-leipzig.de/Software/segemehl) (>=0.2.0)
 * Package
     - [pysam](http://pysam.readthedocs.org/en/latest/) (>=0.8.2)
     - [pybedtools](https://pythonhosted.org/pybedtools)

@@ -12,7 +12,7 @@ Options:
 RNA-seq.
     --no-fix                       No-fix mode (useful for species \
 with poor gene annotations)
-    --rpkm                         Calculate RPKM for specific exons.
+    --rpkm                         Calculate RPKM for cassette exons.
 """
 
 import sys
@@ -59,6 +59,8 @@ def denovo(options):
         new_ref_f.write(open(options['--ref'], 'r').read())
         new_ref_f.close()
     else:
+        print('Warning: no cufflinks directory under %s!' % out_dir)
+        print('Please run CIRCexplorer2 assembly before this step!')
         ref_path = options['--ref']
     # annotate fusion junctions
     annotate_fusion(ref_path, denovo_dir, 1)
@@ -72,8 +74,8 @@ def denovo(options):
             pAplus_dir = os.path.abspath(options['--pAplus'])
         else:
             sys.exit('You should offer --pAplus option in --as mode!')
-        # extract specific exons
-        extract_specific_exon(denovo_dir, tophat_dir, pAplus_dir,
+        # extract cassette exons
+        extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir,
                               options['--rpkm'])
         # extract retained introns
         extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir)
@@ -139,7 +141,7 @@ def extract_novel_circ(denovo_dir, ref_path):
     print('Fetch %d circular RNAs!' % novel_circ_num)
 
 
-def extract_specific_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):
+def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):
     """
     1. Check each exon and fetch PSI
     2. Calculate RPKM if needed

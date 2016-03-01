@@ -23,6 +23,7 @@ CIRCexplorer2 parse [options] -t ALIGNER <fusion>
 
 1. `CIRCexplorer2 parse` only accept results derived from STAR, MapSplice, segemehl.
 2. The `fusion_junction.bed` file has the same format with `fusion_junction.bed` created by the [align](../modules/align.md) module, and would be used by other modules of CIRCexplorer2 to further annotate and characterize circular RNAs.
+3. It will overwrite the output directory automatically, so please be careful when setting the path of output directory.
 
 ## Output
 

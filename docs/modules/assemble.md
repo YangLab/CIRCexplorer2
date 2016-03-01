@@ -28,7 +28,7 @@ CIRCexplorer2 assemble [options] -r REF <circ_dir>
 
 1. `CIRCexplorer2 assemble` require to use alignment results of TopHat2 to *de novo* assemble circular RNA transcripts. So if the TopHat2 result folder is not under `<circ_dir>`, you could specify its path using `--tophat-dir`.
 2. `CIRCexplorer2 assemble` will search for the chrom size file in TopHat2 result folder, and you could also specify its path using `--chrom-size`. If you have used `CIRCexplorer2 align` to align RNA-seq data, the chrom size file would be existed in the TopHat2 result folder.
-3. Assembly for rRNA would be very time-consuming. If you set `--remove-rRNA` option, it would skip assembly for rRNA. To be noted, this option is only suitable for hg19. If the assembly step is still very slow, you could set `--max-bundle-frags` with a small number. Please see [Cufflinks protocol](http://www.nature.com/nprot/journal/v7/n3/fig_tab/nprot.2012.016_T2.html) for more details about `--max-bundle-frags` option.
+3. Assembly for rRNA would be very time-consuming. If you set `--remove-rRNA` option, it would skip assembly for rRNA. To be noted, this option is only suitable for **hg19**. If the assembly step is still very slow, you could set `--max-bundle-frags` with a small number. Please see [Cufflinks protocol](http://www.nature.com/nprot/journal/v7/n3/fig_tab/nprot.2012.016_T2.html) for more details about `--max-bundle-frags` option.
 4. If you set `--bb` option, the BigBed file of assembled transcripts would be created.
 
 ## Output

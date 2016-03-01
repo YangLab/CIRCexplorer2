@@ -13,3 +13,13 @@ CIRCexplorer2 is the successor of [CIRCexplorer](http://yanglab.github.io/CIRCex
 
 CIRCexplorer2 documentation is available through https://readthedocs.org/ from [here](http://CIRCexplorer2.readthedocs.org), including installation instructions and tutorial.
 
+## Features
+
+* Support multiple circular RNA aligners (TopHat/TopHat-Fusion, STAR, MapSplice and segemehl)
+* *De novo* assemble novel circular RNA transcripts
+* Characterize various of alternative splicing events of circular RNAs
+
+##License
+
+Copyright (C) 2016-2016 YangLab.  See the [LICENSE](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)
+file for license rights and limitations (MIT).

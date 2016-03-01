@@ -32,15 +32,15 @@ CIRCexplorer2 align -G hg19_kg.gtf -g hg19.fa RNA_seq.fastq > CIRCexplorer2_alig
 STAR --chimSegmentMin 10 --runThreadN 10 --genomeDir hg19_STAR_index --readFilesIn RNA_seq.fastq
 ```
 
+* MapSplice (See [MapSplice](http://www.netlab.uky.edu/p/bioinfo/MapSplice2UserGuide) for more information)
+```
+mapsplice.py -p 10 -k 1 --non-canonical --fusion-non-canonical --min-fusion-distance 200 -c hg19_dir -x bowtie1_index --gene-gtf hg19_kg.gtf -1 RNA_seq.fastq
+```
+
 * segemehl (See [segemehl manual](http://www.bioinf.uni-leipzig.de/Software/segemehl/segemehl_manual_0_1_7.pdf) for more information)
 ```
 segemehl.x -q RNA_seq.fastq -d hg19.fa -i hg19_segemehl.idx -S -M 1 -t 10 -o RNA_seq.sam
 testrealign.x -d hg19.fa -q RNA_seq.sam -n
-```
-
-* MapSplice (See [MapSplice](http://www.netlab.uky.edu/p/bioinfo/MapSplice2UserGuide) for more information)
-```
-mapsplice.py -p 10 -k 1 --non-canonical --fusion-non-canonical --min-fusion-distance 200 -c hg19_dir -x bowtie1_index --gene-gtf hg19_kg.gtf -1 RNA_seq.fastq
 ```
 
 2 Use `CIRCexplorer2 parse` to parse and convert fusion junction information.
@@ -50,14 +50,14 @@ mapsplice.py -p 10 -k 1 --non-canonical --fusion-non-canonical --min-fusion-dist
 CIRCexplorer2 parse -t STAR Chimeric.out.junction > CIRCexplorer2_parse.log
 ```
 
-* segemehl
-```
-CIRCexplorer2 parse -t segemehl splicesites.bed > CIRCexplorer2_parse.log
-```
-
 * MapSplice
 ```
 CIRCexplorer2 parse -t MapSplice mapsplice_out/fusions_raw.txt > CIRCexplorer2_parse.log
+```
+
+* segemehl
+```
+CIRCexplorer2 parse -t segemehl splicesites.bed > CIRCexplorer2_parse.log
 ```
 
 ### Note

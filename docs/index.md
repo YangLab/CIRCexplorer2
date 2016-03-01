@@ -10,6 +10,12 @@
 
 CIRCexplorer2 is a comprehensive and integrative circular RNA analysis toolset. It is the successor of [CIRCexplorer](http://yanglab.github.io/CIRCexplorer/) with plenty of new features to facilitate circular RNA identification and characterization.
 
+## Features
+
+* Support multiple circular RNA aligners (TopHat/TopHat-Fusion, STAR, MapSplice and segemehl)
+* *De novo* assemble novel circular RNA transcripts
+* Characterize various of alternative splicing events of circular RNAs
+
 ## Tutorial
 
 We have developed a fairly comprehensive tutorial that demonstrates how CIRCexplorer2 helps you to promote your research in circular RNA identification and characterization. Please check it below!

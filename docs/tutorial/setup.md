@@ -23,7 +23,7 @@ This part will guide you to install CIRCexplorer2 and setup all the required stu
         + [segemehl](http://www.bioinf.uni-leipzig.de/Software/segemehl) (>=0.2.0)
 * Package
     - [pysam](http://pysam.readthedocs.org/en/latest/) (>=0.8.2)
-    - [pybedtools](https://pythonhosted.org/pybedtools)
+    - [pybedtools](https://pythonhosted.org/pybedtools) (==0.7.0)
     - [docopt](http://docopt.org)
     - [scipy](http://www.scipy.org) (only used in [denovo](../modules/denovo.md) module)
 
@@ -37,7 +37,6 @@ Fistly, you should successfully install softwares required for fusion junction r
 
 Secondly, install required python packages:
 ```
-pip install -U cython
 pip install -r <(wget --no-check-certificate https://raw.githubusercontent.com/YangLab/CIRCexplorer2/master/requirements.txt -O -)
 ### install scipy according to http://www.scipy.org/install.html
 ```

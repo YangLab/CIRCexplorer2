@@ -17,11 +17,10 @@ with poor gene annotations)
 
 import sys
 import os.path
-import time
 from collections import defaultdict, deque
 from annotate import annotate_fusion, fix_fusion
 from parser import parse_junc
-from helper import fetch_psi, fetch_read, Expression
+from helper import logger, fetch_psi, fetch_read, Expression
 from dir_func import check_dir, create_dir
 import pysam
 from scipy.stats import fisher_exact, binom
@@ -32,9 +31,8 @@ __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 __all__ = ['denovo']
 
 
+@logger
 def denovo(options):
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('Start CIRCexplorer2 denovo at %s' % local_time)
     # check output directory
     out_dir = check_dir(options['<circ_dir>'])
     # check tophat results
@@ -81,8 +79,6 @@ def denovo(options):
         extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir)
         # characterize A5SS and A3SS
         parse_splice_site(denovo_dir, tophat_dir, pAplus_dir)
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('End CIRCexplorer2 denovo at %s' % local_time)
 
 
 def extract_novel_circ(denovo_dir, ref_path):

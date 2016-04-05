@@ -32,30 +32,31 @@ Circular RNA Command:
 
 def main():
     # parse command
+    command_log = 'CIRCexplorer parameters: ' + ' '.join(sys.argv)
     if len(sys.argv) == 1:
         sys.exit(help_doc)
     elif sys.argv[1] == '--version' or sys.argv[1] == '-v':
         sys.exit(__version__)
     elif sys.argv[1] == 'align':
-        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import align
-        align.align(docopt(align.__doc__, version=__version__))
+        align.align(docopt(align.__doc__, version=__version__),
+                    command=command_log, name='align')
     elif sys.argv[1] == 'parse':
-        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import parse
-        parse.parse(docopt(parse.__doc__, version=__version__))
+        parse.parse(docopt(parse.__doc__, version=__version__),
+                    command=command_log, name='parse')
     elif sys.argv[1] == 'annotate':
-        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import annotate
-        annotate.annotate(docopt(annotate.__doc__, version=__version__))
+        annotate.annotate(docopt(annotate.__doc__, version=__version__),
+                          command=command_log, name='annotate')
     elif sys.argv[1] == 'assemble':
-        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import assemble
-        assemble.assemble(docopt(assemble.__doc__, version=__version__))
+        assemble.assemble(docopt(assemble.__doc__, version=__version__),
+                          command=command_log, name='assemble')
     elif sys.argv[1] == 'denovo':
-        print('CIRCexplorer parameters: ' + ' '.join(sys.argv))
         import denovo
-        denovo.denovo(docopt(denovo.__doc__, version=__version__))
+        denovo.denovo(docopt(denovo.__doc__, version=__version__),
+                      command=command_log, name='denovo')
     else:
         sys.exit(help_doc)
 

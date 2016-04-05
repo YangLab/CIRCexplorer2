@@ -10,10 +10,9 @@ Options:
 with poor gene annotations)
 """
 
-import time
 from genomic_interval import Interval
 from parser import parse_ref, parse_bed, check_fasta
-from helper import map_fusion_to_iso, fix_bed, generate_bed
+from helper import logger, map_fusion_to_iso, fix_bed, generate_bed
 from dir_func import check_dir, create_dir
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
@@ -21,9 +20,8 @@ __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 __all__ = ['annotate']
 
 
+@logger
 def annotate(options):
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('Start CIRCexplorer2 annotate at %s' % local_time)
     # check output directory
     out_dir = check_dir(options['<circ_dir>'])
     # prepare annotate directory
@@ -34,8 +32,6 @@ def annotate(options):
     # fix fusion juncrions
     fix_fusion(options['--ref'], options['--genome'], annotate_dir,
                options['--no-fix'])
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('End CIRCexplorer2 annotate at %s' % local_time)
 
 
 def annotate_fusion(ref_f, out_dir, denovo_flag=0):

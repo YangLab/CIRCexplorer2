@@ -19,12 +19,11 @@ Options:
 import sys
 import os
 import os.path
-import time
 from collections import defaultdict
 import pysam
 import pybedtools
 from parser import parse_fusion_bam
-from helper import which, link_index, build_index
+from helper import logger, which, link_index, build_index
 from dir_func import create_dir
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
@@ -32,9 +31,8 @@ __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 __all__ = ['align']
 
 
+@logger
 def align(options):
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('Start CIRCexplorer2 align at %s' % local_time)
     # check output directory
     out_dir = check_outdir(options['--output'])
     # check tophat
@@ -53,8 +51,6 @@ def align(options):
     if not options['--no-tophat-fusion']:
         # tophat fusion mapping
         tophat_fusion_map(out_dir, prefix1, options['--thread'])
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('End CIRCexplorer2 align at %s' % local_time)
 
 
 def check_outdir(out_dir):

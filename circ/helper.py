@@ -2,8 +2,10 @@ import sys
 import os
 import os.path
 import math
+import time
 from collections import defaultdict
 from string import maketrans
+from functools import wraps
 import pysam
 
 
@@ -19,6 +21,21 @@ def which(program):
         if is_executable(progpath):
             return progpath
     return None
+
+
+def logger(fn):
+    '''
+    Record parameters and runming time
+    '''
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        print(kwargs['command'])
+        local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
+        print('Start CIRCexplorer2 %s at %s' % (kwargs['name'], local_time))
+        fn(*args)
+        local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
+        print('End CIRCexplorer2 %s at %s' % (kwargs['name'], local_time))
+    return wrapper
 
 
 class Expression(object):

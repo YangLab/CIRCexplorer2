@@ -15,11 +15,10 @@ human hg19).
 '''
 
 import sys
-import time
 import os
 import os.path
 from parser import parse_junc
-from helper import which, genepred_to_bed
+from helper import logger, which, genepred_to_bed
 from dir_func import check_dir, create_dir
 import pybedtools
 import pysam
@@ -29,9 +28,8 @@ __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 __all__ = ['assemble']
 
 
+@logger
 def assemble(options):
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('Start CIRCexplorer2 assemble at %s' % local_time)
     # check output directory
     out_dir = check_dir(options['<circ_dir>'])
     # check tophat results
@@ -59,8 +57,6 @@ def assemble(options):
     # convert assembly results
     convert_assembly_gtf(out_dir, cufflinks_dir, options['--ref'],
                          options['--bb'], options['--chrom-size'])
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('End CIRCexplorer2 assemble at %s' % local_time)
 
 
 def ref_filter(ref, tophat_dir, out_dir):

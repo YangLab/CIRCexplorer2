@@ -8,24 +8,23 @@ Options:
     -o OUT --output=OUT            Output directory. [default: circ_out]
 """
 
-import time
 import sys
 import os.path
 from collections import defaultdict
 from dir_func import create_dir
+from helper import logger
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
 __all__ = ['parse']
 
 
+@logger
 def parse(options):
     aliger = set(['STAR', 'MapSplice', 'segemehl'])
     if options['-t'] not in aliger:
         sys.exit('Error: CIRCexplorer2 parse does not support %s!' %
                  options['-t'])
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('Start CIRCexplorer2 parse at %s' % local_time)
     # check output directory
     create_dir(options['--output'])
     out_dir = os.path.abspath(options['--output'])
@@ -37,8 +36,6 @@ def parse(options):
         mapsplice_parse(options['<fusion>'], out)
     elif options['-t'] == 'segemehl':
         segemehl_parse(options['<fusion>'], out)
-    local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-    print('End CIRCexplorer2 parse at %s' % local_time)
 
 
 def star_parse(fusion, out):

@@ -21,6 +21,10 @@ CIRCexplorer2 is the successor of [CIRCexplorer](http://yanglab.github.io/CIRCex
 
 CIRCexplorer2 documentation is available through https://readthedocs.org/ from [here](http://CIRCexplorer2.readthedocs.org), including installation instructions and tutorial.
 
+## Citation
+
+Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *under review*
+
 ## License
 
 Copyright (C) 2016 YangLab.  See the [LICENSE](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)

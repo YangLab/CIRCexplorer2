@@ -10,4 +10,5 @@ CIRCexplorer2 annotate -r hg19_ref_all.txt -g hg19.fa circ_out > CIRCexplorer2_a
 
 ### Note:
 1. It will compare `fusion_junction.bed` (See [Alignment](../tutorial/alignment.md)) and gene annotation file (`hg19_ref_all.txt`) to determine the boundaries of circular RNAs, and also carries out realignments to fix some mis-alignments.
-2. See [Annotate](../modules/annotate.md) for detailed information about `CIRCexplorer2 annotate`.
+2. `CIRCexplorer2 annotate` will create a directory `annotate` under the `circ_out` directory by default. All the annotation information of circular RNAs will be created under the directory `annotate`.
+3. See [Annotate](../modules/annotate.md) for detailed information about `CIRCexplorer2 annotate`.

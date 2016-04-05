@@ -36,6 +36,7 @@ CIRCexplorer2 denovo [options] -r REF -g GENOME <circ_dir>
 
 `CIRCexplorer2 denovo` will create one `denovo` folder under the `<circ_dir>` folder.
 
+```
 denovo
 ├── combined_ref.txt
 ├── annotated_fusion.txt
@@ -46,6 +47,7 @@ denovo
 ├── all_intron_info.txt
 ├── all_A5SS_info.txt
 └── all_A3SS_info.txt
+```
 
 * `combined_ref.txt`: combined gene annotation file (*de novo* assembled gene annotations and existing gene annotations).
 * `annotated_fusion.txt`: Annotated fusion junction information file. (same as relevant file in [Annotate](../modules/annotate.md)))

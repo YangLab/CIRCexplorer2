@@ -34,8 +34,8 @@ class TestDenovo(object):
         result_path = 'data/denovo'
         assert os.path.isdir(result_path), 'No denovo directory'
         # check files in denovo directory
-        file_list = ['combined_ref.txt', 'annotated_fusion.txt',
-                     'circ_fusion.txt', 'annotated_circ.txt', 'novel_circ.txt',
+        file_list = ['annotated_fusion.txt', 'circ_fusion.txt',
+                     'annotated_circ.txt', 'novel_circ.txt',
                      'all_exon_info.txt']
         for f in file_list:
             check_file(f, result_path, 'data/denovo_result')

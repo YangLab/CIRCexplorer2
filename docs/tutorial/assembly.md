@@ -10,5 +10,5 @@ CIRCexplorer2 assemble -r hg19_ref_all.txt circ_out > CIRCexplorer2_assemble.log
 
 ### Note:
 1. It will use Cufflinks to assemble circular RNA transcripts with the alignment result (`circ_out/tophat`) of poly(A)−/ribo− RNA-seq (See [Alignment](../tutorial/alignment.md)).
-2. `CIRCexplorer2 assemble` will create a directory `assemble` under the `circ_out` directory by default. All the assembly information of circular RNA transcripts will be created under the directory `annotate`. You could also check `cufflinks.log` file for detailed logs of Cufflinks assembly.
+2. `CIRCexplorer2 assemble` will create a directory `cufflinks` under the `circ_out` directory by default. All the assembly information of circular RNA transcripts will be created under the directory `annotate`. You could also check `cufflinks.log` file for detailed logs of Cufflinks assembly.
 3. See [Assemble](../modules/assemble.md) for detailed information about `CIRCexplorer2 assemble`.

@@ -21,7 +21,7 @@ help_doc = '''
 
 Usage: CIRCexplorer2 <command> [options]
 
-Circular RNA Command:
+Command:
     align            Map circular RNA junction reads with TopHat2/TopHat-Fusion
     parse            Parse fusion junction information from other aligners
     annotate         Annotate circular RNA junction reads with gene annotations

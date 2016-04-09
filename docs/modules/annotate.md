@@ -17,7 +17,7 @@ CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 --version                      Show version.
 -r REF --ref=REF               Gene annotation.
 -g GENOME --genome=GENOME      Genome FASTA file.
---no-fix                       No-fix mode (useful for species with poor gene annotations)
+--no-fix                       No-fix mode (useful for species with poor gene annotations).
 ```
 
 ## Notes about options

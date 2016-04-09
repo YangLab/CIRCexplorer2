@@ -17,17 +17,18 @@ CIRCexplorer2 denovo [options] -r REF -g GENOME <circ_dir>
 --version                      Show version.
 -r REF --ref=REF               Gene annotation.
 --as                           Detect alternative splicing.
+--as-type=AS_TYPE              Only check certain type (CE/RI/ASS) of AS events.
 -a PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for pAplus RNA-seq.
 -g GENOME --genome=GENOME      Genome FASTA file.
 --tophat-dir=TOPHAT_DIR        TopHat mapping directory for pAminus RNA-seq.
---no-fix                       No-fix mode (useful for species with poor gene annotations)
+--no-fix                       No-fix mode (useful for species with poor gene annotations).
 --rpkm                         Calculate RPKM for cassette exons.
 ```
 
 ## Notes about options
 
 1. If there is no `cufflinks` directory under `<circ_dir>` (no *de novo* assembly step for circular RNAs, see [Assemble](../modules/assemble.md)), `CIRCexplorer2 denovo` will only use existing gene annotations to parse alternative splicing with setting `--as` option. This way is not recommended, so please run `CIRCexplorer2 assemble` before `CIRCexplorer2 denovo`.
-2. If you set `--as` option, it will characterize the alternative splicing of circular RNAs, including 'cassette exons', 'retained introns', 'A5SS' and 'A3SS'. In this mode, you should also offer the path of TopHat mapping directory for pAplus RNA-seq via `-a` option.
+2. If you set `--as` option, it will characterize the alternative splicing of circular RNAs, including 'cassette exons', 'retained introns', 'A5SS' and 'A3SS'. In this mode, you should also offer the path of TopHat mapping directory for pAplus RNA-seq via `-a` option. By default, after setting `--as` option, it will check all types of alternative splicing events. You could also indicate one type of alternative splicing events through the `--as-type` option ('CE': 'cassette exons', 'RI': 'retained introns', 'ASS': 'A5SS' and 'A3SS').
 3. If TopHat mapping directory for pAminus RNA-seq is not under `<circ_dir>`, you could set it via `--tophat-dir` option.
 4. If you set `--no-fix` options, [realignment step of fusion junction reads](http://www.sciencedirect.com/science/article/pii/S0092867414011118) will be skipped. It is useful for species with poor gene annotations, but the accuracy of circular RNA prediction would decrease.
 5. If `--rpkm` option is set, RPKM of cassette exons would be calculated.

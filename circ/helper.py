@@ -153,14 +153,14 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                 if start == iso_starts[s] and end == iso_ends[e]:
                     fusions[name] += reads
                     if name not in fusion_set:
-                        fusion_set.add(set)
+                        fusion_set.add(name)
                         fusion_names.append(name)
                     junctions.add(junction_info)
                 # no fix mode
                 elif no_fix:
                     fusions[name] += reads
                     if name not in fusion_set:
-                        fusion_set.add(set)
+                        fusion_set.add(name)
                         fusion_names.append(name)
                     fixed_flag[name] += 1
                     junctions.add(junction_info)
@@ -169,7 +169,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                                fa):
                     fusions[name] += reads
                     if name not in fusion_set:
-                        fusion_set.add(set)
+                        fusion_set.add(name)
                         fusion_names.append(name)
                     fixed_flag[name] += 1
                     junctions.add(junction_info)
@@ -181,7 +181,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                         name += '|'.join(['', str(start), str(end)])
                         fusions[name] += reads
                         if name not in fusion_set:
-                            fusion_set.add(set)
+                            fusion_set.add(name)
                             fusion_names.append(name)
                         junctions.add(junction_info)
                     # realign
@@ -193,7 +193,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                                           str(fixed_end)])
                         fusions[name] += reads
                         if name not in fusion_set:
-                            fusion_set.add(set)
+                            fusion_set.add(name)
                             fusion_names.append(name)
                         fixed_flag[name] += 1
                         junctions.add(junction_info)
@@ -203,7 +203,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                         name += '|'.join(['', str(start), str(end)])
                         fusions[name] += reads
                         if name not in fusion_set:
-                            fusion_set.add(set)
+                            fusion_set.add(name)
                             fusion_names.append(name)
                         junctions.add(junction_info)
                         # realign
@@ -215,7 +215,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                                           str(fixed_end)])
                         fusions[name] += reads
                         if name not in fusion_set:
-                            fusion_set.add(set)
+                            fusion_set.add(name)
                             fusion_names.append(name)
                         fixed_flag[name] += 1
                         junctions.add(junction_info)

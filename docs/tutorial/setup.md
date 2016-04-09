@@ -33,24 +33,16 @@ The [poly(A)−/ribo− RNA-seq](http://genomebiology.com/2011/12/2/R16) is reco
 
 ## Installation
 
-Fistly, you should successfully install softwares required for fusion junction read alignment and *de novo* assembly, and add relevant pathes to your `$PATH`.
+Firstly, you should successfully install softwares required for fusion junction read alignment and *de novo* assembly, and add relevant pathes to your `$PATH`.
 
-Secondly, install required python packages:
-```
-pip install -r <(wget --no-check-certificate https://raw.githubusercontent.com/YangLab/CIRCexplorer2/master/requirements.txt -O -)
-### install scipy according to http://www.scipy.org/install.html
-```
+Secondly, install required python packages and CIRCexplorer2:
 
-Install CIRCexplorer2 from source codes:
 ```
 git clone https://github.com/YangLab/CIRCexplorer2.git
 cd CIRCexplorer2
+pip install -r requirements.txt
+### install scipy according to http://www.scipy.org/install.html
 python setup.py install
-```
-
-Or install CIRCexplorer2 from [PyPI](https://pypi.python.org/pypi):
-```
-pip install CIRCexplorer2
 ```
 
 ## Setup

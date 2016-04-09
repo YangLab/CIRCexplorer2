@@ -6,12 +6,14 @@ Options:
     --version                      Show version.
     -r REF --ref=REF               Gene annotation.
     --as                           Detect alternative splicing.
+    --as-type=AS_TYPE              Only check certain type (CE/RI/ASS) of AS \
+events.
     -a PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for pAplus RNA-seq.
     -g GENOME --genome=GENOME      Genome FASTA file.
     --tophat-dir=TOPHAT_DIR        TopHat mapping directory for pAminus \
 RNA-seq.
     --no-fix                       No-fix mode (useful for species \
-with poor gene annotations)
+with poor gene annotations).
     --rpkm                         Calculate RPKM for cassette exons.
 """
 
@@ -72,13 +74,16 @@ def denovo(options):
             pAplus_dir = os.path.abspath(options['--pAplus'])
         else:
             sys.exit('You should offer --pAplus option in --as mode!')
-        # extract cassette exons
-        extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir,
-                              options['--rpkm'])
-        # extract retained introns
-        extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir)
-        # characterize A5SS and A3SS
-        parse_splice_site(denovo_dir, tophat_dir, pAplus_dir)
+        if not options['--as-type'] or options['--as-type'] == 'CE':
+            # extract cassette exons
+            extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir,
+                                  options['--rpkm'])
+        if not options['--as-type'] or options['--as-type'] == 'RI':
+            # extract retained introns
+            extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir)
+        if not options['--as-type'] or options['--as-type'] == 'ASS':
+            # characterize A5SS and A3SS
+            parse_splice_site(denovo_dir, tophat_dir, pAplus_dir)
 
 
 def extract_novel_circ(denovo_dir, ref_path):

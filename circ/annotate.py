@@ -7,7 +7,7 @@ Options:
     -r REF --ref=REF               Gene annotation.
     -g GENOME --genome=GENOME      Genome FASTA file.
     --no-fix                       No-fix mode (useful for species \
-with poor gene annotations)
+with poor gene annotations).
 """
 
 from genomic_interval import Interval

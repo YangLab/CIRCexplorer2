@@ -1,5 +1,7 @@
 # CIRCexplorer2 -- circular RNA analysis toolset
 
+[![Join the chat at https://gitter.im/YangLab/CIRCexplorer2](https://badges.gitter.im/YangLab/CIRCexplorer2.svg)](https://gitter.im/YangLab/CIRCexplorer2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ```
    ______________  ______                __
   / ____/  _/ __ \/ ____/__  _  ______  / /___  ________  _____

@@ -10,8 +10,8 @@ This part will guide you to install CIRCexplorer2 and setup all the required stu
     - TopHat & TopHat-Fusion
         + [TopHat](http://ccb.jhu.edu/software/tophat/index.shtml) (>=2.0.9)
         + [TopHat-Fusion](http://ccb.jhu.edu/software/tophat/fusion_index.html) (included in TopHat)
-    - Cufflinks
-        + [Cufflinks](http://cole-trapnell-lab.github.io/cufflinks/) (>=2.1.1)
+    - [Cufflinks](http://cole-trapnell-lab.github.io/cufflinks/) (>=2.1.1)
+    - [BEDTools](http://bedtools.readthedocs.org/en/latest/)
     - [UCSC Utilities](http://hgdownload.soe.ucsc.edu/admin/exe/)
         + genePredToGtf
         + gtfToGenePred
@@ -23,7 +23,7 @@ This part will guide you to install CIRCexplorer2 and setup all the required stu
         + [segemehl](http://www.bioinf.uni-leipzig.de/Software/segemehl) (>=0.2.0)
 * Package
     - [pysam](http://pysam.readthedocs.org/en/latest/) (>=0.8.2)
-    - [pybedtools](https://pythonhosted.org/pybedtools) (==0.7.0)
+    - [pybedtools](http://daler.github.io/pybedtools/)
     - [docopt](http://docopt.org)
     - [scipy](http://www.scipy.org) (only used in [denovo](../modules/denovo.md) module)
 

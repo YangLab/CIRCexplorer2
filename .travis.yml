@@ -8,7 +8,8 @@ before_install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
 install:
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION pip nose coveralls scipy
+  - conda install --yes python=$TRAVIS_PYTHON_VERSION pip nose scipy
+  - pip install python-coveralls
   - pip install -r requirements.txt
   - python setup.py install
 script:

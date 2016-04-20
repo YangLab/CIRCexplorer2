@@ -21,7 +21,7 @@ This part will guide you to install CIRCexplorer2 and setup all the required stu
         + [STAR](https://github.com/alexdobin/STAR) (>=2.4.0j)
         + [MapSplice](http://www.netlab.uky.edu/p/bioinfo/MapSplice2) (>=2.1.9)
         + [segemehl](http://www.bioinf.uni-leipzig.de/Software/segemehl) (>=0.2.0)
-* Package
+* Package (python 2.6 +)
     - [pysam](http://pysam.readthedocs.org/en/latest/) (>=0.8.2)
     - [pybedtools](http://daler.github.io/pybedtools/)
     - [docopt](http://docopt.org)

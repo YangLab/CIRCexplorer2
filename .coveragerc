@@ -1,0 +1,7 @@
+[report]
+omit =
+  circ/version.py
+  circ/command_parse.py
+  circ/align.py
+  circ/assemble.py  
+  

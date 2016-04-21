@@ -4,4 +4,4 @@ omit =
   circ/command_parse.py
   circ/align.py
   circ/assemble.py  
-  
+  circ/genomic_interval.py

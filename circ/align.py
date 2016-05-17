@@ -19,10 +19,9 @@ Options:
 import sys
 import os
 import os.path
-from collections import defaultdict
 import pysam
 import pybedtools
-from parser import parse_fusion_bam
+from parse import tophat_fusion_parse
 from helper import logger, which, link_index, build_index
 from dir_func import create_dir
 
@@ -51,6 +50,10 @@ def align(options):
     if not options['--no-tophat-fusion']:
         # tophat fusion mapping
         tophat_fusion_map(out_dir, prefix1, options['--thread'])
+        # parse tophat fusion results
+        fusion_bam_f = '%s/tophat_fusion/accepted_hits.bam' % out_dir
+        out = '%s/fusion_junction.bed' % out_dir
+        tophat_fusion_parse(fusion_bam_f, out)
 
 
 def check_outdir(out_dir):
@@ -175,25 +178,3 @@ def tophat_fusion_map(out_dir, prefix, thread):
     return_code = os.system(tophat_fusion_cmd) >> 8
     if return_code:
         sys.exit('Error: cannot map unmapped reads with TopHat-Fusion!')
-    # extract fusion junction reads
-    print('Extract fusions junction reads...')
-    fusions = defaultdict(int)
-    fusion_bam_f = '%s/tophat_fusion/accepted_hits.bam' % out_dir
-    for i, read in enumerate(parse_fusion_bam(fusion_bam_f)):
-        chrom, strand, start, end = read
-        segments = [start, end]
-        if (i + 1) % 2 == 1:  # first fragment of fusion junction read
-            interval = [start, end]
-        else:  # second fragment of fusion junction read
-            sta1, end1 = interval
-            sta2, end2 = segments
-            if end1 < sta2 or end2 < sta1:  # no overlap between fragments
-                sta = sta1 if sta1 < sta2 else sta2
-                end = end1 if end1 > end2 else end2
-                fusions['%s\t%d\t%d' % (chrom, sta, end)] += 1
-    total = 0
-    with open('%s/fusion_junction.bed' % out_dir, 'w') as outf:
-        for i, pos in enumerate(fusions):
-            outf.write('%s\tFUSIONJUNC_%d/%d\t0\t+\n' % (pos, i, fusions[pos]))
-            total += fusions[pos]
-    print('Converted %d fusion reads!' % total)

@@ -28,6 +28,19 @@ def teardown_function():
 
 
 @with_setup(setup_function, teardown_function)
+def test_tophat_fusion_parse():
+    '''
+    Test TopHat-Fusion parser
+    '''
+    print('#%s: Test parse TopHat-Fusion' % __name__)
+    options = {'-t': 'TopHat-Fusion', '--output': 'circ_out',
+               '<fusion>': 'tophat_fusion.bam'}
+    parse(options, command='CIRCexplorer2 parse (TopHat-Fusion)', name='parse')
+    assert os.path.isdir('circ_out'), 'No circ_out directory'
+    check_file('fusion_junction.bed', 'circ_out', 'TopHat_Fusion_out')
+
+
+@with_setup(setup_function, teardown_function)
 def test_star_parse():
     '''
     Test STAR parser

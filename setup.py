@@ -12,7 +12,7 @@ setup(name='CIRCexplorer2',
       url='https://github.com/YangLab/CIRCexplorer2',
       license='MIT',
       classifiers=[
-          'Development Status :: 2 - Pre-Alpha'
+          'Development Status :: 5 - Production/Stable'
           'Intended Audience :: Science/Research',
           'Topic :: Scientific/Engineering :: Bio-Informatics',
           'License :: OSI Approved :: MIT License',

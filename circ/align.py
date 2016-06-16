@@ -1,19 +1,21 @@
 '''
-Usage: CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2) \
-<fastq>...
+Usage: CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2 \
+| -i INDEX1 | -j INDEX1) <fastq>...
 
 Options:
     -h --help                      Show help message.
     -v --version                   Show version.
     -G GTF --gtf=GTF               Annotation GTF file.
     -g GENOME --genome=GENOME      Genome fasta file.
-    -i INDEX1 --bowtie1=INDEX1     Index files for Bowtie1.
-    -j INDEX2 --bowtie2=INDEX2     Index files for Bowtie2.
+    -i INDEX1 --bowtie1=INDEX1     Index files for Bowtie1 (used for \
+TopHat-Fusion).
+    -j INDEX2 --bowtie2=INDEX2     Index files for Bowtie2 (used for TopHat2).
     -p THREAD --thread=THREAD      Running threads. [default: 10]
     -o OUT --output=OUT            Output directory. [default: circ_out]
     --bw                           Create BigWig file.
     --scale                        Scale to HPB.
-    --no-tophat-fusion             No TopHat-Fusion mapping.
+    --skip-tophat                  Skip TopHat mapping.
+    --skip-tophat-fusion           Skip TopHat-Fusion mapping.
 '''
 
 import sys
@@ -32,6 +34,16 @@ __all__ = ['align']
 
 @logger
 def align(options):
+    # check options
+    if options['--skip-tophat'] and options['--skip-tophat-fusion']:
+        sys.exit('Cannot set --skip-tophat and --skip-tophat-fusion together!')
+    if not options['--genome']:
+        if not options['--bowtie1'] and not options['--skip-tophat-fusion']:
+            sys.exit('TopHat-Fusion require bowtie1 index files!')
+        elif not options['--bowtie2'] and not options['--skip-tophat']:
+            sys.exit('TopHat2 require bowtie2 index files!')
+    skip_tophat = True if options['--skip-tophat'] else False
+    skip_tophat_fusion = True if options['--skip-tophat-fusion'] else False
     # check output directory
     out_dir = check_outdir(options['--output'])
     # check tophat
@@ -39,15 +51,20 @@ def align(options):
         sys.exit('TopHat2 is required for CIRCexplorer2 align!')
     # check index files
     if options['--genome']:  # build index
-        prefix1, prefix2 = check_index(False, out_dir, options['--genome'])
+        index_flag = (True, skip_tophat, skip_tophat_fusion)
+        prefix1, prefix2 = check_index(index_flag, out_dir,
+                                       options['--genome'])
     else:  # index exist
-        prefix1, prefix2 = check_index(True, out_dir, (options['--bowtie1'],
-                                                       options['--bowtie2']))
-    # tophat2 mapping
-    tophat_map(options['--gtf'], out_dir, prefix2, options['<fastq>'],
-               options['--thread'], bw=options['--bw'],
-               scale=options['--scale'])
-    if not options['--no-tophat-fusion']:
+        index_flag = (False, skip_tophat, skip_tophat_fusion)
+        prefix1, prefix2 = check_index(index_flag, out_dir,
+                                       (options['--bowtie1'],
+                                        options['--bowtie2']))
+    if not skip_tophat:
+        # tophat2 mapping
+        tophat_map(options['--gtf'], out_dir, prefix2, options['<fastq>'],
+                   options['--thread'], bw=options['--bw'],
+                   scale=options['--scale'])
+    if not skip_tophat_fusion:
         # tophat fusion mapping
         tophat_fusion_map(out_dir, prefix1, options['--thread'])
         # parse tophat fusion results
@@ -79,23 +96,32 @@ def check_index(index_flag, out_dir, index_file):
     2. Links index files if exist
     '''
     print('Check index files....')
-    if index_flag:  # index files exist
-        # link index files for bowtie1
-        print('Link index files for Bowtie1...')
-        prefix1 = link_index(1, index_file[0], out_dir)
-        # link index files for bowtie2
-        print('Link index files for Bowtie2...')
-        prefix2 = link_index(2, index_file[1], out_dir)
-        return (prefix1, prefix2)
-    else:  # index files not exist
+    genome_flag, skip_tophat, skip_tophat_fusion = index_flag
+    if genome_flag:  # index files not exist
         prefix = os.path.split(index_file)[1]
-        # build index for bowtie1
-        print('Build index for Bowtie1...')
-        build_index(1, index_file, prefix, out_dir)
-        # build index for bowtie2
-        print('Build index for Bowtie2...')
-        build_index(2, index_file, prefix, out_dir)
+        if not skip_tophat_fusion:  # not skip TopHat-Fusion
+            # build index for bowtie1
+            print('Build index for Bowtie1...')
+            build_index(1, index_file, prefix, out_dir)
+        if not skip_tophat:  # not skip TopHat2
+            # build index for bowtie2
+            print('Build index for Bowtie2...')
+            build_index(2, index_file, prefix, out_dir)
         return (prefix, prefix)
+    else:  # index files exist
+        if not skip_tophat_fusion:  # not skip TopHat-Fusion
+            # link index files for bowtie1
+            print('Link index files for Bowtie1...')
+            prefix1 = link_index(1, index_file[0], out_dir)
+        else:
+            prefix1 = ''
+        if not skip_tophat:  # not skip TopHat2
+            # link index files for bowtie2
+            print('Link index files for Bowtie2...')
+            prefix2 = link_index(2, index_file[1], out_dir)
+        else:
+            prefix2 = ''
+        return (prefix1, prefix2)
 
 
 def tophat_map(gtf, out_dir, prefix, fastq, thread, bw=False, scale=False,

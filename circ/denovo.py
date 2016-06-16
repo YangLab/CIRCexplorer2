@@ -8,10 +8,9 @@ Options:
     --as                           Detect alternative splicing.
     --as-type=AS_TYPE              Only check certain type (CE/RI/ASS) of AS \
 events.
-    -a PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for pAplus RNA-seq.
+    -a PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for p(A)+ RNA-seq.
     -g GENOME --genome=GENOME      Genome FASTA file.
-    --tophat-dir=TOPHAT_DIR        TopHat mapping directory for pAminus \
-RNA-seq.
+    --tophat-dir=TOPHAT_DIR        TopHat mapping directory for p(A)- RNA-seq.
     --no-fix                       No-fix mode (useful for species \
 with poor gene annotations).
     --rpkm                         Calculate RPKM for cassette exons.

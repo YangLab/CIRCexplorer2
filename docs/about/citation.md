@@ -12,4 +12,4 @@ Zhang Y\*, Zhang XO\*, Chen T, Xiang JF, Yin QF, Xing YH, Zhu S, Yang L# and Che
 
 ## CIRCpseudo
 
-Dong R, Zhang XO, Zhang Y, Ma XK, Chen LL and Yang L. CircRNA-derived pseudogenes. *Cell Res*, 2016, doi:10.1038/cr.2016.42. [[Paper](http://www.ncbi.nlm.nih.gov/pubmed/27021280)] [[Github](https://github.com/YangLab/CIRCpseudo)]
+Dong R, Zhang XO, Zhang Y, Ma XK, Chen LL and Yang L. CircRNA-derived pseudogenes. *Cell Res*, 2016, 15:611-624. [[Paper](http://www.ncbi.nlm.nih.gov/pubmed/27021280)] [[Github](https://github.com/YangLab/CIRCpseudo)]

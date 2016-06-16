@@ -1,4 +1,4 @@
-# Installation and Setup for CIRCexplorer2
+# Installation and Setup
 
 This part will guide you to install CIRCexplorer2 and setup all the required stuff step by step.
 
@@ -33,10 +33,25 @@ The [poly(A)−/ribo− RNA-seq](http://genomebiology.com/2011/12/2/R16) is reco
 
 ## Installation
 
+### Install latest release using *pip*
+
+CIRCexplorer2 is on [PyPI](https://pypi.python.org/pypi), so you can install via pip like most Python packages. Depending on your Python installation, this may require admin rights:
+```
+pip install circexplorer2
+```
+
+### Install latest release via *conda*
+
+CIRCexplorer2 has installation recipe on [Bioconda](https://bioconda.github.io), so you can install via conda from Bioconda channel:
+```
+conda install circexplorer2 --channel bioconda
+```
+
+### Install latest release from source codes
+
 Firstly, you should successfully install softwares required for fusion junction read alignment and *de novo* assembly, and add relevant pathes to your `$PATH`.
 
 Secondly, install required python packages and CIRCexplorer2:
-
 ```
 git clone https://github.com/YangLab/CIRCexplorer2.git
 cd CIRCexplorer2

@@ -1,15 +1,4 @@
 import os
-from circ.fetch_ucsc import fetch_file
-
-
-def download_fa(path):
-    '''
-    Download hg19 fa file for testing
-    '''
-    os.chdir(path)
-    options = ['fetch_ucsc.py', 'hg19', 'fa', 'hg19.fa']
-    fetch_file(options)
-    os.chdir('..')
 
 
 def compare_file(fn1, fn2):

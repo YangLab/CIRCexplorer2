@@ -16,8 +16,8 @@ class TestDenovo(object):
         '''
         print('$%s: Start testing denovo' % __name__)
         circ_path = 'data'
-        ref_path = circ_path + '/ref_all.txt'
-        fa_path = circ_path + '/hg19.fa'
+        ref_path = circ_path + '/ref.txt'
+        fa_path = circ_path + '/chr21.fa'
         pAplus_tophat_path = circ_path + '/pAplus_tophat'
         options = {'--ref': ref_path, '--genome': fa_path,
                    '--as': True, '--as-type': 'CE',

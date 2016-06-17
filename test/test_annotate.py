@@ -16,8 +16,8 @@ class TestAnnotate(object):
         '''
         print('#%s: Start testing annotate' % __name__)
         circ_path = 'data'
-        ref_path = circ_path + '/ref_all.txt'
-        fa_path = circ_path + '/hg19.fa'
+        ref_path = circ_path + '/ref.txt'
+        fa_path = circ_path + '/chr21.fa'
         options = {'--ref': ref_path, '--genome': fa_path,
                    '--no-fix': False, '<circ_dir>': circ_path}
         annotate(options, command='CIRCexplorer2 annotate', name='annotate')

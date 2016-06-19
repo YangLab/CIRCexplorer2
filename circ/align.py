@@ -66,7 +66,11 @@ def align(options):
                    scale=options['--scale'])
     if not skip_tophat_fusion:
         # tophat fusion mapping
-        tophat_fusion_map(out_dir, prefix1, options['--thread'])
+        if skip_tophat:  # skip tophat, so use fastq files directly
+            tophat_fusion_map(out_dir, prefix1, options['--thread'],
+                              fq=options['<fastq>'])
+        else:
+            tophat_fusion_map(out_dir, prefix1, options['--thread'])
         # parse tophat fusion results
         fusion_bam_f = '%s/tophat_fusion/accepted_hits.bam' % out_dir
         out = '%s/fusion_junction.bed' % out_dir
@@ -186,19 +190,23 @@ def tophat_map(gtf, out_dir, prefix, fastq, thread, bw=False, scale=False,
         print('Could not find bedGraphToBigWig, so skip this step!')
 
 
-def tophat_fusion_map(out_dir, prefix, thread):
+def tophat_fusion_map(out_dir, prefix, thread, fq=None):
     '''
     1. Map reads with TopHat-Fusion
     2. Extract fusion junction reads
     '''
     # tophat_fusion mapping
     print('Map unmapped reads with TopHat-Fusion...')
+    if fq:
+        fastq = ','.join(fq)
+    else:
+        fastq = '%s/tophat/unmapped.fastq' % out_dir
     tophat_fusion_cmd = 'tophat2 --fusion-search --keep-fasta-order --bowtie1 '
     tophat_fusion_cmd += '--no-coverage-search '
     tophat_fusion_cmd += '-p %s -o %s ' % (thread, out_dir + '/tophat_fusion')
     tophat_fusion_cmd += '%s/bowtie1_index/%s ' % (out_dir, prefix)
-    tophat_fusion_cmd += '%s/tophat/unmapped.fastq ' % out_dir
-    tophat_fusion_cmd += '2> %s/tophat_fusion.log' % out_dir
+    tophat_fusion_cmd += fastq
+    tophat_fusion_cmd += ' 2> %s/tophat_fusion.log' % out_dir
     print('TopHat-Fusion mapping command:')
     print(tophat_fusion_cmd)
     return_code = os.system(tophat_fusion_cmd) >> 8

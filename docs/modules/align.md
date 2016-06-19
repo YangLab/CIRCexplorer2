@@ -33,7 +33,7 @@ CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2 | -i INDEX
 2. If you set `--bw` option, [BigWig](http://genome.ucsc.edu/FAQ/FAQformat.html#format6.1) file of TopHat2 alignment would be created automatically for visualization. It will not consider strand information of read alignment.
 3. If you set `--scale` option, expression levels (for BigWig file) would be scaled to HPB (Hits per billion-mapped-bases
 ). More information about HPB could be found in [this paper](http://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-14-206).
-4. If you set `--skip-tophat`, TopHat2 alignment would be skipped. It is useful for poly(A)+ RNA-seq.
+4. If you set `--skip-tophat`, TopHat2 alignment would be skipped. It is useful for some specific conditions, please see [FAQ](../about/faq.md) for details.
 5. If you set `--skip-tophat-fusion`, TopHat-Fusion alignment would be skipped. It is useful for poly(A)+ RNA-seq.
 6. You could offer multiple fastq files (or compressed files) separated by spaces or comma.
 7. Only single-end RNA-seq is supported. It is recommended to convert paired-end RNA-seq to single-end RNA-seq before alignment.

@@ -76,5 +76,9 @@ def fetch_file(options):
         sys.exit('Only support ref/kg/ens/fa!')
 
 
-if __name__ == '__main__':
+def main():
     fetch_file(sys.argv)
+
+
+if __name__ == '__main__':
+    main()

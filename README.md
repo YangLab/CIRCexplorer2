@@ -1,4 +1,4 @@
-# CIRCexplorer2 -- circular RNA analysis toolset
+# CIRCexplorer2
 
 ```
    ______________  ______                __

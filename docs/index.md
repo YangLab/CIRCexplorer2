@@ -17,11 +17,16 @@
 
 CIRCexplorer2 is a comprehensive and integrative circular RNA analysis toolset. It is the successor of [CIRCexplorer](http://yanglab.github.io/CIRCexplorer/) with plenty of new features to facilitate circular RNA identification and characterization.
 
+Authors: Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn), Li Yang (liyang@picb.ac.cn)
+
+Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
+
 ## Features
 
-* Support multiple circular RNA aligners (TopHat/TopHat-Fusion, STAR, MapSplice and segemehl)
-* *De novo* assemble novel circular RNA transcripts
-* Characterize various of alternative splicing events of circular RNAs
+* Preciously annotate circular RNAs ([Annotate](modules/annotate.md))
+* Support multiple circular RNA aligners (TopHat/TopHat-Fusion, STAR, MapSplice and segemehl) ([Align](modules/align.md) and [Parse](modules/parse.md))
+* *De novo* assemble novel circular RNA transcripts ([Assemble](modules/assemble.md))
+* Characterize various of alternative splicing events of circular RNAs ([Denovo](modules/denovo.md))
 
 ## Tutorial
 
@@ -48,11 +53,13 @@ List of Modules:
 * [Assemble](modules/assemble.md)
 * [Denovo](modules/denovo.md)
 
+## Related tools
+
+We developed a series of circular RNA analysis tools, and welcome to use and cite our work. See [Related Tools](about/tools.md) for more information.
+
 ## Citation
 
-Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *under review*
-
-We developed a series of circular RNA analysis tools, and welcome to use and cite our work. See [Citation](about/citation.md) for more information.
+Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *Genome Res*, 2016, *in press*
 
 ## License
 

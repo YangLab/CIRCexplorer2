@@ -22,7 +22,7 @@ CIRCexplorer2 align -G hg19_kg.gtf -g hg19.fa RNA_seq.fastq > CIRCexplorer2_alig
 1. Because Cufflinks is well compatible with TopHat2/TopHat-Fusion, it is recommended to use TopHat2/TopHat-Fusion alignment for [characterization pipeline](../tutorial/pipeline.md).
 2. `CIRCexplorer2 align` will create a directory `circ_out` by default, and the BED file `fusion_junction.bed` under this directory is required for following analysis. You could also check `tophat.log` and `tophat_fusion.log` file for detailed logs of Tophat2 and TopHat-Fusion alignment.
 3. See [Align](../modules/align.md) for detailed information about `CIRCexplorer2 align`.
-4. If you have alreadu had alignment results with TopHat2/TopHat-Fusion, you could use `CIRCexplorer2 parse` to convert their results compatible with CIRCexplorer2. For the alignment parameters of TopHat2/TopHat-Fusion, you could refer to [CIRCexplorer manual](https://github.com/YangLab/CIRCexplorer#tophat--tophat-fusion).
+4. If you have already had alignment results with TopHat2/TopHat-Fusion, you could use `CIRCexplorer2 parse` to convert their results compatible with CIRCexplorer2. For the alignment parameters of TopHat2/TopHat-Fusion, you could refer to [CIRCexplorer manual](https://github.com/YangLab/CIRCexplorer#tophat--tophat-fusion).
 ```
 CIRCexplorer2 parse -t TopHat-Fusion tophat_fusion/accepted_hits.bam > CIRCexplorer2_parse.log
 ```

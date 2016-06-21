@@ -19,7 +19,7 @@ pages:
         - 'Assemble': 'modules/assemble.md'
         - 'Denovo': 'modules/denovo.md'
     - About:
-        - 'Citation': 'about/citation.md'
+        - 'Related Tools': 'about/tools.md'
         - 'FAQ': 'about/faq.md'
         - 'Release Notes': 'about/changelog.md'
         - 'License': 'about/license.md'

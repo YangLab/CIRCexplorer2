@@ -24,7 +24,7 @@ Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 ## Features
 
 * Preciously annotate circular RNAs ([Annotate](modules/annotate.md))
-* Support multiple circular RNA aligners (**TopHat/TopHat-Fusion**, **STAR**, **MapSplice** and **segemehl**) ([Align](modules/align.md) and [Parse](modules/parse.md))
+* Support multiple circular RNA aligners (**TopHat/TopHat-Fusion**, **STAR**, **MapSplice**, **BWA** and **segemehl**) ([Align](modules/align.md) and [Parse](modules/parse.md))
 * *De novo* assemble novel circular RNA transcripts ([Assemble](modules/assemble.md))
 * Characterize various of alternative (back-)splicing events of circular RNAs ([Denovo](modules/denovo.md))
 

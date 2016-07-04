@@ -15,7 +15,7 @@ CIRCexplorer2 is the successor of `CIRCexplorer`_ with plenty of new features to
 Features
 --------
 
-* Preciously annotate circular RNAs
+* Preciously annotate circular RNAs with high accuracy, good sensitivity and low memory consumption
 * Support multiple circular RNA aligners (TopHat/TopHat-Fusion, STAR, MapSplice, BWA and segemehl)
 * *De novo* assemble novel circular RNA transcripts
 * Characterize various of alternative splicing events of circular RNAs

@@ -1,7 +1,7 @@
 [report]
 omit =
-  circ/version.py
-  circ/command_parse.py
-  circ/align.py
-  circ/assemble.py  
-  circ/genomic_interval.py
+  circ2/version.py
+  circ2/command_parse.py
+  circ2/align.py
+  circ2/assemble.py
+  circ2/genomic_interval.py

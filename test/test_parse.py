@@ -7,7 +7,7 @@ import os.path
 import shutil
 from nose.tools import with_setup
 from utils import check_file
-from circ.parse import parse
+from circ2.parse import parse
 
 
 def setup_function():
@@ -64,6 +64,19 @@ def test_mapsplice_parse():
     parse(options, command='CIRCexplorer2 parse (Mapsplice)', name='parse')
     assert os.path.isdir('circ_out'), 'No circ_out directory'
     check_file('fusion_junction.bed', 'circ_out', 'MapSplice_out')
+
+
+@with_setup(setup_function, teardown_function)
+def test_bwa_parse():
+    '''
+    Test BWA parser
+    '''
+    print('#%s: Test parse BWA' % __name__)
+    options = {'-t': 'BWA', '--output': 'circ_out',
+               '<fusion>': 'RNA_seq_bwa.sam'}
+    parse(options, command='CIRCexplorer2 parse (BWA)', name='parse')
+    assert os.path.isdir('circ_out'), 'No circ_out directory'
+    check_file('fusion_junction.bed', 'circ_out', 'BWA_out')
 
 
 @with_setup(setup_function, teardown_function)

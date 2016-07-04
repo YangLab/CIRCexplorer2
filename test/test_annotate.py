@@ -5,7 +5,7 @@ test_annotate.py: Test annotate module
 import os.path
 import shutil
 from utils import check_file
-from circ.annotate import annotate
+from circ2.annotate import annotate
 
 
 class TestAnnotate(object):

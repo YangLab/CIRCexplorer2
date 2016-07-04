@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
-from circ.version import __version__
+from circ2.version import __version__
 
 setup(name='CIRCexplorer2',
       version=__version__,
@@ -23,15 +23,15 @@ setup(name='CIRCexplorer2',
       keywords='circular RNAs',
       packages=find_packages(),
       install_requires=[
-          'pysam>=0.8.2',
+          'pysam>=0.8.4',
           'pybedtools',
           'scipy',
           'docopt'
       ],
       entry_points={
           'console_scripts': [
-              'CIRCexplorer2=circ.command_parse:main',
-              'fetch_ucsc.py=circ.fetch_ucsc:main'
+              'CIRCexplorer2=circ2.command_parse:main',
+              'fetch_ucsc.py=circ2.fetch_ucsc:main'
           ],
       },
       )

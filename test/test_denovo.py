@@ -5,7 +5,7 @@ test_denovo.py: Test denovo module
 import os.path
 import shutil
 from utils import check_file
-from circ.denovo import denovo
+from circ2.denovo import denovo
 
 
 class TestDenovo(object):

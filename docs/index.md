@@ -24,9 +24,11 @@ Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 ## Features
 
 * Preciously annotate circular RNAs ([Annotate](modules/annotate.md))
-* Support multiple circular RNA aligners (TopHat/TopHat-Fusion, STAR, MapSplice and segemehl) ([Align](modules/align.md) and [Parse](modules/parse.md))
+* Support multiple circular RNA aligners (**TopHat/TopHat-Fusion**, **STAR**, **MapSplice** and **segemehl**) ([Align](modules/align.md) and [Parse](modules/parse.md))
 * *De novo* assemble novel circular RNA transcripts ([Assemble](modules/assemble.md))
 * Characterize various of alternative splicing events of circular RNAs ([Denovo](modules/denovo.md))
+
+*For some frequently asked questions about CIRCexplorer2, please [FAQ](about/faq.md) for more details.*
 
 ## Tutorial
 
@@ -59,7 +61,7 @@ We developed a series of circular RNA analysis tools, and welcome to use and cit
 
 ## Citation
 
-Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *Genome Res*, 2016, *in press*
+[Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *Genome Res*, 2016, doi:10.1101/gr.202895.115](http://genome.cshlp.org/content/early/2016/06/30/gr.202895.115.abstract)
 
 ## License
 

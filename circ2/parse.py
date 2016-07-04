@@ -5,16 +5,17 @@ Options:
     -h --help                      Show help message.
     --version                      Show version.
     -t ALIGNER                     Aligner (TopHat-Fusion, STAR, MapSplice, \
-segemehl).
+BWA, segemehl).
     -o OUT --output=OUT            Output directory. [default: circ_out]
 """
 
 import sys
 import os.path
+import pysam
 from collections import defaultdict
 from dir_func import create_dir
 from helper import logger
-from parser import parse_fusion_bam
+from parser import parse_fusion_bam, Cigar
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
@@ -23,7 +24,7 @@ __all__ = ['parse']
 
 @logger
 def parse(options):
-    aliger = set(['TopHat-Fusion', 'STAR', 'MapSplice', 'segemehl'])
+    aliger = set(['TopHat-Fusion', 'STAR', 'MapSplice', 'BWA', 'segemehl'])
     if options['-t'] not in aliger:
         sys.exit('Error: CIRCexplorer2 parse does not support %s!' %
                  options['-t'])
@@ -38,6 +39,8 @@ def parse(options):
         star_parse(options['<fusion>'], out)
     elif options['-t'] == 'MapSplice':
         mapsplice_parse(options['<fusion>'], out)
+    elif options['-t'] == 'BWA':
+        bwa_parse(options['<fusion>'], out)
     elif options['-t'] == 'segemehl':
         segemehl_parse(options['<fusion>'], out)
 
@@ -126,6 +129,70 @@ def mapsplice_parse(fusion, out):
                                                                  end, i,
                                                                  reads))
             total += int(reads)
+    print('Converted %d fusion reads!' % total)
+
+
+def bwa_parse(fusion, out):
+    '''
+    Parse fusion junctions from BWA aligner
+    Origin source codes: Xu-Kai Ma (maxukai@picb.ac.cn)
+    Modified: Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)
+    '''
+    print('Start parsing fusion junctions from BWA...')
+    fusions = defaultdict(int)
+    samFile = pysam.AlignmentFile(fusion, 'r')
+    for read in samFile:
+        if read.is_unmapped:  # unmapped reads
+            continue
+        if read.is_supplementary:  # supplementary reads
+            continue
+        if not read.has_tag('SA'):  # no SA tag
+            continue
+        saInfo = read.get_tag('SA').split(';')[:-1]
+        if len(saInfo) >= 2:  # have many supplementary sequence
+            continue
+        saInfo = saInfo[0].split(',')  # rname,pos,strand,CIGAR,mapQ,NM;
+        chr1 = samFile.get_reference_name(read.reference_id)
+        chr2 = saInfo[0]
+        if chr1 != chr2:  # not same chromosome
+            continue
+        strand1 = '+' if not read.is_reverse else '-'
+        strand2 = saInfo[2]
+        if strand1 != strand2:  # not same strand
+            continue
+        cigar1 = Cigar(read.cigarstring)
+        cigar2 = Cigar(saInfo[3])
+        pos1 = read.reference_start   # 0-base
+        pos2 = int(saInfo[1]) - 1  # 0-base
+        if cigar1.is_MS:  # cigars1: M..S
+            if not cigar2.is_SM:  # cigar2: not S..M
+                continue
+            if pos1 <= pos2:  # may be linear junction
+                continue
+            right = read.reference_end
+            unMap1 = read.query_length - cigar1.read_match_len
+            map2 = cigar2.read_match_len
+            redundence = map2 - unMap1
+            left = pos2 + redundence
+        elif cigar1.is_SM:  # cigars1: S..M
+            if not cigar2.is_MS:  # cigar2: not M..S
+                continue
+            if pos1 >= pos2:  # may be linear junction
+                continue
+            left = pos1
+            unMap1 = read.query_length - cigar1.read_match_len
+            map2 = cigar2.read_match_len
+            redundence = map2 - unMap1
+            right = pos2 + cigar2.ref_match_len - redundence
+        else:
+            continue  # not junction for circRNA
+        fusions['%s\t%d\t%d' % (chr1, left, right)] += 1
+    samFile.close()
+    total = 0
+    with open(out, 'w') as outF:
+        for i, pos in enumerate(fusions):
+            outF.write('%s\tFUSIONJUNC_%d/%d\t0\t+\n' % (pos, i, fusions[pos]))
+            total += fusions[pos]
     print('Converted %d fusion reads!' % total)
 
 

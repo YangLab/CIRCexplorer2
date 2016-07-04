@@ -1,7 +1,38 @@
 import os
 import pysam
 from collections import defaultdict
+from itertools import groupby
 from genomic_interval import Interval
+
+
+class Cigar(object):
+    '''
+    Modified from https://github.com/brentp/cigar
+    '''
+    def __init__(self, cigar_string):
+        self.cigar = cigar_string
+        read_consuming_ops = ("M", "I")
+        ref_consuming_ops = ("M", "D")
+        cig_iter = groupby(self.cigar, lambda c: c.isdigit())
+        ms_flag, sm_flag = 0, 0
+        self.read_match_len, self.ref_match_len = 0, 0
+        for i, (g, n) in enumerate(cig_iter):
+            counts, tag = int("".join(n)), "".join(next(cig_iter)[1])
+            if i == 0:
+                if tag == 'M':
+                    ms_flag += 1
+                elif tag == 'S':
+                    sm_flag += 1
+            if tag in read_consuming_ops:
+                self.read_match_len += counts
+            if tag in ref_consuming_ops:
+                self.ref_match_len += counts
+        if self.cigar.endswith('M'):
+            sm_flag += 1
+        elif self.cigar.endswith('S'):
+            ms_flag += 1
+        self.is_MS = True if ms_flag == 2 else False
+        self.is_SM = True if sm_flag == 2 else False
 
 
 def parse_fusion_bam(bam_f):

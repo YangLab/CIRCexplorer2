@@ -1,3 +1,13 @@
+## 2.1.0 (2016-07-04)
+
+Improvements:
+
+* support for BWA
+
+Bugs:
+
+* change module name from 'circ' to 'circ2' in case of conflict with CIRCexplorer (issue #1).
+
 ## 2.0.1 (2016-06-21)
 
 Improvements:

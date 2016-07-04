@@ -15,10 +15,14 @@
 
 CIRCexplorer2 is the successor of [CIRCexplorer](http://yanglab.github.io/CIRCexplorer/) with plenty of new features to facilitate circular RNA identification and characterization.
 
+Authors: Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn), Li Yang (liyang@picb.ac.cn)
+
+Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
+
 ## Features
 
 * Preciously annotate circular RNAs
-* Support multiple circular RNA aligners (TopHat/TopHat-Fusion, STAR, MapSplice and segemehl)
+* Support multiple circular RNA aligners (**TopHat/TopHat-Fusion**, **STAR**, **MapSplice**, **BWA** and **segemehl**)
 * *De novo* assemble novel circular RNA transcripts
 * Characterize various of alternative splicing events of circular RNAs
 
@@ -26,7 +30,7 @@ CIRCexplorer2 documentation is available through https://readthedocs.org/ from [
 
 ## Citation
 
-Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *Genome Res*, 2016, *in press*
+[Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *Genome Res*, 2016, doi:10.1101/gr.202895.115](http://genome.cshlp.org/content/early/2016/06/30/gr.202895.115.abstract)
 
 ## License
 

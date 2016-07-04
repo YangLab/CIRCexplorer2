@@ -1,6 +1,6 @@
 # Alignment for Circular RNA Fusion Junction Reads
 
-CIRCexplorer2 supports TopHat2/TopHat-Fusion and other aligners (STAR, segemehl and MapSplice). Although different aligners showed slightly different in circular RNA identification, TopHat2/TopHat-Fusion has a perfect match with Cufflinks. As a result, TopHat2/TopHat-Fusion is recommended in alignment step, especially for [circular RNA characterization pipeline](../tutorial/pipeline.md).
+CIRCexplorer2 supports TopHat2/TopHat-Fusion and other aligners (STAR, segemehl, BWA and MapSplice). Although different aligners showed slightly different in circular RNA identification, TopHat2/TopHat-Fusion has a perfect match with Cufflinks. As a result, TopHat2/TopHat-Fusion is recommended in alignment step, especially for [circular RNA characterization pipeline](../tutorial/pipeline.md).
 
 
 ## TopHat2/TopHat-Fusion
@@ -41,6 +41,11 @@ STAR --chimSegmentMin 10 --runThreadN 10 --genomeDir hg19_STAR_index --readFiles
 mapsplice.py -p 10 -k 1 --non-canonical --fusion-non-canonical --min-fusion-distance 200 -c hg19_dir -x bowtie1_index --gene-gtf hg19_kg.gtf -1 RNA_seq.fastq
 ```
 
+* BWA (See [BWA](http://bio-bwa.sourceforge.net/bwa.shtml) for more information)
+```
+bwa mem -T 19 -t 10 hg19_bwa_index RNA_seq.fastq > RNA_seq_bwa.sam
+```
+
 * segemehl (See [segemehl manual](http://www.bioinf.uni-leipzig.de/Software/segemehl/segemehl_manual_0_1_7.pdf) for more information)
 ```
 segemehl.x -q RNA_seq.fastq -d hg19.fa -i hg19_segemehl.idx -S -M 1 -t 10 -o RNA_seq.sam
@@ -57,6 +62,11 @@ CIRCexplorer2 parse -t STAR Chimeric.out.junction > CIRCexplorer2_parse.log
 * MapSplice
 ```
 CIRCexplorer2 parse -t MapSplice mapsplice_out/fusions_raw.txt > CIRCexplorer2_parse.log
+```
+
+* BWA
+```
+CIRCexplorer2 parse -t BWA RNA_seq_bwa.sam > CIRCexplorer2_parse.log
 ```
 
 * segemehl

@@ -7,6 +7,8 @@ CIRCexplorer2
     :target: https://coveralls.io/github/YangLab/CIRCexplorer2?branch=master
 .. image:: https://readthedocs.org/projects/circexplorer2/badge/?version=latest
     :target: http://circexplorer2.readthedocs.org/en/latest/?badge=latest
+.. image:: https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square
+    :target: https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt
 
 CIRCexplorer2 is the successor of `CIRCexplorer`_ with plenty of new features to facilitate circular RNA identification and characterization.
 

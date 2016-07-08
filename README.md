@@ -33,7 +33,7 @@ CIRCexplorer2 documentation is available through https://readthedocs.org/ from [
 
 ## Citation
 
-[Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *Genome Res*, 2016, doi:10.1101/gr.202895.115](http://genome.cshlp.org/content/early/2016/06/30/gr.202895.115.abstract)
+[Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splicing landscape of circular RNAs. *Genome Res*, 2016, doi:10.1101/gr.202895.115](http://genome.cshlp.org/content/early/2016/06/30/gr.202895.115.abstract)
 
 ## License
 

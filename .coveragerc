@@ -5,3 +5,4 @@ omit =
   circ2/align.py
   circ2/assemble.py
   circ2/genomic_interval.py
+  circ2/fetch_ucsc.py

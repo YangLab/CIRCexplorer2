@@ -7,4 +7,5 @@ chr21	16386664	16387546	circular_RNA/39	0	-	Annotated	Novel
 chr21	46540708	46554747	circular_RNA/1	0	+	Novel	Annotated
 chr21	34065481	34067592	circular_RNA/2	1	-	Novel	Annotated
 chr21	38792600	38802702	circular_RNA/44	1	+	Annotated	Novel
+chr21	46538478	46554747	circular_RNA/4	1	+	Novel	Annotated
 chr21	38792600	38798083	circular_RNA/20	0	+	Annotated	Novel

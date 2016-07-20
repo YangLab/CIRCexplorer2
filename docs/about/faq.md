@@ -18,7 +18,7 @@ A: There is no common rule to define which circular RNAs belong to high-expresse
 
 Q: which aligner should I use when aligning circular RNA fusion junction reads?
 
-A: CIRCexplorer2 now supported 5 different aligners (TopHat/TopHat-Fusion, STAR, MapSplice, BWA, and segemehl). Each of them has its own pros and cons. We have offered some example alignment parameters of them for circular RNA fusion junction read alignment (see [tutorial](../tutorial/alignment.md) for details). However, if you want to use CIRCexplorer2 to identification novel circular RNAs or novel alternative (back-)splicing events in circular RNAs, `CIRCexplorer2 assemble` is required, and it relies on TopHat and Cufflinks. So, in this way, TopHat/TopHat-Fusion is recommended for circular RNA fusion junction read alignment.
+A: CIRCexplorer2 now supported 5 different aligners (TopHat2/TopHat-Fusion, STAR, MapSplice, BWA, and segemehl). Each of them has its own pros and cons. We have offered some example alignment parameters of them for circular RNA fusion junction read alignment (see [tutorial](../tutorial/alignment.md) for details). However, if you want to use CIRCexplorer2 to identification novel circular RNAs or novel alternative (back-)splicing events in circular RNAs, `CIRCexplorer2 assemble` is required, and it relies on TopHat and Cufflinks. So, in this way, TopHat/TopHat-Fusion is recommended for circular RNA fusion junction read alignment.
 
 Q: If I have aligned fastq with TopHat2 in advance and don't want to align them again with `CIRCexplorer2 align`, what should I do?
 

@@ -1,10 +1,20 @@
+## 2.1.1 (2016-07-20)
+
+Bugfixes:
+
+* bug that ignores case-sensitivity in fusion fix step
+
+Improvements:
+
+* improve fusion junction identification efficiency for BWA
+
 ## 2.1.0 (2016-07-04)
 
 Improvements:
 
 * support for BWA
 
-Bugs:
+Bugfixes:
 
 * change module name from 'circ' to 'circ2' in case of conflict with CIRCexplorer (issue #1).
 

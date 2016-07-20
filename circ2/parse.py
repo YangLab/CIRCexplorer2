@@ -15,7 +15,7 @@ import pysam
 from collections import defaultdict
 from dir_func import create_dir
 from helper import logger
-from parser import parse_fusion_bam, Cigar
+from parser import parse_fusion_bam, Segment
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
@@ -148,45 +148,41 @@ def bwa_parse(fusion, out):
             continue
         if not read.has_tag('SA'):  # no SA tag
             continue
-        saInfo = read.get_tag('SA').split(';')[:-1]
-        if len(saInfo) >= 2:  # have many supplementary sequence
-            continue
-        saInfo = saInfo[0].split(',')  # rname,pos,strand,CIGAR,mapQ,NM;
         chr1 = samFile.get_reference_name(read.reference_id)
-        chr2 = saInfo[0]
-        if chr1 != chr2:  # not same chromosome
-            continue
         strand1 = '+' if not read.is_reverse else '-'
-        strand2 = saInfo[2]
-        if strand1 != strand2:  # not same strand
-            continue
-        cigar1 = Cigar(read.cigarstring)
-        cigar2 = Cigar(saInfo[3])
-        pos1 = read.reference_start   # 0-base
-        pos2 = int(saInfo[1]) - 1  # 0-base
-        if cigar1.is_MS:  # cigars1: M..S
-            if not cigar2.is_SM:  # cigar2: not S..M
+        saInfo = read.get_tag('SA').split(';')[:-1]
+        loc = [read.query_alignment_start, read.query_alignment_end,
+               read.reference_start, read.reference_end]
+        segments = [loc]
+        for sa in saInfo:
+            chr2, pos, strand2, cigar = sa.split(',')[:4]
+            if chr1 != chr2:  # not same chromosome
                 continue
-            if pos1 <= pos2:  # may be linear junction
+            if strand1 != strand2:  # not same strand
                 continue
-            right = read.reference_end
-            unMap1 = read.query_length - cigar1.read_match_len
-            map2 = cigar2.read_match_len
-            redundence = map2 - unMap1
-            left = pos2 + redundence
-        elif cigar1.is_SM:  # cigars1: S..M
-            if not cigar2.is_MS:  # cigar2: not M..S
-                continue
-            if pos1 >= pos2:  # may be linear junction
-                continue
-            left = pos1
-            unMap1 = read.query_length - cigar1.read_match_len
-            map2 = cigar2.read_match_len
-            redundence = map2 - unMap1
-            right = pos2 + cigar2.ref_match_len - redundence
-        else:
-            continue  # not junction for circRNA
-        fusions['%s\t%d\t%d' % (chr1, left, right)] += 1
+            segment = Segment(pos=pos, cigar=cigar)
+            segments.append([segment.read_start, segment.read_end,
+                             segment.ref_start, segment.ref_end])
+        segments.sort()
+        cov_loc = segments[0][1]
+        ref_loc = segments[0][3]
+        bflag = 0
+        cigar_l, cigar_r = 0, 0
+        ref_l, ref_r = 0, 0
+        for s in segments[1:]:
+            if s[2] < ref_loc and s[0] <= cov_loc:
+                bflag += 1
+                cigar_l = s[0]
+                cigar_r = cov_loc
+                ref_l = s[2]
+                ref_r = ref_loc
+            cov_loc = s[1]
+            ref_loc = s[3]
+        if bflag == 1:
+            fusion_left = str(ref_l)
+            fusion_right = str(ref_r - (cigar_r - cigar_l))
+            fusion_loc = '\t'.join([chr1, fusion_left, fusion_right])
+            fusions[fusion_loc] += 1
     samFile.close()
     total = 0
     with open(out, 'w') as outF:

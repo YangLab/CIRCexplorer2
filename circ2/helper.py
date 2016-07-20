@@ -241,7 +241,7 @@ def check_seq(chrom, pos, fa, intron_flag=False):
         else:
             seq1 = fa.fetch(chrom, pos[1], pos[0])
             seq2 = fa.fetch(chrom, pos[2] - pos[0] + pos[1], pos[2])
-    if seq1 == seq2:
+    if seq1.upper() == seq2.upper():
         return True
     else:
         return False

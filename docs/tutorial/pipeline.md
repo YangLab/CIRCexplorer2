@@ -25,6 +25,12 @@ This pipeline is derived from [CIRCexplorer](http://yanglab.github.io/CIRCexplor
 * Circular RNA fusion junction read alignment and parsing ([Alignment](../tutorial/alignment.md))
 * Circular RNA fusion junction read annotating and realignment ([Annotating](../tutorial/annotating.md))
 
+### Results
+
+Circular RNA infomation: `circ_out/annotate/circ_fusion.txt`  
+("circ_out" denotes the default output directory)  
+See [Annotate](../modules/annotate.md) for more details of circ_fusion.txt.
+
 ## Characterization pipeline
 
 This pipeline aims to comprehensively and systematically characterize the landscape of alternative back-splicing and alternative splicing of circular RNAs through integrating de novo assembly for circular RNA transcripts.
@@ -44,3 +50,14 @@ This pipeline aims to comprehensively and systematically characterize the landsc
 * Circular RNA fusion junction read alignment and parsing ([Alignment](../tutorial/alignment.md))
 * De novo assembly for circular RNA transcripts ([Assembly](../tutorial/assembly.md))
 * Characterization of alternative back-splicing and alternative splicing ([Alternative Splicing](../tutorial/as.md))
+
+### Results
+
+Novel circRNA infomation: `circ_out/denovo/novel_circ.txt`  
+Annotated circRNA infomation: `circ_out/denovo/annotated_circ.txt`  
+Cassette exon information: `circ_out/denovo/all_exon_info.txt`  
+Retained intron information: `circ_out/denovo/all_intron_info.txt`  
+Alternative 5' splice site information: `circ_out/denovo/all_A5SS_info.txt`  
+Alternative 3' splice site information: `circ_out/denovo/all_A3SS_info.txt`  
+("circ_out" denotes the default output directory)  
+See [Denovo](../modules/denovo.md) for more details of output files.

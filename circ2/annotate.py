@@ -8,12 +8,14 @@ Options:
     -g GENOME --genome=GENOME      Genome FASTA file.
     --no-fix                       No-fix mode (useful for species \
 with poor gene annotations).
+    --low-confidence               Extract low confidence circRNAs.
 """
 
 from genomic_interval import Interval
 from parser import parse_ref, parse_bed, check_fasta
 from helper import logger, map_fusion_to_iso, fix_bed, generate_bed
 from dir_func import check_dir, create_dir
+from collections import defaultdict
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
@@ -28,13 +30,14 @@ def annotate(options):
     annotate_dir = '%s/annotate' % out_dir
     create_dir(annotate_dir)
     # annotate fusion junctions
-    annotate_fusion(options['--ref'], annotate_dir)
+    annotate_fusion(options['--ref'], annotate_dir,
+                    side_flag=options['--low-confidence'])
     # fix fusion juncrions
     fix_fusion(options['--ref'], options['--genome'], annotate_dir,
-               options['--no-fix'])
+               options['--no-fix'], side_flag=options['--low-confidence'])
 
 
-def annotate_fusion(ref_f, out_dir, denovo_flag=0):
+def annotate_fusion(ref_f, out_dir, side_flag=0, denovo_flag=0):
     """
     Align fusion juncrions to gene annotations
     """
@@ -64,7 +67,11 @@ def annotate_fusion(ref_f, out_dir, denovo_flag=0):
                 for fus in itl[(2 + len(iso)):]:
                     reads = fus.split()[1]
                     fus_start, fus_end = fusion_index[fus]
+                    fus_loc = '%s\t%d\t%d\tFUSIONJUNC/%s' % (chrom, fus_start,
+                                                             fus_end, reads)
                     edge_annotations = []  # first or last exon flag
+                    side_exon = defaultdict(dict)  # one-sided exon
+                    annotate_flag = 0
                     for iso_id in iso:
                         g, i, c, s = iso_id.split()[1:]
                         start = gene_info[iso_id][0][0]
@@ -72,20 +79,19 @@ def annotate_fusion(ref_f, out_dir, denovo_flag=0):
                         # fusion junction excesses boundaries of gene
                         # annotation
                         if fus_start < start - 10 or fus_end > end + 10:
-                            continue
+                            if not side_flag:
+                                continue
                         (fusion_info,
                          index,
-                         edge) = map_fusion_to_iso(fus_start,
+                         edge,
+                         side) = map_fusion_to_iso(fus_start,
                                                    fus_end, s,
                                                    gene_info[iso_id])
                         if fusion_info:
-                            fus_start_str = str(fus_start)
-                            fus_end_str = str(fus_end)
-                            bed_info = '\t'.join([chrom, fus_start_str,
-                                                  fus_end_str,
-                                                  'FUSIONJUNC/%s' % reads,
-                                                  '0', s, fus_start_str,
-                                                  fus_start_str, '0,0,0'])
+                            annotate_flag += 1
+                            bed_info = '\t'.join([fus_loc, '0', s,
+                                                  str(fus_start),
+                                                  str(fus_start), '0,0,0'])
                             bed = '\t'.join([bed_info, fusion_info, g, i,
                                              index])
                             if not edge:  # not first or last exon
@@ -93,14 +99,33 @@ def annotate_fusion(ref_f, out_dir, denovo_flag=0):
                                 total.add(fus)
                             else:  # first or last exon
                                 edge_annotations.append(bed)
+                        elif side_flag and side is not None:
+                            li, ri = side
+                            gene = ':'.join([g, s])
+                            if li is not None:
+                                li = str(li)
+                                side_exon['left'][gene] = ':'.join([i, li])
+                            if ri is not None:
+                                ri = str(ri)
+                                side_exon['right'][gene] = ':'.join([i, ri])
                     if edge_annotations:
                         for bed in edge_annotations:
                             outf.write(bed + '\n')
                         total.add(fus)
+                    if side_flag and not annotate_flag:
+                        for gene in side_exon['left']:
+                            if gene in side_exon['right']:
+                                left = side_exon['left'][gene]
+                                right = side_exon['right'][gene]
+                                g, s = gene.split(':')
+                                fus_loc += '\t0\t%s' % s
+                                outf.write('%s\t%s:%s\t%s:%s\n' % (fus_loc, g,
+                                                                   left, g,
+                                                                   right))
     print('Annotated %d fusion junctions!' % len(total))
 
 
-def fix_fusion(ref_f, genome_fa, out_dir, no_fix, denovo_flag=0):
+def fix_fusion(ref_f, genome_fa, out_dir, no_fix, side_flag=0, denovo_flag=0):
     """
     Realign fusion juncrions
     """
@@ -113,6 +138,8 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, denovo_flag=0):
     total = 0
     annotations = set()
     fixed_fusion_f = '%s/circ_fusion.txt' % out_dir
+    if side_flag:
+        side_f = open('%s/low_circ_fusion.txt' % out_dir, 'w')
     with open(fixed_fusion_f, 'w') as outf:
         for fus in fusion_names:
             reads = str(fusions[fus])
@@ -121,6 +148,12 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, denovo_flag=0):
                 total += 1
             fixed = str(fixed)
             name = 'circular_RNA/' + reads
+            if fus.startswith('side'):
+                _, loc, strand, left_info, right_info = fus.split('|')
+                side_f.write('\t'.join([loc, name, fixed, strand, left_info,
+                                        right_info]))
+                side_f.write('\n')
+                continue
             gene, iso, chrom, strand, index = fus.split()
             starts, ends = ref['\t'.join([gene, iso, chrom, strand])]
             exon_num = len(starts)
@@ -175,4 +208,6 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, denovo_flag=0):
             if denovo_flag:  # in denovo mode
                 annotations.add(annotation_info)
             outf.write(bed + '\n')
+    if side_flag:
+        side_f.close()
     print('Fixed %d fusion junctions!' % total)

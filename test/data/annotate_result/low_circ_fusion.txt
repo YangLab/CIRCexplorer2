@@ -1,0 +1,1 @@
+chr1	247302017	247323115	circular_RNA/37	0	-	ZNF124:uc001ich.3:1	ZNF124:uc001ick.3:2

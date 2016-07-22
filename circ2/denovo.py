@@ -62,10 +62,10 @@ def denovo(options):
         print('Please run CIRCexplorer2 assembly before this step!')
         ref_path = options['--ref']
     # annotate fusion junctions
-    annotate_fusion(ref_path, denovo_dir, 1)
+    annotate_fusion(ref_path, denovo_dir, denovo_flag=1)
     # fix fusion juncrions
     fix_fusion(ref_path, options['--genome'], denovo_dir,
-               options['--no-fix'], 1)
+               options['--no-fix'], denovo_flag=1)
     # extract novel circRNAs
     extract_novel_circ(denovo_dir, options['--ref'])
     if options['--as']:

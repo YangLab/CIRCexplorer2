@@ -19,7 +19,8 @@ class TestAnnotate(object):
         ref_path = circ_path + '/ref.txt'
         fa_path = circ_path + '/chr21.fa'
         options = {'--ref': ref_path, '--genome': fa_path,
-                   '--no-fix': False, '<circ_dir>': circ_path}
+                   '--no-fix': False, '<circ_dir>': circ_path,
+                   '--low-confidence': True}
         annotate(options, command='CIRCexplorer2 annotate', name='annotate')
 
     def testAnnotate(self):
@@ -33,6 +34,8 @@ class TestAnnotate(object):
         check_file('annotated_fusion.txt', result_path, 'data/annotate_result')
         # check circ_fusion.txt file
         check_file('circ_fusion.txt', result_path, 'data/annotate_result')
+        # check low_circ_fusion.txt file
+        check_file('low_circ_fusion.txt', result_path, 'data/annotate_result')
 
     def teardown(self):
         '''

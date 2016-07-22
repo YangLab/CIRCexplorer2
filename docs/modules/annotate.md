@@ -18,12 +18,14 @@ CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 -r REF --ref=REF               Gene annotation.
 -g GENOME --genome=GENOME      Genome FASTA file.
 --no-fix                       No-fix mode (useful for species with poor gene annotations).
+--low-confidence               Extract low confidence circRNAs.
 ```
 
 ## Notes about options
 
 1. It would randomly report one circular RNA isoform for each back-splicing junction based on existed gene annotations.
 2. If you set `--no-fix` options, [realignment step of fusion junction reads](http://www.sciencedirect.com/science/article/pii/S0092867414011118) will be skipped. It is useful for species with poor gene annotations, but the accuracy of circular RNA prediction would decrease.
+3. `CIRCexplorer2 annotate` extracts fusion junction reads exactly matching the boundaries of exons of the same isoform by default. If you set the `--low-confidence`, it will also extract fusion junction reads matching the boundaries of exons of the different isofoms of the same gene, and output them in `low_circ_fusion.txt`.
 
 ## Output
 
@@ -32,7 +34,8 @@ CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 ```
 annotate
 ├── annotated_fusion.txt
-└── circ_fusion.txt
+├── circ_fusion.txt
+└── low_circ_fusion.txt (if set the '--low-confidence' option)
 ```
 
 * `annotated_fusion.txt`: Annotated fusion junction information file.
@@ -60,3 +63,16 @@ annotate
 | isoformName | Name of isoform                       |
 | index       | Index of exon or intron               |
 | flankIntron | Left intron/Right intron              |
+
+*Format of `low_circ_fusion.txt`:*
+
+| Field       | Description                           |
+| :---------- | :------------------------------------ |
+| chrom       | Chromosome                            |
+| start       | Start of circular RNA                 |
+| end         | End of circular RNA                   |
+| name        | Circular RNA/Junction reads           |
+| score       | Flag of fusion junction realignment   |
+| strand      | + or - for strand                     |
+| leftInfo    | Gene:Isoform:Index of left exon       |
+| rightInfo   | Gene:Isoform:Index of right exon      |

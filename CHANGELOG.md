@@ -1,3 +1,9 @@
+## 2.1.2 (2016-07-22)
+
+Improvements:
+
+* add '--low-confidence' option
+
 ## 2.1.1 (2016-07-20)
 
 Bugfixes:

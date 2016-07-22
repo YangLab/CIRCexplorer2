@@ -93,10 +93,10 @@ def map_fusion_to_iso(start, end, strand, iso_info):
     # ciRNAs
     if start_intron_flag and strand == '+' and end < starts[start_index + 1]:
         return ('\t'.join(['1', str(end - start), '0', 'ciRNA']),
-                str(start_index), False)
+                str(start_index), False, None)
     elif end_intron_flag and strand == '-' and start > ends[end_index]:
         return ('\t'.join(['1', str(end - start), '0', 'ciRNA']),
-                str(end_index), False)
+                str(end_index), False, None)
     # back spliced exons
     elif (start_index is not None and end_index is not None and
           not start_intron_flag and not end_intron_flag):
@@ -104,15 +104,17 @@ def map_fusion_to_iso(start, end, strand, iso_info):
             edge_flag = False
         else:
             edge_flag = True
-        return convert_to_bed(start, end,
-                              starts[start_index:(end_index + 1)],
-                              ends[start_index:(end_index + 1)],
-                              str(start_index), str(end_index), edge_flag)
+        index = '%d,%d' % (start_index, end_index)
+        return (convert_to_bed(start, end, starts[start_index:(end_index + 1)],
+                               ends[start_index:(end_index + 1)]),
+                index, edge_flag, None)
+    elif start_index is not None or end_index is not None:
+        return (None, None, False, [start_index, end_index])
     else:
-        return(None, None, False)
+        return (None, None, False, None)
 
 
-def convert_to_bed(start, end, starts, ends, start_index, end_index, edge):
+def convert_to_bed(start, end, starts, ends):
     new_starts = [start] + starts[1:]
     new_ends = ends[:-1] + [end]
     block_starts, block_sizes = [], []
@@ -122,9 +124,7 @@ def convert_to_bed(start, end, starts, ends, start_index, end_index, edge):
     length = len(block_sizes)
     block_starts = ','.join(block_starts)
     block_sizes = ','.join(block_sizes)
-    index = ','.join([start_index, end_index])
-    return ('\t'.join([str(length), block_sizes, block_starts, 'circRNA']),
-            index, edge)
+    return ('\t'.join([str(length), block_sizes, block_starts, 'circRNA']))
 
 
 def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
@@ -136,6 +136,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
     junctions = set()
     with open(fusion_file, 'r') as f:
         for line in f:
+            side_flag = False
             chrom = line.split()[0]
             strand = line.split()[5]
             start, end = [int(x) for x in line.split()[1:3]]
@@ -143,12 +144,29 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
             if not denovo_flag and junction_info in junctions:
                 continue
             reads = int(line.split()[3].split('/')[1])
-            flag, gene, iso, index = line.split()[-4:]
-            flag = True if flag == 'ciRNA' else False
-            name = '\t'.join([gene, iso, chrom, strand, index])
-            iso_starts, iso_ends = ref['\t'.join([gene, iso, chrom, strand])]
+            if len(line.split()) == 8:
+                side_flag = True
+                flag = False
+                left_info, right_info = line.split()[6:8]
+                left_gene, left_iso, left_index = left_info.split(':')
+                right_gene, right_iso, right_index = right_info.split(':')
+                s = int(left_index)
+                e = int(right_index)
+                iso_starts = ref['\t'.join([left_gene, left_iso, chrom,
+                                            strand])][0]
+                iso_ends = ref['\t'.join([right_gene, right_iso, chrom,
+                                          strand])][1]
+                loc = '%s\t%d\t%d' % (chrom, iso_starts[s], iso_ends[e])
+                name = '|'.join(['side', loc, strand, left_info, right_info])
+            else:
+                flag, gene, iso, index = line.split()[-4:]
+                flag = True if flag == 'ciRNA' else False
+                name = '\t'.join([gene, iso, chrom, strand, index])
+                iso_starts, iso_ends = ref['\t'.join([gene, iso, chrom,
+                                                      strand])]
             if not flag:  # back spliced exons
-                s, e = [int(x) for x in index.split(',')]
+                if not side_flag:
+                    s, e = [int(x) for x in index.split(',')]
                 # not realign
                 if start == iso_starts[s] and end == iso_ends[e]:
                     fusions[name] += reads

@@ -63,7 +63,25 @@ python setup.py install
 
 ## Setup
 
-We will use `fetch_ucsc.py` script to download all the essential gene annotation and reference genome sequence files for circular RNA identification.
+CIRCexplorer2 requires the gene annotation file and the reference genome sequence file to annotate circular RNAs. The gene annotation file should be in the format of [Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9), and the reference genome sequence file contains all the genome sequences with respective chromosome ID. All the chromosome IDs in the gene annotation file must be included in the reference genome sequence file, otherwise the inconsistence between these two files may cause undetectable errors when running CIRCexplorer2.
+
+*Format of 'Gene Predictions and RefSeq Genes with Gene Names':*
+
+| Field       | Description                   |
+| :---------: | :---------------------------- |
+| geneName    | Name of gene                  |
+| isoformName | Name of isoform               |
+| chrom       | Reference sequence            |
+| strand      | + or - for strand             |
+| txStart     | Transcription start position  |
+| txEnd       | Transcription end position    |
+| cdsStart    | Coding region start           |
+| cdsEnd      | Coding region end             |
+| exonCount   | Number of exons               |
+| exonStarts  | Exon start positions          |
+| exonEnds    | Exon end positions            |
+
+We could use `fetch_ucsc.py` script to download all the essential gene annotation and reference genome sequence files for circular RNA identification.
 
 `fetch_ucsc.py` is a small python script included in CIRCexplorer2 to help users to prepare relevant stuff for CIRCexplorer2. It could download and format the gene annotation file (RefSeq, KnownGenes or Ensembl) and the reference genome sequence file for two species (Human: hg19, hg38 Mouse: mm10). All these files will be fetched from the latest release of [UCSC](http://hgdownload.soe.ucsc.edu/downloads.html).
 

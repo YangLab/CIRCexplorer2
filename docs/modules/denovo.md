@@ -33,6 +33,10 @@ CIRCexplorer2 denovo [options] -r REF -g GENOME <circ_dir>
 4. If you set `--no-fix` options, [realignment step of fusion junction reads](http://www.sciencedirect.com/science/article/pii/S0092867414011118) will be skipped. It is useful for species with poor gene annotations, but the accuracy of circular RNA prediction would decrease.
 5. If `--rpkm` option is set, RPKM of cassette exons would be calculated.
 
+## Input
+
+The input files are similar to those in `CIRCexplorer2 annotate` command. See [Annotate](../modules/annotate.md) for more details.
+
 ## Output
 
 `CIRCexplorer2 denovo` will create one `denovo` folder under the `<circ_dir>` folder.

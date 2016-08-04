@@ -31,6 +31,10 @@ CIRCexplorer2 assemble [options] -r REF <circ_dir>
 3. Assembly for rRNA would be very time-consuming. If you set `--remove-rRNA` option, it would skip assembly for rRNA. To be noted, this option is only suitable for **hg19**. If the assembly step is still very slow, you could set `--max-bundle-frags` with a small number. Please see [Cufflinks protocol](http://www.nature.com/nprot/journal/v7/n3/fig_tab/nprot.2012.016_T2.html) for more details about `--max-bundle-frags` option.
 4. If you set `--bb` option, the BigBed file of assembled transcripts would be created.
 
+## Input
+
+`CIRCexplorer2 assemble` needs a gene annotation file and a `<circ_dir>` folder which contains `fusion_junction.bed` created by `CIRCexplorer2 parse` or `CIRCexplorer2 align`. If there is no `tophat` folder under `<circ_dir>`, you should indicate its path via `--tophat-dir`. The gene annotation file should be in the format of [Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9). See [Annotate](../modules/annotate.md) for more details.
+
 ## Output
 
 `CIRCexplorer2 assemble` will create one `cufflinks` folder under the `<circ_dir>` folder. It will also create `cufflinks.log` under `<circ_dir>` folder. The `transcripts_ref.txt` would be used to do alternative splicing analysis for circular RNAs, and it has the same format with [refFlat format](http://genome.ucsc.edu/FAQ/FAQformat.html#format9).

@@ -7,7 +7,7 @@ Options:
     -t ALIGNER                     Aligner (TopHat-Fusion, STAR, MapSplice, \
 BWA, segemehl).
     -o OUT --output=OUT            Output directory. [default: circ_out]
-    -p                             Parse paired-end mapping file
+    -p                             Parse paired-end alignment file
 """
 
 import sys

@@ -22,14 +22,17 @@ CIRCexplorer2 align -G hg19_kg.gtf -g hg19.fa RNA_seq.fastq > CIRCexplorer2_alig
 1. Because Cufflinks is well compatible with TopHat2/TopHat-Fusion, it is recommended to use TopHat2/TopHat-Fusion alignment for [characterization pipeline](../tutorial/pipeline.md).
 2. `CIRCexplorer2 align` will create a directory `circ_out` by default, and the BED file `fusion_junction.bed` under this directory is required for following analysis. You could also check `tophat.log` and `tophat_fusion.log` file for detailed logs of Tophat2 and TopHat-Fusion alignment.
 3. See [Align](../modules/align.md) for detailed information about `CIRCexplorer2 align`.
-4. If you have already had alignment results with TopHat2/TopHat-Fusion, you could use `CIRCexplorer2 parse` to convert their results compatible with CIRCexplorer2. For the alignment parameters of TopHat2/TopHat-Fusion, you could refer to [CIRCexplorer manual](https://github.com/YangLab/CIRCexplorer#tophat--tophat-fusion).
-```
-CIRCexplorer2 parse -t TopHat-Fusion tophat_fusion/accepted_hits.bam > CIRCexplorer2_parse.log
-```
 
-## Other aligners
+## To align manually
 
 1 Align sequencing reads to the reference genome. Commands for different aligners for detecting fusion junction reads are listed below, and you could modify them according to your different requirements.
+
+* TopHat2/TopHat-Fusion
+```
+tophat2 -a 6 --microexon-search -m 2 -p 10 -G knownGene.gtf -o tophat hg19_bowtie2_index RNA_seq.fastq
+bamToFastq -i tophat/unmapped.bam -fq tophat/unmapped.fastq
+tophat2 -o tophat_fusion -p 15 --fusion-search --keep-fasta-order --bowtie1 --no-coverage-search hg19_bowtie1_index tophat/unmapped.fastq
+```
 
 * STAR (See [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more information)
 ```
@@ -52,30 +55,16 @@ segemehl.x -q RNA_seq.fastq -d hg19.fa -i hg19_segemehl.idx -S -M 1 -t 10 -o RNA
 testrealign.x -d hg19.fa -q RNA_seq.sam -n
 ```
 
-2 Use `CIRCexplorer2 parse` to parse and convert fusion junction information.
+### Note
 
-* STAR
-```
-CIRCexplorer2 parse -t STAR Chimeric.out.junction > CIRCexplorer2_parse.log
-```
+1. You could align raw sequencing reads or unmapped reads from TopHat2 alignment (`circ_out/tophat/unmapped.fastq`) for other alignment rather than TopHat2/TopHat-Fusion.
 
-* MapSplice
+## For paired-end data
+* TopHat-Fusion
 ```
-CIRCexplorer2 parse -t MapSplice mapsplice_out/fusions_raw.txt > CIRCexplorer2_parse.log
-```
-
-* BWA
-```
-CIRCexplorer2 parse -t BWA RNA_seq_bwa.sam > CIRCexplorer2_parse.log
-```
-
-* segemehl
-```
-CIRCexplorer2 parse -t segemehl splicesites.bed > CIRCexplorer2_parse.log
+tophat2 -o tophat_fusion -p 15 --fusion-search --keep-fasta-order --bowtie1 --no-coverage-search hg19_bowtie1_index RNA_seq.fastq
 ```
 
 ### Note
-
-1. You could align raw sequencing reads or unmapped reads from TopHat2 alignment (`circ_out/tophat/unmapped.fastq`).
-2. `CIRCexplorer2 parse` will create a directory `circ_out` by default, and the BED file `fusion_junction.bed` under this directory is required for following analysis.
-3. See [Parse](../modules/parse.md) for detailed information about `CIRCexplorer2 parse`.
+1. For paired-end data analysis, only TopHat-Fusion aligning results are supported by now.
+2. For alignment of paired-end data, you should choose appropriate library-type which is not included in the command above.

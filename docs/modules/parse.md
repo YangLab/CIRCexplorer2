@@ -17,6 +17,7 @@ CIRCexplorer2 parse [options] -t ALIGNER <fusion>
 --version                      Show version.
 -t ALIGNER                     Aligner (TopHat-Fusion, STAR, MapSplice, BWA, segemehl).
 -o OUT --output=OUT            Output directory. [default: circ_out]
+-p                             Parse paired-end alignment file
 ```
 
 ## Notes about options
@@ -26,6 +27,7 @@ CIRCexplorer2 parse [options] -t ALIGNER <fusion>
 3. The `fusion_junction.bed` file has the same format with `fusion_junction.bed` created by the [align](../modules/align.md) module, and would be used by other modules of CIRCexplorer2 to further annotate and characterize circular RNAs.
 4. It will overwrite the output directory automatically, so please be careful when setting the path of output directory.
 5. For different aligner, the `<fusion>` is different.
+6. For paired-end results, you can add `-p` option to get more strict fusion reads by considering the pair reads.
 
 | ALigner       | Fusion file                           |
 | :------------ | :------------------------------------ |

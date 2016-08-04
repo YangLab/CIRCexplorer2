@@ -29,15 +29,16 @@ CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 
 ## Input
 
-`CIRCexplorer2 annotate` need a gene annotation file and a `<circ_dir>` folder contains `fusion_junction.bed` created by `CIRCexplorer2 parse`.
+`CIRCexplorer2 annotate` needs a gene annotation file, a reference genome sequence file and a `<circ_dir>` folder which contains `fusion_junction.bed` created by `CIRCexplorer2 parse` or `CIRCexplorer2 align`.
 
 ```
 <circ_dir>
 └── fusion_junction.bed
 ```
 
-*Format of `gene annotation file`:*
-The file is in the format ([Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9)) below.
+### Format of gene annotation file:
+
+The file is in the format of [Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9) below.
 
 | Field       | Description                   |
 | :---------: | :---------------------------- |

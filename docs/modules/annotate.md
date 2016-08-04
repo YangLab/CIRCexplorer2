@@ -27,6 +27,33 @@ CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 2. If you set `--no-fix` options, [realignment step of fusion junction reads](http://www.sciencedirect.com/science/article/pii/S0092867414011118) will be skipped. It is useful for species with poor gene annotations, but the accuracy of circular RNA prediction would decrease.
 3. `CIRCexplorer2 annotate` extracts fusion junction reads exactly matching the boundaries of exons of the same isoform by default. If you set the `--low-confidence`, it will also extract fusion junction reads matching the boundaries of exons of the different isofoms of the same gene, and output them in `low_circ_fusion.txt`.
 
+## Input
+
+`CIRCexplorer2 annotate` need a gene annotation file and a `<circ_dir>` folder contains `fusion_junction.bed` created by `CIRCexplorer2 parse`.
+
+```
+<circ_dir>
+└── fusion_junction.bed
+```
+
+*Format of `gene annotation file`:*
+The file is in the format ([Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9)) below.
+
+| Field       | Description                   |
+| :---------: | :---------------------------- |
+| geneName    | Name of gene                  |
+| isoformName | Name of isoform               |
+| chrom       | Reference sequence            |
+| strand      | + or - for strand             |
+| txStart     | Transcription start position  |
+| txEnd       | Transcription end position    |
+| cdsStart    | Coding region start           |
+| cdsEnd      | Coding region end             |
+| exonCount   | Number of exons               |
+| exonStarts  | Exon start positions          |
+| exonEnds    | Exon end positions            |
+
+
 ## Output
 
 `CIRCexplorer2 annotate` will create one `annotate` folder under the `<circ_dir>` folder. The `circ_fusion.txt` contains the final circular RNA annotation information.

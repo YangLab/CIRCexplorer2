@@ -1,3 +1,9 @@
+## 2.1.3 (2016-08-04)
+
+Improvements:
+
+* add paired-end data parsing function
+
 ## 2.1.2 (2016-07-22)
 
 Improvements:

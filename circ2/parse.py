@@ -7,6 +7,7 @@ Options:
     -t ALIGNER                     Aligner (TopHat-Fusion, STAR, MapSplice, \
 BWA, segemehl).
     -o OUT --output=OUT            Output directory. [default: circ_out]
+    -p                             Parse paired-end mapping file
 """
 
 import sys
@@ -32,9 +33,13 @@ def parse(options):
     create_dir(options['--output'])
     out_dir = os.path.abspath(options['--output'])
     out = out_dir + '/fusion_junction.bed'
+    # if use paired-end data, check whether use Tophat-Fusion
+    if options['-t'] != 'TopHat-Fusion' and options['-p'] is True:
+        sys.exit('Sorry. Only Tophat-Fusion are supported to parse the\
+paired-end data')
     # parse fusion junctions from other aligers
     if options['-t'] == 'TopHat-Fusion':
-        tophat_fusion_parse(options['<fusion>'], out)
+        tophat_fusion_parse(options['<fusion>'], options['-p'],out)
     elif options['-t'] == 'STAR':
         star_parse(options['<fusion>'], out)
     elif options['-t'] == 'MapSplice':
@@ -45,15 +50,23 @@ def parse(options):
         segemehl_parse(options['<fusion>'], out)
 
 
-def tophat_fusion_parse(fusion, out):
+def tophat_fusion_parse(fusion, pair_flag, out):
     '''
     Parse fusion junctions from TopHat-Fusion aligner
     '''
     print('Start parsing fusion junctions from TopHat-Fusion...')
     fusions = defaultdict(int)
-    for i, read in enumerate(parse_fusion_bam(fusion)):
-        chrom, strand, start, end = read
+    for i, read in enumerate(parse_fusion_bam(fusion, pair_flag)):
+        chrom, strand, start, end, xp_info = read
         segments = [start, end]
+
+        if pair_flag is True:
+            part_chrom, part_pos, part_cigar = xp_info.split()
+            part_pos = int(part_pos)
+
+            if chrom != part_chrom:
+                continue
+
         if (i + 1) % 2 == 1:  # first fragment of fusion junction read
             interval = [start, end]
         else:  # second fragment of fusion junction read
@@ -62,6 +75,11 @@ def tophat_fusion_parse(fusion, out):
             if end1 < sta2 or end2 < sta1:  # no overlap between fragments
                 sta = sta1 if sta1 < sta2 else sta2
                 end = end1 if end1 > end2 else end2
+
+                if pair_flag is True:
+                    if part_pos < sta or part_pos > end:
+                        continue
+
                 fusions['%s\t%d\t%d' % (chrom, sta, end)] += 1
     total = 0
     with open(out, 'w') as outf:

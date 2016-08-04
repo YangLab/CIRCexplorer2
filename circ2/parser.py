@@ -27,7 +27,7 @@ class Segment(object):
                 self.ref_end += counts
 
 
-def parse_fusion_bam(bam_f):
+def parse_fusion_bam(bam_f, pair_flag):
     fusions = {}
     bam = pysam.AlignmentFile(bam_f, 'rb')
     for read in bam:
@@ -35,17 +35,27 @@ def parse_fusion_bam(bam_f):
             continue
         if not read.has_tag('XF'):  # not fusion junctions
             continue
+        if pair_flag is True and not read.has_tag('XP'):
+            continue
+
         chr1, chr2 = read.get_tag('XF').split()[1].split('-')
         if chr1 != chr2:  # not on the same chromosome
             continue
         strand = '+' if not read.is_reverse else '-'
+
+        if pair_flag is True:
+            xp_info = read.get_tag('XP')
+        else:
+            xp_info = ''
+
         if read.query_name not in fusions:  # first fragment
             fusions[read.query_name] = [chr1, strand, read.reference_start,
-                                        read.reference_end]
+                                        read.reference_end, xp_info]
         else:  # second fragment
             if chr1 == fusions[read.query_name][0] \
                and strand == fusions[read.query_name][1]:
-                yield [chr1, strand, read.reference_start, read.reference_end]
+                yield [chr1, strand, read.reference_start, read.reference_end,
+                       xp_info]
                 yield fusions[read.query_name]
     bam.close()
 

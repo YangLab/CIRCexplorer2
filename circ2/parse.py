@@ -36,7 +36,7 @@ def parse(options):
     # if use paired-end data, check whether use Tophat-Fusion
     if options['-t'] != 'TopHat-Fusion' and options['-p'] is True:
         sys.exit('Sorry. Only Tophat-Fusion are supported to parse the\
-paired-end data')
+ paired-end data')
     # parse fusion junctions from other aligers
     if options['-t'] == 'TopHat-Fusion':
         tophat_fusion_parse(options['<fusion>'], options['-p'],out)

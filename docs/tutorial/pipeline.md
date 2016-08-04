@@ -22,7 +22,7 @@ This pipeline is derived from [CIRCexplorer](http://yanglab.github.io/CIRCexplor
 
 ### Steps
 
-* Circular RNA fusion junction read alignment and parsing ([Alignment](../tutorial/alignment.md))
+* Circular RNA fusion junction read alignment ([Alignment](../tutorial/alignment.md)) and parsing ([Parsing](../tutorial/parsing.md))
 * Circular RNA fusion junction read annotating and realignment ([Annotating](../tutorial/annotating.md))
 
 ### Results

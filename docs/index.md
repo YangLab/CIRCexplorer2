@@ -40,6 +40,7 @@ We have developed a fairly comprehensive tutorial that demonstrates how CIRCexpl
 * [Installation and Setup](tutorial/setup.md)
 * [Pipeline](tutorial/pipeline.md)
 * [Alignment](tutorial/alignment.md)
+* [Parsing](tutorial/parsing.md)
 * [Annotating](tutorial/annotating.md)
 * [Assembly](tutorial/assembly.md)
 * [Alternative Splicing](tutorial/as.md)

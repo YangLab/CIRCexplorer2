@@ -1,6 +1,8 @@
 # Parsing for Circular RNA Fusion Junction Reads
 
-CIRCexplorer2 can parse the alignment results separably rather than together with alignment by `CIRCexplorer2 align` in one step. Then it can support many [aligners](./alignment.md) and support paired-end data.
+CIRCexplorer2 can parse the alignment results separably rather than together with alignment by `CIRCexplorer2 align` in one step. In this way, it can support many [aligners](./alignment.md) and support paired-end data.
+
+If you have aligned reads with `CIRCexplorer2 align`, you could **skip** this step.
 
 # For different aligners
 

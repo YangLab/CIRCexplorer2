@@ -22,6 +22,8 @@ Authors: Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn), Li Yang (liyang@picb.ac.cn)
 
 Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 
+*NEWS: [CIRCpedia](http://www.picb.ac.cn/rnomics/circpedia) is an integrative database, aiming to annotating alternative back-splicing and alternative splicing in circRNAs across different cell lines. Welcome to use!*
+
 ## Features
 
 * Preciously annotate circular RNAs with [high accuracy, good sensitivity and low memory consumption](http://nar.oxfordjournals.org/content/44/6/e58.abstract)

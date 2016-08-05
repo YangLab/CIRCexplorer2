@@ -7,7 +7,8 @@ Options:
     -t ALIGNER                     Aligner (TopHat-Fusion, STAR, MapSplice, \
 BWA, segemehl).
     -o OUT --output=OUT            Output directory. [default: circ_out]
-    -p                             Parse paired-end alignment file
+    -p                             Parse paired-end alignment file (only for \
+TopHat-Fusion).
 """
 
 import sys
@@ -39,7 +40,7 @@ def parse(options):
  paired-end data')
     # parse fusion junctions from other aligers
     if options['-t'] == 'TopHat-Fusion':
-        tophat_fusion_parse(options['<fusion>'], options['-p'],out)
+        tophat_fusion_parse(options['<fusion>'], options['-p'], out)
     elif options['-t'] == 'STAR':
         star_parse(options['<fusion>'], out)
     elif options['-t'] == 'MapSplice':

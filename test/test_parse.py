@@ -41,6 +41,20 @@ def test_tophat_fusion_parse():
 
 
 @with_setup(setup_function, teardown_function)
+def test_tophat_fusion_pe_parse():
+    '''
+    Test TopHat-Fusion PE parser
+    '''
+    print('#%s: Test parse TopHat-Fusion' % __name__)
+    options = {'-t': 'TopHat-Fusion', '--output': 'circ_out',
+               '<fusion>': 'tophat_fusion_PE.bam', '-p': True}
+    parse(options, command='CIRCexplorer2 parse (TopHat-Fusion PE)',
+          name='parse')
+    assert os.path.isdir('circ_out'), 'No circ_out directory'
+    check_file('fusion_junction.bed', 'circ_out', 'TopHat_Fusion_PE_out')
+
+
+@with_setup(setup_function, teardown_function)
 def test_star_parse():
     '''
     Test STAR parser

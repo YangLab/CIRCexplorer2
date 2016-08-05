@@ -1,6 +1,6 @@
 # Alignment for Circular RNA Fusion Junction Reads
 
-CIRCexplorer2 supports TopHat2/TopHat-Fusion and other aligners (STAR, segemehl, BWA and MapSplice). Although different aligners showed slightly different in circular RNA identification, TopHat2/TopHat-Fusion has a perfect match with Cufflinks. As a result, TopHat2/TopHat-Fusion is recommended in alignment step, especially for [circular RNA characterization pipeline](../tutorial/pipeline.md).
+CIRCexplorer2 supports TopHat2/TopHat-Fusion and other aligners (STAR, segemehl, BWA and MapSplice). Although different aligners showed slight difference in circular RNA identification, TopHat2/TopHat-Fusion has a perfect match with Cufflinks. As a result, TopHat2/TopHat-Fusion is recommended in alignment step, especially for [circular RNA characterization pipeline](../tutorial/pipeline.md).
 
 
 ## TopHat2/TopHat-Fusion
@@ -25,7 +25,9 @@ CIRCexplorer2 align -G hg19_kg.gtf -g hg19.fa RNA_seq.fastq > CIRCexplorer2_alig
 
 ## To align manually
 
-1 Align sequencing reads to the reference genome. Commands for different aligners for detecting fusion junction reads are listed below, and you could modify them according to your different requirements.
+If you prefer other aligners or want to align paired-end reads, you could align sequencing reads manually. Commands for different aligners for detecting fusion junction reads are listed below, and you could modify them according to your different requirements.
+
+### For single-end reads
 
 * TopHat2/TopHat-Fusion
 ```
@@ -55,16 +57,17 @@ segemehl.x -q RNA_seq.fastq -d hg19.fa -i hg19_segemehl.idx -S -M 1 -t 10 -o RNA
 testrealign.x -d hg19.fa -q RNA_seq.sam -n
 ```
 
-### Note
+Note: You could align unmapped reads from TopHat2 alignment (`circ_out/tophat/unmapped.fastq`) via other aligners rather than TopHat-Fusion.
 
-1. You could align raw sequencing reads or unmapped reads from TopHat2 alignment (`circ_out/tophat/unmapped.fastq`) for other alignment rather than TopHat2/TopHat-Fusion.
+### For paired-end reads
 
-## For paired-end data
 * TopHat-Fusion
+
 ```
 tophat2 -o tophat_fusion -p 15 --fusion-search --keep-fasta-order --bowtie1 --no-coverage-search hg19_bowtie1_index RNA_seq.fastq
 ```
 
-### Note
+Note:
+
 1. For paired-end data analysis, only TopHat-Fusion aligning results are supported by now.
 2. For alignment of paired-end data, you should choose appropriate library-type which is not included in the command above.

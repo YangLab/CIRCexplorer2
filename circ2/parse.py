@@ -1,4 +1,4 @@
-"""
+'''
 Usage: CIRCexplorer2 parse [options] -t ALIGNER <fusion>
 
 Options:
@@ -9,7 +9,7 @@ BWA, segemehl).
     -o OUT --output=OUT            Output directory. [default: circ_out]
     -p                             Parse paired-end alignment file (only for \
 TopHat-Fusion).
-"""
+'''
 
 import sys
 import os.path

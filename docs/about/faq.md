@@ -4,9 +4,9 @@ Q: Comparied with other circular RNA identification tools, what is the performan
 
 A: CIRCexplorer2 is based on our previous circular RNA identification tool CIRCexplorer, and it inherits all the advantages of CIRCexplorer such as [high accuracy, good sensitivity and low memory consumption](http://nar.oxfordjournals.org/content/44/6/e58.abstract).
 
-Q: Which types of sequencing data are supported by CIRCexplorer2? Single or paired-end reads?
+Q: Which types of sequencing data are supported by CIRCexplorer2? Single-end or paired-end reads?
 
-A: CIRCexplorer2 will not take advantage of information derived from paired-end reads now. So in practice, paired-end reads could be converted to single reads, and then used in CIRCexplorer2. However, when you use paired-end reads, you should be careful in calculation RPM (Reads Per Million mapped reads) for circular RNAs, because the number of total mapped reads may have some misestimation after converted to single reads.
+A: CIRCexplorer2 now (after v2.2.0) supports paired-end reads. Please refer to [Alignment](../tutorial/alignment.md) and [Parsing](../tutorial/parsing.md). On the other hand, paired-end reads could also be converted to single-end reads, and then used in CIRCexplorer2. However, in this way, you should be careful in calculation RPM (Reads Per Million mapped reads) for circular RNAs, because the number of total mapped reads may have some misestimation after converted to single-end reads.
 
 Q: Which treatments are required for RNA-seq?
 
@@ -14,7 +14,7 @@ A: If you only use the [annotating pipeline](../tutorial/pipeline.md), the [poly
 
 Q: What is the criterion to define high-expressed/high-confidence circular RNAs.
 
-A: There is no common rule to define which circular RNAs belong to high-expressed/high-confidence circular RNAs. In practice, we use circular RNA fusion junction cutoff (RPM≥0.1, RPM: Reads Per Million mapped reads) to define them. This cutoff was used in our previous [Cell paper](http://www.sciencedirect.com/science/article/pii/S0092867414011118), and it works well for our current research.
+A: There is no common rule to define which circular RNAs belong to high-expressed/high-confidence circular RNAs. In practice, we use circular RNA fusion junction cutoff (*RPM≥0.1*, RPM: Reads Per Million mapped reads) to define them. This cutoff was used in our previous [Cell paper](http://www.sciencedirect.com/science/article/pii/S0092867414011118), and it works well for our current research.
 
 Q: which aligner should I use when aligning circular RNA fusion junction reads?
 

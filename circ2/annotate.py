@@ -1,4 +1,4 @@
-"""
+'''
 Usage: CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 
 Options:
@@ -9,7 +9,7 @@ Options:
     --no-fix                       No-fix mode (useful for species \
 with poor gene annotations).
     --low-confidence               Extract low confidence circRNAs.
-"""
+'''
 
 from genomic_interval import Interval
 from parser import parse_ref, parse_bed, check_fasta

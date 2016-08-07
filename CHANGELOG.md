@@ -1,3 +1,13 @@
+## 2.2.1 (2016-08-07)
+
+Improvements:
+
+* chang option '-p' to '--pe' in parse module
+
+Bugfixes:
+
+* bug in align module because of parse module
+
 ## 2.2.0 (2016-08-04)
 
 Improvements:

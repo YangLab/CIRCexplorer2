@@ -40,7 +40,7 @@ def parse(options):
  paired-end data')
     # parse fusion junctions from other aligers
     if options['-t'] == 'TopHat-Fusion':
-        tophat_fusion_parse(options['<fusion>'], options['--pe'], out)
+        tophat_fusion_parse(options['<fusion>'], out, options['--pe'])
     elif options['-t'] == 'STAR':
         star_parse(options['<fusion>'], out)
     elif options['-t'] == 'MapSplice':
@@ -51,7 +51,7 @@ def parse(options):
         segemehl_parse(options['<fusion>'], out)
 
 
-def tophat_fusion_parse(fusion, pair_flag, out):
+def tophat_fusion_parse(fusion, out, pair_flag=False):
     '''
     Parse fusion junctions from TopHat-Fusion aligner
     '''

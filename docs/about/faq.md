@@ -14,7 +14,7 @@ A: If you only use the [annotating pipeline](../tutorial/pipeline.md), the [poly
 
 Q: What is the criterion to define high-expressed/high-confidence circular RNAs.
 
-A: There is no common rule to define which circular RNAs belong to high-expressed/high-confidence circular RNAs. In practice, we use circular RNA fusion junction cutoff (*RPM≥0.1*, RPM: Reads Per Million mapped reads) to define them. This cutoff was used in our previous [Cell paper](http://www.sciencedirect.com/science/article/pii/S0092867414011118), and it works well for our current research.
+A: There is no common rule to define which circular RNAs belong to high-expressed/high-confidence circular RNAs. In practice, we use circular RNA fusion junction cutoff (**RPM≥0.1**, RPM: Reads Per Million mapped reads) to define them. This cutoff was used in our previous [Cell paper](http://www.sciencedirect.com/science/article/pii/S0092867414011118), and it works well for our current research.
 
 Q: which aligner should I use when aligning circular RNA fusion junction reads?
 

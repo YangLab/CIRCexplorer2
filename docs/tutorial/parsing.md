@@ -40,7 +40,7 @@ CIRCexplorer2 parse -t segemehl splicesites.bed > CIRCexplorer2_parse.log
 
 * TopHat-Fusion
 ```
-CIRCexplorer2 parse -p -t TopHat-Fusion tophat_fusion/accepted_hits.bam > CIRCexplorer2_parse.log
+CIRCexplorer2 parse --pe -t TopHat-Fusion tophat_fusion/accepted_hits.bam > CIRCexplorer2_parse.log
 ```
 
 ### Note

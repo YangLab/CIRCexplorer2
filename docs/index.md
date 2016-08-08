@@ -47,6 +47,8 @@ We have developed a fairly comprehensive tutorial that demonstrates how CIRCexpl
 * [Assembly](tutorial/assembly.md)
 * [Alternative Splicing](tutorial/as.md)
 
+We also offered `fast_circ.py` script to help you to automatically run our pipelines in one step without any additional operations. Please check this [one-step script](tutorial/one_step.md) for more details.
+
 ## Modules
 
 CIRCexplorer2 contains 5 modules. Each module functions as an independent component owning its distinctive duty. Meanwhile, they inteact with each other, and different circular RNA analysis pipelines are derived from different combinations of several modules. Understanding the detailed mechanism of each module could facilitate your circular RNA research.

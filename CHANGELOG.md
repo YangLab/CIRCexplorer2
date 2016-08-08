@@ -1,8 +1,9 @@
-## 2.2.1 (2016-08-07)
+## 2.2.1 (2016-08-08)
 
 Improvements:
 
 * chang option '-p' to '--pe' in parse module
+* add 'fast_circ.py'
 
 Bugfixes:
 

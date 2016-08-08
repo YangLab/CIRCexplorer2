@@ -31,7 +31,8 @@ setup(name='CIRCexplorer2',
       entry_points={
           'console_scripts': [
               'CIRCexplorer2=circ2.command_parse:main',
-              'fetch_ucsc.py=circ2.fetch_ucsc:main'
+              'fetch_ucsc.py=circ2.fetch_ucsc:main',
+              'fast_circ.py=circ2.fast_circ:main'
           ],
       },
       )

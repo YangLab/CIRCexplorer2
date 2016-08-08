@@ -13,6 +13,7 @@ pages:
         - 'Annotating': 'tutorial/annotating.md'
         - 'Assembly': 'tutorial/assembly.md'
         - 'Alternative Splicing': 'tutorial/as.md'
+        - 'Run CIRCexplorer2 via One Command': tutorial/one_step.md
     - Modules:
         - 'Align': 'modules/align.md'
         - 'Parse': 'modules/parse.md'

@@ -53,12 +53,14 @@ def align(options):
     if options['--genome']:  # build index
         index_flag = (True, skip_tophat, skip_tophat_fusion)
         prefix1, prefix2 = check_index(index_flag, out_dir,
-                                       options['--genome'])
+                                       options['--genome'],
+                                       options['thread'])
     else:  # index exist
         index_flag = (False, skip_tophat, skip_tophat_fusion)
         prefix1, prefix2 = check_index(index_flag, out_dir,
                                        (options['--bowtie1'],
-                                        options['--bowtie2']))
+                                        options['--bowtie2']),
+                                       options['thread'])
     if not skip_tophat:
         # tophat2 mapping
         tophat_map(options['--gtf'], out_dir, prefix2, options['<fastq>'],
@@ -94,7 +96,7 @@ def check_outdir(out_dir):
     return dir_path
 
 
-def check_index(index_flag, out_dir, index_file):
+def check_index(index_flag, out_dir, index_file, thread=10):
     '''
     1. Build index for Bowtie1 and Bowtie2 if not exist
     2. Links index files if exist
@@ -106,11 +108,11 @@ def check_index(index_flag, out_dir, index_file):
         if not skip_tophat_fusion:  # not skip TopHat-Fusion
             # build index for bowtie1
             print('Build index for Bowtie1...')
-            build_index(1, index_file, prefix, out_dir)
+            build_index(1, index_file, prefix, out_dir, thread)
         if not skip_tophat:  # not skip TopHat2
             # build index for bowtie2
             print('Build index for Bowtie2...')
-            build_index(2, index_file, prefix, out_dir)
+            build_index(2, index_file, prefix, out_dir, thread)
         return (prefix, prefix)
     else:  # index files exist
         if not skip_tophat_fusion:  # not skip TopHat-Fusion

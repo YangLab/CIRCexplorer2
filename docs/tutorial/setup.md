@@ -24,7 +24,7 @@ This part will guide you to install CIRCexplorer2 and setup all the required stu
         + [segemehl](http://www.bioinf.uni-leipzig.de/Software/segemehl) (>=0.2.0)
 * Package (python 2.7 +)
     - [pysam](http://pysam.readthedocs.org/en/latest/) (>=0.8.4)
-    - [pybedtools](http://daler.github.io/pybedtools/)
+    - [pybedtools](http://daler.github.io/pybedtools/) (require [pandas](http://pandas.pydata.org) if pybedtools>=0.7.6)
     - [docopt](http://docopt.org)
     - [scipy](http://www.scipy.org) (only used in [denovo](../modules/denovo.md) module)
 

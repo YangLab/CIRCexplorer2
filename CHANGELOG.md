@@ -1,3 +1,10 @@
+## 2.2.2 (2016-08-16)
+
+Improvements:
+
+* update logic of annotate step
+* update build index module
+
 ## 2.2.1 (2016-08-08)
 
 Improvements:

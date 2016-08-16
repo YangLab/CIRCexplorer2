@@ -244,8 +244,10 @@ class Interval(object):
         Overlap index with interval.
         '''
         tmp1 = Interval.__init(index)
+        # for boundaries conditions
+        tmp1 = [[i[0]-11, i[1]+11] + i[2:] for i in tmp1]
         tmp2 = Interval.__init(interval)
-        return Interval.__map(tmp1, tmp2, flag=0)
+        return Interval.__map(tmp1, tmp2)
 
     @staticmethod
     def __convert(interval):
@@ -266,14 +268,15 @@ class Interval(object):
         return mapping
 
     @staticmethod
-    def __map(index, interval, flag):
+    def __map(index, interval):
+        '''
+        update for CIRCexplorer particularly.
+        '''
         mapped_fragment = []
         tmp_fragment = []
         if not interval:
-            if flag:
-                return mapped_fragment
-            else:
-                return index
+            return index
+
         for dex in index:
             dex_info = dex[2:]
             while True:
@@ -283,28 +286,25 @@ class Interval(object):
                     if tmp_fragment:
                         interval.extend(tmp_fragment)
                         tmp_fragment = []
-                        continue
+                        break
                     else:
-                        if flag:
-                            return mapped_fragment
-                        else:
-                            return index
-                if fragment[0] >= dex[1]:
+                        return index
+
+                if fragment[0] < dex[0]:
+                    continue
+
+                elif fragment[0] >= dex[1]:
                     interval.insert(0, fragment)
                     interval[0:0] = tmp_fragment
                     tmp_fragment = []
                     break
-                elif dex[0] < fragment[1] and dex[1] > fragment[0]:
+
+                elif fragment[1] > dex[1]:
+                    tmp_fragment.append(fragment)
+                    continue
+
+                else:
                     dex += fragment[2:]
-                    sta = dex[0] if dex[0] > fragment[0] else fragment[0]
-                    end = dex[1] if dex[1] < fragment[1] else fragment[1]
-                    new_fragment = [sta, end] + fragment[2:] + dex_info
-                    mapped_fragment.append(new_fragment)
-                    if fragment[1] > dex[1]:
-                        tmp_fragment.append([dex[1],
-                                            fragment[1]] + fragment[2:])
+
         else:
-            if flag:
-                return mapped_fragment
-            else:
-                return index
+            return index

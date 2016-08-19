@@ -54,13 +54,13 @@ def align(options):
         index_flag = (True, skip_tophat, skip_tophat_fusion)
         prefix1, prefix2 = check_index(index_flag, out_dir,
                                        options['--genome'],
-                                       options['thread'])
+                                       options['--thread'])
     else:  # index exist
         index_flag = (False, skip_tophat, skip_tophat_fusion)
         prefix1, prefix2 = check_index(index_flag, out_dir,
                                        (options['--bowtie1'],
                                         options['--bowtie2']),
-                                       options['thread'])
+                                       options['--thread'])
     if not skip_tophat:
         # tophat2 mapping
         tophat_map(options['--gtf'], out_dir, prefix2, options['<fastq>'],

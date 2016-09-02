@@ -408,7 +408,7 @@ def build_index(i, genome_file, prefix, out_dir, thread=10):
     if which(prog) is None:
         sys.exit('%s is required to build index!' % prog)
     index_file = '%s/bowtie%d_index/%s' % (out_dir, i, prefix)
-    return_code = os.system('%s %s %s %d > %s/bowtie%d_index.log' %
+    return_code = os.system('%s %s %s %s > %s/bowtie%d_index.log' %
                             (prog, genome_file, index_file, thread, out_dir, i)) >> 8
     if return_code:
         sys.exit('Error: cannot build index for bowtie%d!' % i)

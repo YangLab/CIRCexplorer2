@@ -1,3 +1,9 @@
+## 2.2.4 (2016-09-02)
+
+Bugfixes:
+
+* fix a bug in align module
+
 ## 2.2.3 (2016-08-19)
 
 Bugfixes:

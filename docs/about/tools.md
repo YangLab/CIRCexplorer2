@@ -16,5 +16,5 @@ Dong R, Zhang XO, Zhang Y, Ma XK, Chen LL and Yang L. CircRNA-derived pseudogene
 
 ### CIRCpedia
 
-Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splcing landscape of circular RNAs. *Genome Res*, 2016, doi:10.1101/gr.202895.115
-[[Paper](http://genome.cshlp.org/content/early/2016/06/30/gr.202895.115.abstract)] [[Website](http://www.picb.ac.cn/rnomics/circpedia/)]
+Zhang XO\*, Dong R\*, Zhang Y\*, Zhang JL, Luo Z, Zhang J, Chen LL#, Yang L#. Diverse alternative back-splicing and alternative splicing landscape of circular RNAs. *Genome Res*, 2016, 26:1277-1287
+[[Paper](http://genome.cshlp.org/content/26/9/1277.abstract)] [[Website](http://www.picb.ac.cn/rnomics/circpedia/)]

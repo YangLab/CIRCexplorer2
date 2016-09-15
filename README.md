@@ -26,7 +26,7 @@ Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 
 ## Features
 
-* Preciously annotate circular RNAs with [high accuracy, good sensitivity and low memory consumption](http://nar.oxfordjournals.org/content/44/6/e58.abstract)
+* Precisely annotate circular RNAs with [high accuracy, good sensitivity and low memory consumption](http://nar.oxfordjournals.org/content/44/6/e58.abstract)
 * Support multiple circular RNA aligners (**TopHat2/TopHat-Fusion**, **STAR**, **MapSplice**, **BWA** and **segemehl**)
 * *De novo* assemble novel circular RNA transcripts
 * Characterize various of alternative (back-)splicing events of circular RNAs

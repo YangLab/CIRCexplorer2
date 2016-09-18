@@ -83,11 +83,11 @@ CIRCexplorer2 requires the gene annotation file and the reference genome sequenc
 
 We could use `fetch_ucsc.py` script to download all the essential gene annotation and reference genome sequence files for circular RNA identification.
 
-`fetch_ucsc.py` is a small python script included in CIRCexplorer2 to help users to prepare relevant stuff for CIRCexplorer2. It could download and format the gene annotation file (RefSeq, KnownGenes or Ensembl) and the reference genome sequence file for two species (Human: hg19, hg38 Mouse: mm10). All these files will be fetched from the latest release of [UCSC](http://hgdownload.soe.ucsc.edu/downloads.html).
+`fetch_ucsc.py` is a small python script included in CIRCexplorer2 to help users to prepare relevant stuff for CIRCexplorer2. It could download and format the gene annotation file (RefSeq, KnownGenes or Ensembl) and the reference genome sequence file for two species (Human: hg19, hg38; Mouse: mm9, mm10). All these files will be fetched from the latest release of [UCSC](http://hgdownload.soe.ucsc.edu/downloads.html).
 
 Command line of `fetch_ucsc.py`:
 ```
-fetch_ucsc.py hg19/hg38/mm10 ref/kg/ens/fa out
+fetch_ucsc.py hg19/hg38/mm9/mm10 ref/kg/ens/fa out
 ```
 
 Examples:
@@ -138,7 +138,7 @@ bowtie-build hg19.fa bowtie1_index
 bowtie2-build hg19.fa bowtie2_index
 ```
 
-4 If you analyze circular RNAs in mouse, you should download mouse relevant files.
+4 If you analyze circular RNAs in mouse, you should download mouse relevant files (use mm10 for example).
 ```
 # mouse RefSeq gene annotation file
 fetch_ucsc.py mm10 ref mm10_ref.txt

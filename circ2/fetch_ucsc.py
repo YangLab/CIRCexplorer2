@@ -17,8 +17,8 @@ import pysam
 
 def fetch_file(options):
     if len(options) != 4:
-        sys.exit('fetch_ucsc.py hg19/hg38/mm10 ref/kg/ens/fa out')
-    if options[1] in {'hg19', 'hg38', 'mm10'}:
+        sys.exit('fetch_ucsc.py hg19/hg38/mm9/mm10 ref/kg/ens/fa out')
+    if options[1] in {'hg19', 'hg38', 'mm9', 'mm10'}:
         path = 'http://hgdownload.soe.ucsc.edu/goldenPath/%s/' % options[1]
     else:
         sys.exit('Only support human or mouse!')

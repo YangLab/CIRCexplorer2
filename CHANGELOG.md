@@ -1,3 +1,9 @@
+## 2.2.5 (2016-09-17)
+
+Improvements:
+
+* let fetch_ucsc.py support mm9
+
 ## 2.2.4 (2016-09-02)
 
 Bugfixes:

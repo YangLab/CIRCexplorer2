@@ -31,13 +31,13 @@ def annotate(options):
     create_dir(annotate_dir)
     # annotate fusion junctions
     annotate_fusion(options['--ref'], annotate_dir,
-                    side_flag=options['--low-confidence'])
+                    secondary_flag=options['--low-confidence'])
     # fix fusion juncrions
     fix_fusion(options['--ref'], options['--genome'], annotate_dir,
-               options['--no-fix'], side_flag=options['--low-confidence'])
+               options['--no-fix'], secondary_flag=options['--low-confidence'])
 
 
-def annotate_fusion(ref_f, out_dir, side_flag=0, denovo_flag=0):
+def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
     """
     Align fusion juncrions to gene annotations
     """
@@ -70,7 +70,7 @@ def annotate_fusion(ref_f, out_dir, side_flag=0, denovo_flag=0):
                     fus_loc = '%s\t%d\t%d\tFUSIONJUNC/%s' % (chrom, fus_start,
                                                              fus_end, reads)
                     edge_annotations = []  # first or last exon flag
-                    side_exon = defaultdict(dict)  # one-sided exon
+                    secondary_exon = defaultdict(dict)  # secondary exons
                     annotate_flag = 0
                     for iso_id in iso:
                         g, i, c, s = iso_id.split()[1:]
@@ -79,12 +79,12 @@ def annotate_fusion(ref_f, out_dir, side_flag=0, denovo_flag=0):
                         # fusion junction excesses boundaries of gene
                         # annotation
                         if fus_start < start - 10 or fus_end > end + 10:
-                            if not side_flag:
+                            if not secondary_flag:
                                 continue
                         (fusion_info,
                          index,
                          edge,
-                         side) = map_fusion_to_iso(fus_start,
+                         secondary) = map_fusion_to_iso(fus_start,
                                                    fus_end, s,
                                                    gene_info[iso_id])
                         if fusion_info:
@@ -99,24 +99,24 @@ def annotate_fusion(ref_f, out_dir, side_flag=0, denovo_flag=0):
                                 total.add(fus)
                             else:  # first or last exon
                                 edge_annotations.append(bed)
-                        elif side_flag and side is not None:
-                            li, ri = side
+                        elif secondary_flag and secondary is not None:
+                            li, ri = secondary
                             gene = ':'.join([g, s])
                             if li is not None:
                                 li = str(li)
-                                side_exon['left'][gene] = ':'.join([i, li])
+                                secondary_exon['left'][gene] = ':'.join([i, li])
                             if ri is not None:
                                 ri = str(ri)
-                                side_exon['right'][gene] = ':'.join([i, ri])
+                                secondary_exon['right'][gene] = ':'.join([i, ri])
                     if edge_annotations:
                         for bed in edge_annotations:
                             outf.write(bed + '\n')
                         total.add(fus)
-                    if side_flag and not annotate_flag:
-                        for gene in side_exon['left']:
-                            if gene in side_exon['right']:
-                                left = side_exon['left'][gene]
-                                right = side_exon['right'][gene]
+                    if secondary_flag and not annotate_flag:
+                        for gene in secondary_exon['left']:
+                            if gene in secondary_exon['right']:
+                                left = secondary_exon['left'][gene]
+                                right = secondary_exon['right'][gene]
                                 g, s = gene.split(':')
                                 fus_loc += '\t0\t%s' % s
                                 outf.write('%s\t%s:%s\t%s:%s\n' % (fus_loc, g,
@@ -125,7 +125,7 @@ def annotate_fusion(ref_f, out_dir, side_flag=0, denovo_flag=0):
     print('Annotated %d fusion junctions!' % len(total))
 
 
-def fix_fusion(ref_f, genome_fa, out_dir, no_fix, side_flag=0, denovo_flag=0):
+def fix_fusion(ref_f, genome_fa, out_dir, no_fix, secondary_flag=0, denovo_flag=0):
     """
     Realign fusion juncrions
     """
@@ -138,8 +138,8 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, side_flag=0, denovo_flag=0):
     total = 0
     annotations = set()
     fixed_fusion_f = '%s/circ_fusion.txt' % out_dir
-    if side_flag:
-        side_f = open('%s/low_circ_fusion.txt' % out_dir, 'w')
+    if secondary_flag:
+        secondary_f = open('%s/low_circ_fusion.txt' % out_dir, 'w')
     with open(fixed_fusion_f, 'w') as outf:
         for fus in fusion_names:
             reads = str(fusions[fus])
@@ -148,11 +148,11 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, side_flag=0, denovo_flag=0):
                 total += 1
             fixed = str(fixed)
             name = 'circular_RNA/' + reads
-            if fus.startswith('side'):
+            if fus.startswith('secondary'):
                 _, loc, strand, left_info, right_info = fus.split('|')
-                side_f.write('\t'.join([loc, name, fixed, strand, left_info,
+                secondary_f.write('\t'.join([loc, name, fixed, strand, left_info,
                                         right_info]))
-                side_f.write('\n')
+                secondary_f.write('\n')
                 continue
             gene, iso, chrom, strand, index = fus.split()
             starts, ends = ref['\t'.join([gene, iso, chrom, strand])]
@@ -208,6 +208,6 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, side_flag=0, denovo_flag=0):
             if denovo_flag:  # in denovo mode
                 annotations.add(annotation_info)
             outf.write(bed + '\n')
-    if side_flag:
-        side_f.close()
+    if secondary_flag:
+        secondary_f.close()
     print('Fixed %d fusion junctions!' % total)

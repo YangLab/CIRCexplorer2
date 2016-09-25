@@ -1,3 +1,10 @@
+## 2.2.6 (2016-09-25)
+
+Bugfixes:
+
+* bug in building bowtie1/2 index using multiple threads
+* bug in parsing Drosophila circRNAs
+
 ## 2.2.5 (2016-09-17)
 
 Improvements:

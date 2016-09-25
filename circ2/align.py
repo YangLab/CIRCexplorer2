@@ -96,7 +96,7 @@ def check_outdir(out_dir):
     return dir_path
 
 
-def check_index(index_flag, out_dir, index_file, thread=10):
+def check_index(index_flag, out_dir, index_file, thread):
     '''
     1. Build index for Bowtie1 and Bowtie2 if not exist
     2. Links index files if exist

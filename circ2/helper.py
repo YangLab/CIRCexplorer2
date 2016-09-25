@@ -136,7 +136,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
     junctions = set()
     with open(fusion_file, 'r') as f:
         for line in f:
-            side_flag = False
+            secondary_flag = False
             chrom = line.split()[0]
             strand = line.split()[5]
             start, end = [int(x) for x in line.split()[1:3]]
@@ -145,7 +145,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                 continue
             reads = int(line.split()[3].split('/')[1])
             if len(line.split()) == 8:
-                side_flag = True
+                secondary_flag = True
                 flag = False
                 left_info, right_info = line.split()[6:8]
                 left_gene, left_iso, left_index = left_info.split(':')
@@ -157,7 +157,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                 iso_ends = ref['\t'.join([right_gene, right_iso, chrom,
                                           strand])][1]
                 loc = '%s\t%d\t%d' % (chrom, iso_starts[s], iso_ends[e])
-                name = '|'.join(['side', loc, strand, left_info, right_info])
+                name = '|'.join(['secondary', loc, strand, left_info, right_info])
             else:
                 flag, gene, iso, index = line.split()[-4:]
                 flag = True if flag == 'ciRNA' else False
@@ -165,7 +165,7 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                 iso_starts, iso_ends = ref['\t'.join([gene, iso, chrom,
                                                       strand])]
             if not flag:  # back spliced exons
-                if not side_flag:
+                if not secondary_flag:
                     s, e = [int(x) for x in index.split(',')]
                 # not realign
                 if start == iso_starts[s] and end == iso_ends[e]:

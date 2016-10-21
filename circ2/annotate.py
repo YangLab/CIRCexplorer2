@@ -85,8 +85,8 @@ def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
                          index,
                          edge,
                          secondary) = map_fusion_to_iso(fus_start,
-                                                   fus_end, s,
-                                                   gene_info[iso_id])
+                                                        fus_end, s,
+                                                        gene_info[iso_id])
                         if fusion_info:
                             annotate_flag += 1
                             bed_info = '\t'.join([fus_loc, '0', s,
@@ -104,10 +104,12 @@ def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
                             gene = ':'.join([g, s])
                             if li is not None:
                                 li = str(li)
-                                secondary_exon['left'][gene] = ':'.join([i, li])
+                                secondary_exon['left'][gene] = ':'.join([i,
+                                                                         li])
                             if ri is not None:
                                 ri = str(ri)
-                                secondary_exon['right'][gene] = ':'.join([i, ri])
+                                secondary_exon['right'][gene] = ':'.join([i,
+                                                                          ri])
                     if edge_annotations:
                         for bed in edge_annotations:
                             outf.write(bed + '\n')
@@ -125,7 +127,8 @@ def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
     print('Annotated %d fusion junctions!' % len(total))
 
 
-def fix_fusion(ref_f, genome_fa, out_dir, no_fix, secondary_flag=0, denovo_flag=0):
+def fix_fusion(ref_f, genome_fa, out_dir, no_fix, secondary_flag=0,
+               denovo_flag=0):
     """
     Realign fusion juncrions
     """
@@ -150,8 +153,8 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, secondary_flag=0, denovo_flag=
             name = 'circular_RNA/' + reads
             if fus.startswith('secondary'):
                 _, loc, strand, left_info, right_info = fus.split('|')
-                secondary_f.write('\t'.join([loc, name, fixed, strand, left_info,
-                                        right_info]))
+                secondary_f.write('\t'.join([loc, name, fixed, strand,
+                                             left_info, right_info]))
                 secondary_f.write('\n')
                 continue
             gene, iso, chrom, strand, index = fus.split()

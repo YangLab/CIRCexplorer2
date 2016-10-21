@@ -272,13 +272,11 @@ class Interval(object):
         '''
         update for CIRCexplorer particularly.
         '''
-        mapped_fragment = []
         tmp_fragment = []
         if not interval:
             return index
 
         for dex in index:
-            dex_info = dex[2:]
             while True:
                 try:
                     fragment = interval.pop(0)

@@ -157,7 +157,8 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
                 iso_ends = ref['\t'.join([right_gene, right_iso, chrom,
                                           strand])][1]
                 loc = '%s\t%d\t%d' % (chrom, iso_starts[s], iso_ends[e])
-                name = '|'.join(['secondary', loc, strand, left_info, right_info])
+                name = '|'.join(['secondary', loc, strand, left_info,
+                                 right_info])
             else:
                 flag, gene, iso, index = line.split()[-4:]
                 flag = True if flag == 'ciRNA' else False
@@ -411,6 +412,7 @@ def build_index(i, genome_file, prefix, out_dir, thread):
         sys.exit('%s is required to build index!' % prog)
     index_file = '%s/bowtie%d_index/%s' % (out_dir, i, prefix)
     return_code = os.system('%s %s %s %s > %s/bowtie%d_index.log' %
-                            (prog, p, genome_file, index_file, out_dir, i)) >> 8
+                            (prog, p, genome_file, index_file, out_dir,
+                             i)) >> 8
     if return_code:
         sys.exit('Error: cannot build index for bowtie%d!' % i)

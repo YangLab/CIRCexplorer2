@@ -30,6 +30,7 @@ Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 * Support multiple circular RNA aligners (**TopHat2/TopHat-Fusion**, **STAR**, **MapSplice**, **BWA** and **segemehl**)
 * *De novo* assemble novel circular RNA transcripts
 * Characterize various of alternative (back-)splicing events of circular RNAs
+* Fast identify circuar RNAs with **STAR** or **BWA**
 
 CIRCexplorer2 documentation is available through https://readthedocs.org/ from [here](http://CIRCexplorer2.readthedocs.org), including installation instructions and tutorial.
 

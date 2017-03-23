@@ -32,6 +32,7 @@ Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 * Support multiple circular RNA aligners (**TopHat2/TopHat-Fusion**, **STAR**, **MapSplice**, **BWA** and **segemehl**) ([Align](modules/align.md) and [Parse](modules/parse.md))
 * *De novo* assemble novel circular RNA transcripts ([Assemble](modules/assemble.md))
 * Characterize various of alternative (back-)splicing events of circular RNAs ([Denovo](modules/denovo.md))
+* Fast identify circuar RNAs with [STAR](https://github.com/alexdobin/STAR) or [BWA](https://github.com/lh3/bwa) ([Parse](modules/parse.md))
 
 *For some frequently asked questions about CIRCexplorer2, please [FAQ](about/faq.md) for more details.*
 

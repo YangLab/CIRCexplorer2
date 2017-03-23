@@ -21,6 +21,7 @@ Features
 * Support multiple circular RNA aligners (TopHat2/TopHat-Fusion, STAR, MapSplice, BWA and segemehl)
 * *De novo* assemble novel circular RNA transcripts
 * Characterize various of alternative splicing events of circular RNAs
+* Fast identify circuar RNAs with STAR or BWA
 
 CIRCexplorer2 documentation is available through https://readthedocs.org/ from `here`_, including installation instructions and tutorial.
 

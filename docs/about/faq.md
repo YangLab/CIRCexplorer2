@@ -5,6 +5,7 @@ Q: Comparied with other circular RNA identification tools, what is the performan
 A: CIRCexplorer2 is based on our previous circular RNA identification tool CIRCexplorer, and it inherits all the advantages of CIRCexplorer such as [high accuracy, good sensitivity and low memory consumption](http://nar.oxfordjournals.org/content/44/6/e58.abstract).
 
 Q: CIRCexplorer2 is too slow with large data. How could I improve it?
+
 A: The rate-limiting step of CIRCexplorer2 is the alignment step. The default aligner TopHat2/TopHat-Fusion would be very slow for some cases. If you use [Annotating pipeline](../tutorial/pipeline.md), you could use [STAR](https://github.com/alexdobin/STAR) or [BWA](https://github.com/lh3/bwa) instead, and they are extremely fast. Please refer [here](../tutorial/parsing.md) for how to integrate CIRCexplorer2 with other aligners.
 
 Q: Which types of sequencing data are supported by CIRCexplorer2? Single-end or paired-end reads?

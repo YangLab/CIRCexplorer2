@@ -40,5 +40,5 @@ CIRCexplorer2 documentation is available through https://readthedocs.org/ from [
 
 ## License
 
-Copyright (C) 2016 YangLab.  See the [LICENSE](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)
+Copyright (C) 2016-2017 YangLab.  See the [LICENSE](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)
 file for license rights and limitations (MIT).

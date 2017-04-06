@@ -2,7 +2,7 @@ site_name: CIRCexplorer2
 repo_url: https://github.com/YangLab/CIRCexplorer2
 site_description: Documents for CIRCexplorer2
 site_author: Xiao-Ou Zhang
-copyright: Copyright (C) 2016 YangLab
+copyright: Copyright (C) 2016-2017 YangLab
 pages:
     - Home: 'index.md'
     - Tutorial:

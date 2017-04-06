@@ -72,4 +72,4 @@ We developed a series of circular RNA analysis tools, and welcome to use and cit
 
 ## License
 
-Copyright (C) 2016 YangLab. See [LICENSE](about/license.md) for license rights and limitations (MIT).
+Copyright (C) 2016-2017 YangLab. See [LICENSE](about/license.md) for license rights and limitations (MIT).

@@ -21,7 +21,7 @@ def create_dir(dir):
     '''
     if os.path.isdir(dir):
         if os.listdir(dir):
-            print(('Warning: the directory %s is not empty!' % dir))
+            print('Warning: the directory %s is not empty!' % dir)
         shutil.rmtree(dir)
     os.mkdir(dir)
 

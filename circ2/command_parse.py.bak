@@ -7,7 +7,7 @@ Usage: CIRCexplorer2 (<command> | --help | --version)
 
 from docopt import docopt
 import sys
-from .version import __version__
+from version import __version__
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
@@ -38,23 +38,23 @@ def main():
     elif sys.argv[1] == '--version' or sys.argv[1] == '-v':
         sys.exit(__version__)
     elif sys.argv[1] == 'align':
-        from . import align
+        import align
         align.align(docopt(align.__doc__, version=__version__),
                     command=command_log, name='align')
     elif sys.argv[1] == 'parse':
-        from . import parse
+        import parse
         parse.parse(docopt(parse.__doc__, version=__version__),
                     command=command_log, name='parse')
     elif sys.argv[1] == 'annotate':
-        from . import annotate
+        import annotate
         annotate.annotate(docopt(annotate.__doc__, version=__version__),
                           command=command_log, name='annotate')
     elif sys.argv[1] == 'assemble':
-        from . import assemble
+        import assemble
         assemble.assemble(docopt(assemble.__doc__, version=__version__),
                           command=command_log, name='assemble')
     elif sys.argv[1] == 'denovo':
-        from . import denovo
+        import denovo
         denovo.denovo(docopt(denovo.__doc__, version=__version__),
                       command=command_log, name='denovo')
     else:

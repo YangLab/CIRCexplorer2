@@ -19,13 +19,13 @@ with poor gene annotations).
 import sys
 import os.path
 from collections import defaultdict, deque
-from .annotate import annotate_fusion, fix_fusion
-from .parser import parse_junc
-from .helper import logger, fetch_psi, fetch_read, Expression
-from .dir_func import check_dir, create_dir
+from annotate import annotate_fusion, fix_fusion
+from parser import parse_junc
+from helper import logger, fetch_psi, fetch_read, Expression
+from dir_func import check_dir, create_dir
 import pysam
 from scipy.stats import fisher_exact, binom
-from .genomic_interval import Interval
+from genomic_interval import Interval
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
@@ -47,8 +47,8 @@ def denovo(options):
     # combine ref files
     cufflinks_ref_path = '%s/cufflinks/transcripts_ref.txt' % out_dir
     if os.path.isfile(cufflinks_ref_path):
-        print(('Combine %s with %s to create a new ref file!' %
-              (options['--ref'], cufflinks_ref_path)))
+        print('Combine %s with %s to create a new ref file!' %
+              (options['--ref'], cufflinks_ref_path))
         ref_path = '%s/combined_ref.txt' % denovo_dir
         new_ref_f = open(ref_path, 'w')
         with open(cufflinks_ref_path, 'r') as cuff_ref:
@@ -58,7 +58,7 @@ def denovo(options):
         new_ref_f.write(open(options['--ref'], 'r').read())
         new_ref_f.close()
     else:
-        print(('Warning: no cufflinks directory under %s!' % out_dir))
+        print('Warning: no cufflinks directory under %s!' % out_dir)
         print('Please run CIRCexplorer2 assembly before this step!')
         ref_path = options['--ref']
     # annotate fusion junctions
@@ -138,7 +138,7 @@ def extract_novel_circ(denovo_dir, ref_path):
             else:
                 annotated.write('\t'.join([circ_id, all_circ[circ_id]]) +
                                 '\n')
-    print(('Fetch %d circular RNAs!' % novel_circ_num))
+    print('Fetch %d circular RNAs!' % novel_circ_num)
 
 
 def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):

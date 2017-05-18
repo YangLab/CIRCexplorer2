@@ -4,7 +4,7 @@ test_denovo.py: Test denovo module
 
 import os.path
 import shutil
-from .utils import check_file
+from utils import check_file
 from circ2.denovo import denovo
 
 
@@ -14,7 +14,7 @@ class TestDenovo(object):
         '''
         Run CIRCexplorer2 denovo
         '''
-        print(('$%s: Start testing denovo' % __name__))
+        print('$%s: Start testing denovo' % __name__)
         circ_path = 'data'
         ref_path = circ_path + '/ref.txt'
         fa_path = circ_path + '/chr21.fa'
@@ -30,7 +30,7 @@ class TestDenovo(object):
         '''
         Check files in denovo directory
         '''
-        print(('#%s: Test denovo' % __name__))
+        print('#%s: Test denovo' % __name__)
         result_path = 'data/denovo'
         assert os.path.isdir(result_path), 'No denovo directory'
         # check files in denovo directory
@@ -44,5 +44,5 @@ class TestDenovo(object):
         '''
         Delete denovo directory
         '''
-        print(('#%s: End testing denovo' % __name__))
+        print('#%s: End testing denovo' % __name__)
         shutil.rmtree('data/denovo')

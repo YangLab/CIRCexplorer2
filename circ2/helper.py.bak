@@ -29,12 +29,12 @@ def logger(fn):
     '''
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        print((kwargs['command']))
+        print(kwargs['command'])
         local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-        print(('Start CIRCexplorer2 %s at %s' % (kwargs['name'], local_time)))
+        print('Start CIRCexplorer2 %s at %s' % (kwargs['name'], local_time))
         fn(*args)
         local_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-        print(('End CIRCexplorer2 %s at %s' % (kwargs['name'], local_time)))
+        print('End CIRCexplorer2 %s at %s' % (kwargs['name'], local_time))
     return wrapper
 
 

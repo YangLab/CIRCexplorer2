@@ -15,9 +15,9 @@ import sys
 import os.path
 import pysam
 from collections import defaultdict
-from .dir_func import create_dir
-from .helper import logger
-from .parser import parse_fusion_bam, Segment
+from dir_func import create_dir
+from helper import logger
+from parser import parse_fusion_bam, Segment
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 
@@ -87,7 +87,7 @@ def tophat_fusion_parse(fusion, out, pair_flag=False):
         for i, pos in enumerate(fusions):
             outf.write('%s\tFUSIONJUNC_%d/%d\t0\t+\n' % (pos, i, fusions[pos]))
             total += fusions[pos]
-    print(('Converted %d fusion reads!' % total))
+    print('Converted %d fusion reads!' % total)
 
 
 def star_parse(fusion, out):
@@ -119,7 +119,7 @@ def star_parse(fusion, out):
         for i, j in enumerate(junc):
             outf.write('%s\tFUSIONJUNC_%d/%d\t0\t+\n' % (j, i, junc[j]))
             total += junc[j]
-    print(('Converted %d fusion reads!' % total))
+    print('Converted %d fusion reads!' % total)
 
 
 def mapsplice_parse(fusion, out):
@@ -148,7 +148,7 @@ def mapsplice_parse(fusion, out):
                                                                  end, i,
                                                                  reads))
             total += int(reads)
-    print(('Converted %d fusion reads!' % total))
+    print('Converted %d fusion reads!' % total)
 
 
 def bwa_parse(fusion, out):
@@ -208,7 +208,7 @@ def bwa_parse(fusion, out):
         for i, pos in enumerate(fusions):
             outF.write('%s\tFUSIONJUNC_%d/%d\t0\t+\n' % (pos, i, fusions[pos]))
             total += fusions[pos]
-    print(('Converted %d fusion reads!' % total))
+    print('Converted %d fusion reads!' % total)
 
 
 def segemehl_parse(fusion, out):
@@ -227,4 +227,4 @@ def segemehl_parse(fusion, out):
             outf.write('\t'.join([chrom, start, end,
                                   'FUSIONJUNC_%d/%s\t+\n' % (i, reads)]))
             total += int(reads)
-    print(('Converted %d fusion reads!' % total))
+    print('Converted %d fusion reads!' % total)

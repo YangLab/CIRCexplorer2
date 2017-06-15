@@ -26,7 +26,7 @@ CIRCexplorer2 parse [options] -t ALIGNER <fusion>
 2. For the alignment parameters of each aligner, some examples have been offered in the [tutorial](../tutorial/alignment.md). You could also adjust relevant parameters according to your requirements.
 3. The `fusion_junction.bed` file has the same format with `fusion_junction.bed` created by the [align](../modules/align.md) module, and would be used by other modules of CIRCexplorer2 to further annotate and characterize circular RNAs.
 4. It will overwrite the output directory automatically, so please be careful when setting the path of output directory.
-5. For paired-end results, you can add `--pe` option to get more strict fusion reads by considering the pair reads.
+5. For paired-end results, you can add `--pe` option to get more strict fusion reads by considering the mate reads.
 6. For different aligner, the `<fusion>` is different.
 
 | ALigner       | Fusion file                           |

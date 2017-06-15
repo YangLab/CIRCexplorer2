@@ -27,7 +27,7 @@ CIRCexplorer2 align -G hg19_kg.gtf -g hg19.fa RNA_seq.fastq > CIRCexplorer2_alig
 
 If you prefer other aligners or want to align paired-end reads, you could align sequencing reads manually. Commands for different aligners for detecting fusion junction reads are listed below, and you could modify them according to your different requirements.
 
-### For single-end reads
+### For single-read sequencing
 
 * TopHat2/TopHat-Fusion
 ```
@@ -59,15 +59,20 @@ testrealign.x -d hg19.fa -q RNA_seq.sam -n
 
 Note: You could align unmapped reads from TopHat2 alignment (`circ_out/tophat/unmapped.fastq`) via other aligners rather than TopHat-Fusion.
 
-### For paired-end reads
+### For paired-end sequencing
+
+* STAR (See [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more information)
+
+```
+STAR --chimSegmentMin 10 --runThreadN 10 --genomeDir hg19_STAR_index --readFilesIn read_1.fastq read_2.fastq
+```
 
 * TopHat-Fusion
 
 ```
-tophat2 -o tophat_fusion -p 15 --fusion-search --keep-fasta-order --bowtie1 --no-coverage-search hg19_bowtie1_index RNA_seq.fastq
+tophat2 -o tophat_fusion -p 15 --fusion-search --keep-fasta-order --bowtie1 --no-coverage-search hg19_bowtie1_index read_1.fastq read_2.fastq
 ```
 
 Note:
 
-1. For paired-end data analysis, only TopHat-Fusion aligning results are supported by now.
-2. For alignment of paired-end data, you should choose appropriate library-type which is not included in the command above.
+1. For alignment of paired-end data, you should choose appropriate library-type which is not included in the command above.

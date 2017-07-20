@@ -18,14 +18,17 @@ TopHat-Fusion).
     --skip-tophat-fusion           Skip TopHat-Fusion mapping.
 '''
 
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
 import sys
 import os
 import os.path
 import pysam
 import pybedtools
-from parse import tophat_fusion_parse
-from helper import logger, which, link_index, build_index
-from dir_func import create_dir
+from .parse import tophat_fusion_parse
+from .helper import logger, which, link_index, build_index
+from .dir_func import create_dir
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 

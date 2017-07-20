@@ -23,6 +23,7 @@ TopHat-Fusion).
     -o OUT --output=OUT            Output directory. [default: circ_out]
 '''
 
+from __future__ import absolute_import
 import sys
 from docopt import docopt
 
@@ -52,12 +53,12 @@ def main():
 
 
 def parse_command(options, command_log):
-    from parse import parse
+    from .parse import parse
     parse(options, command=command_log, name='parse')
 
 
 def align_command(options, command_log):
-    from align import align
+    from .align import align
     options['--bw'] = True
     options['--scale'] = True
     options['--skip-tophat'] = False
@@ -66,7 +67,7 @@ def align_command(options, command_log):
 
 
 def annotate_command(options, command_log):
-    from annotate import annotate
+    from .annotate import annotate
     options['--no-fix'] = False
     options['--low-confidence'] = False
     options['<circ_dir>'] = options['--output']
@@ -74,7 +75,7 @@ def annotate_command(options, command_log):
 
 
 def assemble_command(options, command_log):
-    from assemble import assemble
+    from .assemble import assemble
     options['--bb'] = False
     options['--tophat-dir'] = None
     options['--chrom-size'] = None
@@ -85,7 +86,7 @@ def assemble_command(options, command_log):
 
 
 def denovo_command(options, command_log):
-    from denovo import denovo
+    from .denovo import denovo
     if options['--pAplus']:
         options['--as'] = True
         options['--rpkm'] = True

@@ -11,10 +11,14 @@ with poor gene annotations).
     --low-confidence               Extract low confidence circRNAs.
 '''
 
-from genomic_interval import Interval
-from parser import parse_ref, parse_bed, check_fasta
-from helper import logger, map_fusion_to_iso, fix_bed, generate_bed
-from dir_func import check_dir, create_dir
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
+from builtins import range
+from .genomic_interval import Interval
+from .parser import parse_ref, parse_bed, check_fasta
+from .helper import logger, map_fusion_to_iso, fix_bed, generate_bed
+from .dir_func import check_dir, create_dir
 from collections import defaultdict
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
@@ -62,7 +66,7 @@ def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
                                                fusions[chrom])
             for itl in result:
                 # extract gene annotations
-                iso = list(filter(lambda x: x.startswith('iso'), itl[2:]))
+                iso = list([x for x in itl[2:] if x.startswith('iso')])
                 # for each overlapped fusion junction
                 for fus in itl[(2 + len(iso)):]:
                     reads = fus.split()[1]
@@ -165,10 +169,10 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, secondary_flag=0,
             if ',' in index:  # back spliced exons
                 s, e = [int(x) for x in index.split(',')]
                 if strand == '+':
-                    index_info = ','.join(str(x + 1) for x in xrange(s, e + 1))
+                    index_info = ','.join(str(x + 1) for x in range(s, e + 1))
                 else:
                     index_info = ','.join(str(exon_num - x)
-                                          for x in xrange(s, e + 1))
+                                          for x in range(s, e + 1))
                 start = str(starts[s])
                 end = str(ends[e])
                 length = str(e - s + 1)

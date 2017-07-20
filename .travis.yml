@@ -1,6 +1,7 @@
 language: python
 python:
   - "2.7"
+  - "3.6"
 before_install:
   - sudo apt-get update
   - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh

@@ -2,9 +2,12 @@
 test_denovo.py: Test denovo module
 '''
 
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import object
 import os.path
 import shutil
-from utils import check_file
+from .utils import check_file
 from circ2.denovo import denovo
 
 

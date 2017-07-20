@@ -2,11 +2,13 @@
 test_parse.py: Test parse module
 '''
 
+from __future__ import print_function
+from __future__ import absolute_import
 import os
 import os.path
 import shutil
 from nose.tools import with_setup
-from utils import check_file
+from .utils import check_file
 from circ2.parse import parse
 
 

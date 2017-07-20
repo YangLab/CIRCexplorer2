@@ -1,8 +1,12 @@
+from __future__ import absolute_import
+from builtins import str
+from builtins import next
+from builtins import object
 import os
 import pysam
 from collections import defaultdict
 from itertools import groupby
-from genomic_interval import Interval
+from .genomic_interval import Interval
 
 
 class Segment(object):

@@ -16,16 +16,22 @@ with poor gene annotations).
     --rpkm                         Calculate RPKM for cassette exons.
 """
 
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import zip
+from builtins import str
+from builtins import range
 import sys
 import os.path
 from collections import defaultdict, deque
-from annotate import annotate_fusion, fix_fusion
-from parser import parse_junc
-from helper import logger, fetch_psi, fetch_read, Expression
-from dir_func import check_dir, create_dir
+from .annotate import annotate_fusion, fix_fusion
+from .parser import parse_junc
+from .helper import logger, fetch_psi, fetch_read, Expression
+from .dir_func import check_dir, create_dir
 import pysam
 from scipy.stats import fisher_exact, binom
-from genomic_interval import Interval
+from .genomic_interval import Interval
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 

@@ -2,9 +2,12 @@
 test_annotate.py: Test annotate module
 '''
 
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import object
 import os.path
 import shutil
-from utils import check_file
+from .utils import check_file
 from circ2.annotate import annotate
 
 

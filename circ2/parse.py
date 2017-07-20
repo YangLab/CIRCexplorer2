@@ -11,13 +11,16 @@ BWA, segemehl).
 TopHat-Fusion).
 '''
 
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
 import sys
 import os.path
 import pysam
 from collections import defaultdict
-from dir_func import create_dir
-from helper import logger
-from parser import parse_fusion_bam, Segment
+from .dir_func import create_dir
+from .helper import logger
+from .parser import parse_fusion_bam, Segment
 
 __author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
 

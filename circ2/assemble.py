@@ -14,12 +14,15 @@ human hg19).
     --max-bundle-frags=FRAGMENTS   Cufflinks --max-bundle-frags option.
 '''
 
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import zip
 import sys
 import os
 import os.path
-from parser import parse_junc
-from helper import logger, which, genepred_to_bed
-from dir_func import check_dir, create_dir
+from .parser import parse_junc
+from .helper import logger, which, genepred_to_bed
+from .dir_func import check_dir, create_dir
 import pybedtools
 import pysam
 
@@ -152,7 +155,7 @@ def convert_assembly_gtf(out_dir, cufflinks_dir, ref, bb, chrom_size):
     if bb:
         if which('bedToBigBed') is not None:
             print('Convert to BigBed file...')
-            if not chrom_size:  # no chrom size file, search it in tophat folder
+            if not chrom_size:  # no chromsize file, search it in tophat folder
                 chrom_size = '%s/tophat/chrom.size' % out_dir
                 if not os.path.isfile(chrom_size):
                     sys.exit('Please offer the path of chrom.size!')
@@ -164,7 +167,8 @@ def convert_assembly_gtf(out_dir, cufflinks_dir, ref, bb, chrom_size):
             bed.saveas(sorted_bed_path)
             bb_path = '%s/transcripts_ref_sorted.bb' % cufflinks_dir
             return_code = os.system('bedToBigBed -type=bed12 %s %s %s' %
-                                    (sorted_bed_path, chrom_size, bb_path)) >> 8
+                                    (sorted_bed_path, chrom_size,
+                                     bb_path)) >> 8
             if return_code:
                 sys.exit('Error: cannot convert bed to BigBed!')
         else:

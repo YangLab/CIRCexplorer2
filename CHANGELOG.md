@@ -1,3 +1,10 @@
+## 2.2.7 (2017-07-20)
+
+Bugfixes:
+
+* fix a display error in assemble step
+* fix a bug with "--low-confidence" option in annotate step
+
 ## 2.2.6 (2016-09-25)
 
 Bugfixes:

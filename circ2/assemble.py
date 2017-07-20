@@ -149,22 +149,23 @@ def convert_assembly_gtf(out_dir, cufflinks_dir, ref, bb, chrom_size):
             symbol = gene_symbol[iso] if iso in gene_symbol else iso
             ref_f.write(symbol + '\t' + line)
     # convert to bigbed if needed
-    if bb and which('bedToBigBed') is not None:
-        print('Convert to BigBed file...')
-        if not chrom_size:  # no chrom size file, search it in tophat folder
-            chrom_size = '%s/tophat/chrom.size' % out_dir
-            if not os.path.isfile(chrom_size):
-                sys.exit('Please offer the path of chrom.size!')
-        bed_path = '%s/transcripts_ref.bed' % cufflinks_dir
-        genepred_to_bed(ref_path, bed_path)
-        sorted_bed_path = '%s/transcripts_ref_sorted.bed' % cufflinks_dir
-        bed = pybedtools.BedTool(bed_path)
-        bed = bed.sort()
-        bed.saveas(sorted_bed_path)
-        bb_path = '%s/transcripts_ref_sorted.bb' % cufflinks_dir
-        return_code = os.system('bedToBigBed -type=bed12 %s %s %s' %
-                                (sorted_bed_path, chrom_size, bb_path)) >> 8
-        if return_code:
-            sys.exit('Error: cannot convert bed to BigBed!')
-    else:
-        print('Could not find bedToBigBed, so skip this step!')
+    if bb:
+        if which('bedToBigBed') is not None:
+            print('Convert to BigBed file...')
+            if not chrom_size:  # no chrom size file, search it in tophat folder
+                chrom_size = '%s/tophat/chrom.size' % out_dir
+                if not os.path.isfile(chrom_size):
+                    sys.exit('Please offer the path of chrom.size!')
+            bed_path = '%s/transcripts_ref.bed' % cufflinks_dir
+            genepred_to_bed(ref_path, bed_path)
+            sorted_bed_path = '%s/transcripts_ref_sorted.bed' % cufflinks_dir
+            bed = pybedtools.BedTool(bed_path)
+            bed = bed.sort()
+            bed.saveas(sorted_bed_path)
+            bb_path = '%s/transcripts_ref_sorted.bb' % cufflinks_dir
+            return_code = os.system('bedToBigBed -type=bed12 %s %s %s' %
+                                    (sorted_bed_path, chrom_size, bb_path)) >> 8
+            if return_code:
+                sys.exit('Error: cannot convert bed to BigBed!')
+        else:
+            print('Could not find bedToBigBed, so skip this step!')

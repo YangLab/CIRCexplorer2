@@ -120,8 +120,9 @@ def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
                                 left = secondary_exon['left'][gene]
                                 right = secondary_exon['right'][gene]
                                 g, s = gene.split(':')
-                                fus_loc += '\t0\t%s' % s
-                                outf.write('%s\t%s:%s\t%s:%s\n' % (fus_loc, g,
+                                # for avoid dup, use fus_loc_new
+                                fus_loc_new = fus_loc + '\t0\t%s' % s 
+                                outf.write('%s\t%s:%s\t%s:%s\n' % (fus_loc_new, g,
                                                                    left, g,
                                                                    right))
     print('Annotated %d fusion junctions!' % len(total))

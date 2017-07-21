@@ -8,7 +8,7 @@ import os
 import os.path
 import shutil
 from nose.tools import with_setup
-from .utils import check_file
+from .utils import check_fusion
 from circ2.parse import parse
 
 
@@ -39,7 +39,7 @@ def test_tophat_fusion_parse():
                '<fusion>': 'tophat_fusion.bam', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (TopHat-Fusion)', name='parse')
     assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_file('fusion_junction.bed', 'circ_out', 'TopHat_Fusion_out')
+    check_fusion('fusion_junction.bed', 'circ_out', 'TopHat_Fusion_out')
 
 
 @with_setup(setup_function, teardown_function)
@@ -53,7 +53,7 @@ def test_tophat_fusion_pe_parse():
     parse(options, command='CIRCexplorer2 parse (TopHat-Fusion PE)',
           name='parse')
     assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_file('fusion_junction.bed', 'circ_out', 'TopHat_Fusion_PE_out')
+    check_fusion('fusion_junction.bed', 'circ_out', 'TopHat_Fusion_PE_out')
 
 
 @with_setup(setup_function, teardown_function)
@@ -66,7 +66,7 @@ def test_star_parse():
                '<fusion>': 'Chimeric.out.junction', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (STAR)', name='parse')
     assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_file('fusion_junction.bed', 'circ_out', 'STAR_out')
+    check_fusion('fusion_junction.bed', 'circ_out', 'STAR_out')
 
 
 @with_setup(setup_function, teardown_function)
@@ -79,7 +79,7 @@ def test_mapsplice_parse():
                '<fusion>': 'fusions_raw.txt', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (Mapsplice)', name='parse')
     assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_file('fusion_junction.bed', 'circ_out', 'MapSplice_out')
+    check_fusion('fusion_junction.bed', 'circ_out', 'MapSplice_out')
 
 
 @with_setup(setup_function, teardown_function)
@@ -92,7 +92,7 @@ def test_bwa_parse():
                '<fusion>': 'RNA_seq_bwa.sam', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (BWA)', name='parse')
     assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_file('fusion_junction.bed', 'circ_out', 'BWA_out')
+    check_fusion('fusion_junction.bed', 'circ_out', 'BWA_out')
 
 
 @with_setup(setup_function, teardown_function)
@@ -105,4 +105,4 @@ def test_segemehl_parse():
                '<fusion>': 'splicesites.bed', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (segemehl)', name='parse')
     assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_file('fusion_junction.bed', 'circ_out', 'segemehl_out')
+    check_fusion('fusion_junction.bed', 'circ_out', 'segemehl_out')

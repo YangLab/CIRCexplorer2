@@ -230,7 +230,7 @@ def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):
                                                 [inclusion_linear,
                                                  2 * exclusion_linear]],
                                                 alternative='less')
-                        info = '\t'.join(str(round(x, 3))
+                        info = '\t'.join(str(round(float(x), 3))
                                          for x in (psi_circ, psi_linear, p1,
                                                    p2,
                                                    inclusion_circ,
@@ -369,7 +369,7 @@ def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir):
                         linear_intron_read)
             p = 1 / 3.5
             p2 = binom.cdf(m, n, p)  # one-side binomial test
-            info = '\t'.join(str(round(x, 3))
+            info = '\t'.join(str(round(float(x), 3))
                              for x in (pir_circ, pir_linear, p1, p2,
                                        circ_ri_read,
                                        circ_junc_read,

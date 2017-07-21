@@ -10,9 +10,12 @@ author: Xiao-Ou Zhang <zhangxiaoou@picb.ac.cn>
 import sys
 import requests
 import gzip
-import string
 import tarfile
 import pysam
+try:
+    from string import maketrans
+except ImportError:
+    maketrans = str.maketrans
 
 
 def fetch_file(options):
@@ -22,7 +25,7 @@ def fetch_file(options):
         path = 'http://hgdownload.soe.ucsc.edu/goldenPath/%s/' % options[1]
     else:
         sys.exit('Only support human or mouse!')
-    s = string.maketrans(' ', '_')
+    s = maketrans(' ', '_')
     if options[2] == 'ref':  # RefSeq gene annotations
         download_file(path + 'database/refFlat.txt.gz', 'refFlat.txt.gz')
         with open(options[3], 'w') as outf:

@@ -1,3 +1,13 @@
+## 2.2.8 (2017-09-01)
+
+Bugfixes:
+
+* Support Python 3
+
+Improvements:
+
+* Add Snakemake workflows
+
 ## 2.2.7 (2017-07-20)
 
 Bugfixes:

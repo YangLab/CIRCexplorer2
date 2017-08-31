@@ -1,16 +1,19 @@
 '''
-Usage: CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
+Usage: CIRCexplorer2 annotate [options] -r REF -g GENOME -b JUNC -o OUT
 
 Options:
     -h --help                      Show help message.
     --version                      Show version.
     -r REF --ref=REF               Gene annotation.
     -g GENOME --genome=GENOME      Genome FASTA file.
+    -b JUNC --bed=JUNC             Input file.
+    -o OUT --output=OUT            Output file. [default: circularRNA_known.txt]
     --no-fix                       No-fix mode (useful for species \
 with poor gene annotations).
     --low-confidence               Extract low confidence circRNAs.
 '''
 
+import os
 from genomic_interval import Interval
 from parser import parse_ref, parse_bed, check_fasta
 from helper import logger, map_fusion_to_iso, fix_bed, generate_bed
@@ -25,29 +28,32 @@ __all__ = ['annotate']
 @logger
 def annotate(options):
     # check output directory
-    out_dir = check_dir(options['<circ_dir>'])
+    # out_dir = check_dir(options['<circ_dir>'])
     # prepare annotate directory
-    annotate_dir = '%s/annotate' % out_dir
-    create_dir(annotate_dir)
+    # annotate_dir = '%s/annotate' % out_dir
+    # create_dir(annotate_dir)
     # annotate fusion junctions
-    annotate_fusion(options['--ref'], annotate_dir,
+    annotate_fusion(options['--ref'], options['--bed'],
                     secondary_flag=options['--low-confidence'])
     # fix fusion juncrions
-    fix_fusion(options['--ref'], options['--genome'], annotate_dir,
+    fix_fusion(options['--ref'], options['--genome'], options['--output'],
                options['--no-fix'], secondary_flag=options['--low-confidence'])
 
 
-def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
+# def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
+def annotate_fusion(ref_f, junc_bed, secondary_flag=0, denovo_flag=0):
     """
     Align fusion juncrions to gene annotations
     """
     print('Start to annotate fusion junctions...')
     # gene annotations
     genes, novel_genes, gene_info, chrom_info = parse_ref(ref_f, 1)
-    fusion_bed = '%s/../fusion_junction.bed' % out_dir
+    # fusion_bed = '%s/../fusion_junction.bed' % out_dir
+    fusion_bed = junc_bed
     fusions, fusion_index = parse_bed(fusion_bed)  # fusion junctions
     total = set()
-    annotated_fusion_f = '%s/annotated_fusion.txt' % out_dir
+    # annotated_fusion_f = '%s/annotated_fusion.txt' % out_dir
+    annotated_fusion_f = 'annotated_fusion.txt.tmp'
     with open(annotated_fusion_f, 'w') as outf:
         for chrom in chrom_info:
             # overlap gene annotations with fusion juncrions
@@ -128,7 +134,7 @@ def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
     print('Annotated %d fusion junctions!' % len(total))
 
 
-def fix_fusion(ref_f, genome_fa, out_dir, no_fix, secondary_flag=0,
+def fix_fusion(ref_f, genome_fa, out_file, no_fix, secondary_flag=0,
                denovo_flag=0):
     """
     Realign fusion juncrions
@@ -136,14 +142,15 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, secondary_flag=0,
     print('Start to fix fusion junctions...')
     fa = check_fasta(genome_fa)
     ref = parse_ref(ref_f, 2)
-    annotated_fusion_f = '%s/annotated_fusion.txt' % out_dir
+    # annotated_fusion_f = '%s/annotated_fusion.txt' % out_dir
+    annotated_fusion_f = 'annotated_fusion.txt.tmp'
     fusions, fusion_names, fixed_flag = fix_bed(annotated_fusion_f, ref, fa,
                                                 no_fix, denovo_flag)
     total = 0
     annotations = set()
-    fixed_fusion_f = '%s/circ_fusion.txt' % out_dir
+    fixed_fusion_f = out_file
     if secondary_flag:
-        secondary_f = open('%s/low_circ_fusion.txt' % out_dir, 'w')
+        secondary_f = open('low_conf_%s' % out_file, 'w')
     with open(fixed_fusion_f, 'w') as outf:
         for fus in fusion_names:
             reads = str(fusions[fus])
@@ -214,4 +221,7 @@ def fix_fusion(ref_f, genome_fa, out_dir, no_fix, secondary_flag=0,
             outf.write(bed + '\n')
     if secondary_flag:
         secondary_f.close()
+
+    os.remove('annotated_fusion.txt.tmp')
+
     print('Fixed %d fusion junctions!' % total)

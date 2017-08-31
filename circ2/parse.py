@@ -6,7 +6,7 @@ Options:
     --version                      Show version.
     -t ALIGNER                     Aligner (TopHat-Fusion, STAR, MapSplice, \
 BWA, segemehl).
-    -o OUT --output=OUT            Output directory. [default: circ_out]
+    -b JUNC --bed=JUNC             Output file. [default: back_spliced_junction.bed]
     --pe                           Parse paired-end alignment file (only for \
 TopHat-Fusion).
 '''
@@ -31,9 +31,10 @@ def parse(options):
         sys.exit('Error: CIRCexplorer2 parse does not support %s!' %
                  options['-t'])
     # check output directory
-    create_dir(options['--output'])
-    out_dir = os.path.abspath(options['--output'])
-    out = out_dir + '/fusion_junction.bed'
+    # create_dir(options['--output'])
+    # out_dir = os.path.abspath(options['--output'])
+    # out = out_dir + '/fusion_junction.bed'
+    out = options['--bed']
     # if use paired-end data, check whether use Tophat-Fusion
     if options['-t'] != 'TopHat-Fusion' and options['--pe'] is True:
         sys.exit('Sorry. Only Tophat-Fusion are supported to parse the\

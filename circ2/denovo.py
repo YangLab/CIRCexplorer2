@@ -1,16 +1,20 @@
 """
-Usage: CIRCexplorer2 denovo [options] -r REF -g GENOME <circ_dir>
+Usage: CIRCexplorer2 denovo [options] -r REF -g GENOME -b JUNC -o denovo
 
 Options:
     -h --help                      Show help message.
     --version                      Show version.
     -r REF --ref=REF               Gene annotation.
-    --as                           Detect alternative splicing.
+    --as=AS                        Detect alternative splicing and output.
     --as-type=AS_TYPE              Only check certain type (CE/RI/ASS) of AS \
 events.
-    -a PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for p(A)+ RNA-seq.
+    --abs=ABS                      Detect alternative back-splicing and output.
+    -b JUNC --bed=JUNC             Input file.
+    -d CUFF --cuff=CUFF            Cufflinks folder.
+    -m TOPHAT --tophat=TOPHAT      TopHat mapping folder.
+    -n PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for p(A)+ RNA-seq.
+    -o OUT --output=OUT            Output Folder. [default: denovo]
     -g GENOME --genome=GENOME      Genome FASTA file.
-    --tophat-dir=TOPHAT_DIR        TopHat mapping directory for p(A)- RNA-seq.
     --no-fix                       No-fix mode (useful for species \
 with poor gene annotations).
     --rpkm                         Calculate RPKM for cassette exons.
@@ -35,17 +39,15 @@ __all__ = ['denovo']
 @logger
 def denovo(options):
     # check output directory
-    out_dir = check_dir(options['<circ_dir>'])
+    # out_dir = check_dir(options['<circ_dir>'])
     # check tophat results
-    if options['--tophat-dir']:
-        tophat_dir = check_dir(options['--tophat-dir'])
-    else:
-        tophat_dir = check_dir(out_dir + '/tophat')
+    if options['--tophat']:
+        tophat_dir = check_dir(options['--tophat'])
     # prepare denovo directory
-    denovo_dir = '%s/denovo' % out_dir
+    denovo_dir = options['--output']
     create_dir(denovo_dir)
     # combine ref files
-    cufflinks_ref_path = '%s/cufflinks/transcripts_ref.txt' % out_dir
+    cufflinks_ref_path = '%s/transcripts_ref.txt' % options['--cuff']
     if os.path.isfile(cufflinks_ref_path):
         print('Combine %s with %s to create a new ref file!' %
               (options['--ref'], cufflinks_ref_path))
@@ -58,32 +60,47 @@ def denovo(options):
         new_ref_f.write(open(options['--ref'], 'r').read())
         new_ref_f.close()
     else:
-        print('Warning: no cufflinks directory under %s!' % out_dir)
+        print('Warning: no cufflinks directory %s!' % options['--cuff'])
         print('Please run CIRCexplorer2 assembly before this step!')
         ref_path = options['--ref']
     # annotate fusion junctions
-    annotate_fusion(ref_path, denovo_dir, denovo_flag=1)
+    annotate_fusion(ref_path, options['--bed'], denovo_flag=1)
     # fix fusion juncrions
-    fix_fusion(ref_path, options['--genome'], denovo_dir,
+    out_f = '%s/circularRNA_full.txt' % denovo_dir
+    fix_fusion(ref_path, options['--genome'], out_f,
                options['--no-fix'], denovo_flag=1)
     # extract novel circRNAs
     extract_novel_circ(denovo_dir, options['--ref'])
     if options['--as']:
+        create_dir(options['--as'])
+
         if options['--pAplus'] and os.path.isdir(options['--pAplus']):
             pAplus_dir = os.path.abspath(options['--pAplus'])
         else:
             sys.exit('You should offer --pAplus option in --as mode!')
+
+        if options['--tophat'] and os.path.isdir(options['--tophat']):
+            pass
+        else:
+            sys.exit('You should offer p(A)minus dir in --as mode!')
+
         if not options['--as-type'] or options['--as-type'] == 'CE':
             # extract cassette exons
             extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir,
-                                  options['--rpkm'])
+                                  options['--as'], options['--rpkm'])
         if not options['--as-type'] or options['--as-type'] == 'RI':
             # extract retained introns
-            extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir)
+            extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir,
+                                    options['--as'])
         if not options['--as-type'] or options['--as-type'] == 'ASS':
             # characterize A5SS and A3SS
-            parse_splice_site(denovo_dir, tophat_dir, pAplus_dir)
+            parse_splice_site(denovo_dir, tophat_dir, pAplus_dir,
+                              options['--as'])
 
+    if options['--abs']:
+        create_dir(options['--abs'])
+        
+        analyze_abs(denovo_dir, options['--genome'], options['--abs'])
 
 def extract_novel_circ(denovo_dir, ref_path):
     """
@@ -92,7 +109,7 @@ def extract_novel_circ(denovo_dir, ref_path):
     print('Start to fetch novel circular RNAs...')
     all_circ = {}
     # set path
-    fusion_f = '%s/circ_fusion.txt' % denovo_dir
+    fusion_f = '%s/circularRNA_full.txt' % denovo_dir
     with open(fusion_f, 'r') as f:
         for line in f:
             circ_type = line.split()[13]
@@ -141,7 +158,7 @@ def extract_novel_circ(denovo_dir, ref_path):
     print('Fetch %d circular RNAs!' % novel_circ_num)
 
 
-def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):
+def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, output_dir,rpkm_flag):
     """
     1. Check each exon and fetch PSI
     2. Calculate RPKM if needed
@@ -150,7 +167,7 @@ def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):
     print('Start to parse circular RNA exons...')
     exons = {}
     # set path
-    fusion_f = '%s/circ_fusion.txt' % denovo_dir
+    fusion_f = '%s/circularRNA_full.txt' % denovo_dir
     pAminus_junc_f = tophat_dir + '/junctions.bed'
     (pAminus_junc,
      pAminus_left_junc,
@@ -236,7 +253,7 @@ def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):
                             linear_exp = pAplus_bam.rpkm(chrom, *exon_deque[1])
                             info += '\t%.3f\t%.3f' % (circ_exp, linear_exp)
                         exons[exon_info] = [gene_info, reads, info]
-    output_f = '%s/all_exon_info.txt' % denovo_dir
+    output_f = '%s/all_exon_info.txt' % output_dir
     with open(output_f, 'w') as output:
         for exon in exons:
             chrom, start, end = exon.split()
@@ -246,14 +263,14 @@ def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, rpkm_flag):
     print('Complete parsing circular RNA exons!')
 
 
-def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir):
+def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir, output_dir):
     """
     Check each intron and fetch PIR
     Modified from Braunschweig et al., Genome Research, 2014, gr-177790.
     """
     print('Start to parse circular RNA introns...')
     # set path
-    fusion_f = '%s/circ_fusion.txt' % denovo_dir
+    fusion_f = '%s/circularRNA_full.txt' % denovo_dir
     pAminus_junc_f = tophat_dir + '/junctions.bed'
     pAminus_junc = parse_junc(pAminus_junc_f)
     pAminus_bam_f = tophat_dir + '/accepted_hits.bam'
@@ -319,7 +336,7 @@ def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir):
             if len(region) >= 3:
                 for intron_info in region[2:]:
                     intron_set.discard(intron_info)
-    output_f = '%s/all_intron_info.txt' % denovo_dir
+    output_f = '%s/all_intron_info.txt' % output_dir
     with open(output_f, 'w') as output:
         for intron in intron_set:
             chrom, sta, end, strand = intron.split()
@@ -378,7 +395,7 @@ def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir):
     print('Complete parsing circular RNA introns!')
 
 
-def parse_splice_site(denovo_dir, tophat_dir, pAplus_dir):
+def parse_splice_site(denovo_dir, tophat_dir, pAplus_dir, output_dir):
     """
     Characterize all the alternative splice site selections.
     """
@@ -386,7 +403,7 @@ def parse_splice_site(denovo_dir, tophat_dir, pAplus_dir):
     splice_site_5 = set()
     splice_site_3 = set()
     # set path
-    fusion_f = '%s/circ_fusion.txt' % denovo_dir
+    fusion_f = '%s/circularRNA_full.txt' % denovo_dir
     pAminus_junc_f = tophat_dir + '/junctions.bed'
     (pAminus_junc,
      pAminus_left_junc,
@@ -466,10 +483,117 @@ def parse_splice_site(denovo_dir, tophat_dir, pAplus_dir):
                         splice_site_5.add(left_info)
                     if pAminus_right_psu != 100:
                         splice_site_3.add(right_info)
-    output_f = '%s/all_A5SS_info.txt' % denovo_dir
+    output_f = '%s/all_A5SS_info.txt' % output_dir
     with open(output_f, 'w') as output:
         output.write(''.join(splice_site_5))
-    output_f = '%s/all_A3SS_info.txt' % denovo_dir
+    output_f = '%s/all_A3SS_info.txt' % output_dir
     with open(output_f, 'w') as output:
         output.write(''.join(splice_site_3))
     print('Complete parsing alternative splice sites!')
+
+def get_strand(fa, chrom, start, end, strand):
+    left = fa.fetch(chrom, start - 2, start).upper()
+    right = fa.fetch(chrom, end, end + 2).upper()
+    if left == 'AG' or right == 'GT':
+        return '+'
+    elif left == 'AC' or right == 'CT':
+        return '-'
+    else:
+        return strand
+
+def analyze_abs(denovo_dir, fasta, output_dir):
+    fa = pysam.FastaFile(fasta)
+    main_circ = set()
+    all_circ = set()
+    site5 = defaultdict(int)
+    site3 = defaultdict(int)
+    circ_f = '%s/circularRNA_full.txt' % denovo_dir
+    with open(circ_f, 'r') as f:
+        for line in f:
+            chrom, start, end, name, _, strand = line.split()[:6]
+            read = name.split('/')[1]
+            gene = line.split()[14]
+            if gene.startswith('CUFF'):
+                strand = get_strand(fa, chrom, int(start), int(end), strand)
+            circ_id = '\t'.join([chrom, start, end, read, strand])
+            if circ_id not in all_circ:
+                all_circ.add(circ_id)
+                rpm = float(line.split()[12])
+                if rpm >= 0.1:
+                    main_circ.add(circ_id)
+                left_id = '\t'.join([chrom, start])
+                right_id = '\t'.join([chrom, end])
+                if strand == '+':
+                    site3[left_id] += int(read)
+                    site5[right_id] += int(read)
+                else:
+                    site3[right_id] += int(read)
+                    site5[left_id] += int(read)
+    alter5 = '%s/a5bs.txt' % output_dir
+    alter3 = '%s/a3bs.txt' % output_dir
+    site3_set = set()
+    site5_set = set()
+    with open(alter5, 'w') as f5, open(alter3, 'w') as f3:
+        for circ in main_circ:
+            chrom, start, end, read, strand = circ.split()
+            read = int(read)
+            left_id = '\t'.join([chrom, start])
+            right_id = '\t'.join([chrom, end])
+            if strand == '+':
+                site3_total = site3[left_id]
+                site3_id = left_id
+                site5_total = site5[right_id]
+                site5_id = right_id
+            else:
+                site3_total = site3[right_id]
+                site3_id = right_id
+                site5_total = site5[left_id]
+                site5_id = left_id
+            site3_set.add(site3_id)
+            site5_set.add(site5_id)
+            site3_pci = read * 1.0 / site3_total
+            site5_pci = read * 1.0 / site5_total
+            if site5_pci < 1.0:
+                f5.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
+                                                        end, strand,
+                                                        site3_id,
+                                                        site3_total,
+                                                        site3_pci))
+            if site3_pci < 1.0:
+                f3.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
+                                                        end, strand,
+                                                        site5_id, 
+                                                        site5_total, 
+                                                        site5_pci))
+        for circ in all_circ:
+            if circ in main_circ:
+                continue
+            chrom, start, end, read, strand = circ.split()
+            read = int(read)
+            left_id = '\t'.join([chrom, start])
+            right_id = '\t'.join([chrom, end])
+            if strand == '+':
+                site3_total = site3[left_id]
+                site3_id = left_id
+                site5_total = site5[right_id]
+                site5_id = right_id
+            else:
+                site3_total = site3[right_id]
+                site3_id = right_id
+                site5_total = site5[left_id]
+                site5_id = left_id
+            site3_pci = read * 1.0 / site3_total
+            site5_pci = read * 1.0 / site5_total
+            if site3_id in site3_set and site3_pci < 1.0:
+                f5.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
+                                                           end, strand,
+                                                           site3_id, 
+                                                           site3_total, 
+                                                           site3_pci))
+            if site5_id in site5_set and site5_pci < 1.0:
+                f3.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
+                                                           end, strand,
+                                                           site5_id, 
+                                                           site5_total, 
+                                                           site5_pci))
+

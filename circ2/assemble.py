@@ -1,28 +1,26 @@
 '''
-Usage: CIRCexplorer2 assemble [options] -r REF <circ_dir>
+Usage: CIRCexplorer2 assemble [options] -r REF -m TOPHAT [-o OUT]
 
 Options:
     -h --help                      Show help message.
     -v --version                   Show version.
     -r REF --ref=REF               Gene annotation file.
+    -m TOPHAT --tophat=TOPHAT      TopHat mapping folder.
+    -o OUT --output=OUT            Output directory. [default: assemble]
     -p THREAD --thread=THREAD      Running threads. [default: 10]
     --bb                           Convert assembly results to BigBed.
-    --tophat-dir=TOPHAT_DIR        TopHat mapping directory.
     --chrom-size=CHROM_SIZE        Chrom size file for converting to BigBed.
     --remove-rRNA                  Ignore rRNA during assembling (only for \
 human hg19).
     --max-bundle-frags=FRAGMENTS   Cufflinks --max-bundle-frags option.
 '''
 
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import zip
 import sys
 import os
 import os.path
 from .parser import parse_junc
 from .helper import logger, which, genepred_to_bed
-from .dir_func import check_dir, create_dir
+from .dir_func import create_dir
 import pybedtools
 import pysam
 
@@ -34,12 +32,9 @@ __all__ = ['assemble']
 @logger
 def assemble(options):
     # check output directory
-    out_dir = check_dir(options['<circ_dir>'])
+    out_dir = create_dir(options['--output'])
     # check tophat results
-    if options['--tophat-dir']:
-        tophat_dir = check_dir(options['--tophat-dir'])
-    else:
-        tophat_dir = check_dir(out_dir + '/tophat')
+    tophat_dir = options['--tophat']
     # check cufflinks
     if which('cufflinks') is None:
         sys.exit('Cufflinks is required for CIRCexplorer2 assemble!')
@@ -50,19 +45,19 @@ def assemble(options):
     if which('gtfToGenePred') is None:
         sys.exit('gtfToGenePred is required for CIRCexplorer2 assemble!')
     # prepare cufflinks directory
-    cufflinks_dir = out_dir + '/cufflinks'
+    cufflinks_dir = out_dir
     create_dir(cufflinks_dir)
     # filter ref file
-    ref_filter(options['--ref'], tophat_dir, out_dir)
+    ref_filter(options['--ref'], tophat_dir, cufflinks_dir)
     # assemble with cufflinks
-    cufflinks_assemble(out_dir, tophat_dir, cufflinks_dir, options['--thread'],
+    cufflinks_assemble(tophat_dir, cufflinks_dir, options['--thread'],
                        options['--remove-rRNA'], options['--max-bundle-frags'])
     # convert assembly results
-    convert_assembly_gtf(out_dir, cufflinks_dir, options['--ref'],
+    convert_assembly_gtf(tophat_dir, cufflinks_dir, options['--ref'],
                          options['--bb'], options['--chrom-size'])
 
 
-def ref_filter(ref, tophat_dir, out_dir):
+def ref_filter(ref, tophat_dir, cufflinks_dir):
     '''
     Extract isoform with at least two supported junction reads for each
     junction
@@ -70,10 +65,11 @@ def ref_filter(ref, tophat_dir, out_dir):
     print('Read gene annotations...')
     # read junction information
     junction_f = tophat_dir + '/junctions.bed'
+
     junc = parse_junc(junction_f)
     print('Filter gene annotations with junction information...')
     # filter out gene annotations using junction reads
-    filtered_junction_f = '%s/cufflinks/filtered_junction.txt' % out_dir
+    filtered_junction_f = '%s/filtered_junction.txt' % cufflinks_dir
     with open(ref, 'r') as ref_f, open(filtered_junction_f, 'w') as out_f:
         for line in ref_f:
             chrom = line.split()[2]
@@ -85,23 +81,23 @@ def ref_filter(ref, tophat_dir, out_dir):
                     break
             else:  # all the junctions have enough reads
                 out_f.write('\t'.join(line.split()[1:]) + '\n')
-    filtered_junction_gtf = '%s/cufflinks/filtered_junction.gtf' % out_dir
+    filtered_junction_gtf = '%s/filtered_junction.gtf' % cufflinks_dir
     return_code = os.system('genePredToGtf file %s %s' %
                             (filtered_junction_f, filtered_junction_gtf)) >> 8
     if return_code:
         sys.exit('Error: cannot convert GenePred to GTF!')
 
 
-def cufflinks_assemble(out_dir, tophat_dir, cufflinks_dir, thread, flag_rRNA,
+def cufflinks_assemble(tophat_dir, cufflinks_dir, thread, flag_rRNA,
                        fragments):
     '''
     Cufflinks RABT assembly
     '''
     # prepare cufflinks command
-    gtf_path = '%s/cufflinks/filtered_junction.gtf' % out_dir
-    bam_path = tophat_dir + '/accepted_hits.bam'
+    gtf_path = '%s/filtered_junction.gtf' % cufflinks_dir
+    bam_path = '%s/accepted_hits.bam' % tophat_dir
     if flag_rRNA:  # remove rRNA
-        new_bam_path = '%s/tophat_no_rRNA.bam' % out_dir
+        new_bam_path = '%s/tophat_no_rRNA.bam' % cufflinks_dir
         previous_bam = pysam.AlignmentFile(bam_path, 'rb')
         new_bam = pysam.AlignmentFile(new_bam_path, 'wb',
                                       template=previous_bam)
@@ -117,7 +113,7 @@ def cufflinks_assemble(out_dir, tophat_dir, cufflinks_dir, thread, flag_rRNA,
     if fragments:
         cufflinks_cmd += '--max-bundle-frags %s ' % fragments
     cufflinks_cmd += '-g %s -o %s %s ' % (gtf_path, cufflinks_dir, bam_path)
-    cufflinks_cmd += '2> %s/cufflinks.log' % out_dir
+    cufflinks_cmd += '2> %s/cufflinks.log' % cufflinks_dir
     # run cufflinks
     print('Assemble with Cufflinks...')
     print('Cufflinks assemble command:')
@@ -127,7 +123,7 @@ def cufflinks_assemble(out_dir, tophat_dir, cufflinks_dir, thread, flag_rRNA,
         sys.exit('Error: cannot assemble with Cufflinks!')
 
 
-def convert_assembly_gtf(out_dir, cufflinks_dir, ref, bb, chrom_size):
+def convert_assembly_gtf(tophat_dir, cufflinks_dir, ref, bb, chrom_size):
     '''
     1. Convert Cufflinks GTF to GenePred
     2. Add gene symbols
@@ -156,7 +152,7 @@ def convert_assembly_gtf(out_dir, cufflinks_dir, ref, bb, chrom_size):
         if which('bedToBigBed') is not None:
             print('Convert to BigBed file...')
             if not chrom_size:  # no chromsize file, search it in tophat folder
-                chrom_size = '%s/tophat/chrom.size' % out_dir
+                chrom_size = '%s/tophat/chrom.size' % tophat_dir
                 if not os.path.isfile(chrom_size):
                     sys.exit('Please offer the path of chrom.size!')
             bed_path = '%s/transcripts_ref.bed' % cufflinks_dir

@@ -7,7 +7,7 @@
 ### Usage:
 
 ```
-CIRCexplorer2 assemble [options] -r REF <circ_dir>
+CIRCexplorer2 assemble [options] -r REF -m TOPHAT [-o OUT]
 ```
 
 ### Options:
@@ -16,9 +16,10 @@ CIRCexplorer2 assemble [options] -r REF <circ_dir>
 -h --help                      Show help message.
 -v --version                   Show version.
 -r REF --ref=REF               Gene annotation file.
+-m TOPHAT --tophat=TOPHAT      TopHat mapping folder.
+-o OUT --output=OUT            Output directory. [default: assemble]
 -p THREAD --thread=THREAD      Running threads. [default: 10]
 --bb                           Convert assembly results to BigBed.
---tophat-dir=TOPHAT_DIR        TopHat mapping directory.
 --chrom-size=CHROM_SIZE        Chrom size file for converting to BigBed.
 --remove-rRNA                  Ignore rRNA during assembling (only for human hg19).
 --max-bundle-frags=FRAGMENTS   Cufflinks --max-bundle-frags option.
@@ -26,21 +27,21 @@ CIRCexplorer2 assemble [options] -r REF <circ_dir>
 
 ## Notes about options
 
-1. `CIRCexplorer2 assemble` require to use alignment results of TopHat2 to *de novo* assemble circular RNA transcripts. So if the TopHat2 result folder is not under `<circ_dir>`, you could specify its path using `--tophat-dir`.
-2. `CIRCexplorer2 assemble` will search for the chrom size file in TopHat2 result folder, and you could also specify its path using `--chrom-size`. If you have used `CIRCexplorer2 align` to align RNA-seq data, the chrom size file would be existed in the TopHat2 result folder.
-3. Assembly for rRNA would be very time-consuming. If you set `--remove-rRNA` option, it would skip assembly for rRNA. To be noted, this option is only suitable for **hg19**. If the assembly step is still very slow, you could set `--max-bundle-frags` with a small number. Please see [Cufflinks protocol](http://www.nature.com/nprot/journal/v7/n3/fig_tab/nprot.2012.016_T2.html) for more details about `--max-bundle-frags` option.
-4. If you set `--bb` option, the BigBed file of assembled transcripts would be created.
+1. `CIRCexplorer2 assemble` will search for the chrom size file in TopHat2 result folder, and you could also specify its path using `--chrom-size`. If you have used `CIRCexplorer2 align` to align RNA-seq data, the chrom size file would be existed in the TopHat2 result folder.
+2. Assembly for rRNA would be very time-consuming. If you set `--remove-rRNA` option, it would skip assembly for rRNA. To be noted, this option is only suitable for **hg19**. If the assembly step is still very slow, you could set `--max-bundle-frags` with a small number. Please see [Cufflinks protocol](http://www.nature.com/nprot/journal/v7/n3/fig_tab/nprot.2012.016_T2.html) for more details about `--max-bundle-frags` option.
+3. If you set `--bb` option, the BigBed file of assembled transcripts would be created.
 
 ## Input
 
-`CIRCexplorer2 assemble` needs a gene annotation file and a `<circ_dir>` folder which contains `fusion_junction.bed` created by `CIRCexplorer2 parse` or `CIRCexplorer2 align`. If there is no `tophat` folder under `<circ_dir>`, you should indicate its path via `--tophat-dir`. The gene annotation file should be in the format of [Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9). See [Annotate](../modules/annotate.md) for more details.
+`CIRCexplorer2 assemble` needs a gene annotation file and a tophat folder containing p(A)- or ribo- RNA-seq mapping result. The gene annotation file should be in the format of [Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9). See [Annotate](../modules/annotate.md) for more details.
 
 ## Output
 
-`CIRCexplorer2 assemble` will create one `cufflinks` folder under the `<circ_dir>` folder. It will also create `cufflinks.log` under `<circ_dir>` folder. The `transcripts_ref.txt` would be used to do alternative splicing analysis for circular RNAs, and it has the same format with [refFlat format](http://genome.ucsc.edu/FAQ/FAQformat.html#format9).
+`CIRCexplorer2 assemble` will create one `assemble` folder by default. The `transcripts_ref.txt` would be used to do alternative splicing analysis for circular RNAs, and it has the same format with [refFlat format](http://genome.ucsc.edu/FAQ/FAQformat.html#format9).
 
 ```
-cufflinks
+assemble
+├── cufflinks.log
 ├── filtered_junction.gtf
 ├── filtered_junction.txt
 ├── genes.fpkm_tracking

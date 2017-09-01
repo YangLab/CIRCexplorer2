@@ -7,7 +7,7 @@
 ### Usage:
 
 ```
-CIRCexplorer2 denovo [options] -r REF -g GENOME <circ_dir>
+CIRCexplorer2 denovo [options] -r REF -g GENOME -b JUNC [-d CUFF] [-o OUT]
 ```
 
 ### Options:
@@ -16,20 +16,24 @@ CIRCexplorer2 denovo [options] -r REF -g GENOME <circ_dir>
 -h --help                      Show help message.
 --version                      Show version.
 -r REF --ref=REF               Gene annotation.
---as                           Detect alternative splicing.
+--as=AS                        Detect alternative splicing and output.
 --as-type=AS_TYPE              Only check certain type (CE/RI/ASS) of AS events.
--a PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for p(A)+ RNA-seq.
+--abs=ABS                      Detect alternative back-splicing and output.
+-b JUNC --bed=JUNC             Input file.
+-d CUFF --cuff=CUFF            assemble folder output by CIRCexplorer2 assemble. [default: '']
+-m TOPHAT --tophat=TOPHAT      TopHat mapping folder.
+-n PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for p(A)+ RNA-seq.
+-o OUT --output=OUT            Output Folder. [default: denovo]
 -g GENOME --genome=GENOME      Genome FASTA file.
---tophat-dir=TOPHAT_DIR        TopHat mapping directory for p(A)- RNA-seq.
 --no-fix                       No-fix mode (useful for species with poor gene annotations).
 --rpkm                         Calculate RPKM for cassette exons.
 ```
 
 ## Notes about options
 
-1. If there is no `cufflinks` directory under `<circ_dir>` (no *de novo* assembly step for circular RNAs, see [Assemble](../modules/assemble.md)), `CIRCexplorer2 denovo` will only use existing gene annotations to parse alternative splicing with setting `--as` option. This way is not recommended, so please run `CIRCexplorer2 assemble` before `CIRCexplorer2 denovo`.
-2. If you set `--as` option, it will characterize the alternative splicing of circular RNAs, including 'cassette exons', 'retained introns', 'A5SS' and 'A3SS'. In this mode, you should also offer the path of TopHat mapping directory for p(A)+ RNA-seq via `-a` option. By default, after setting `--as` option, it will check all types of alternative splicing events. You could also indicate one type of alternative splicing events through the `--as-type` option ('CE': 'cassette exons', 'RI': 'retained introns', 'ASS': 'A5SS' and 'A3SS').
-3. If TopHat mapping directory for p(A)- RNA-seq is not under `<circ_dir>`, you could set it via `--tophat-dir` option.
+1. If the `--cuff` is not set, `CIRCexplorer2 denovo` will only use existing gene annotations to parse alternative splicing with setting `--as` option. This way is not recommended, so please run `CIRCexplorer2 assemble` before `CIRCexplorer2 denovo`.
+2. If you set `--abs` option, `CIRCexplorer2 denovo` will characteriza the alternative back-splicing of circular RNAs.
+3. If you set `--as` option, it will characterize the alternative splicing of circular RNAs, including 'cassette exons', 'retained introns', 'A5SS' and 'A3SS'. In this mode, you should also offer the path of TopHat mapping directory for p(A)-/p(A)+ RNA-seq via `-m`/`-n` option. By default, after setting `--as` option, it will check all types of alternative splicing events. You could also indicate one type of alternative splicing events through the `--as-type` option ('CE': 'cassette exons', 'RI': 'retained introns', 'ASS': 'A5SS' and 'A3SS').
 4. If you set `--no-fix` options, [realignment step of fusion junction reads](http://www.sciencedirect.com/science/article/pii/S0092867414011118) will be skipped. It is useful for species with poor gene annotations, but the accuracy of circular RNA prediction would decrease.
 5. If `--rpkm` option is set, RPKM of cassette exons would be calculated.
 
@@ -44,10 +48,13 @@ The input files are similar to those in `CIRCexplorer2 annotate` command. See [A
 ```
 denovo
 ├── combined_ref.txt
-├── annotated_fusion.txt
-├── circ_fusion.txt
+├── circularRNA_full.txt
 ├── annotated_circ.txt
-├── novel_circ.txt
+└── novel_circ.txt
+abs
+├── a5bs.txt
+└── a3bs.txt
+as
 ├── all_exon_info.txt
 ├── all_intron_info.txt
 ├── all_A5SS_info.txt
@@ -55,9 +62,10 @@ denovo
 ```
 
 * `combined_ref.txt`: combined gene annotation file (*de novo* assembled gene annotations and existing gene annotations).
-* `annotated_fusion.txt`: Annotated fusion junction information file. (same as relevant file in [Annotate](../modules/annotate.md)))
-* `circ_fusion.txt`: Circular RNA annotation file. (same as relevant file in [Annotate](../modules/annotate.md)))
+* `circularRNA_full.txt`: Circular RNA annotation file. (same as relevant file in [Annotate](../modules/annotate.md)))
 * `annotated_circ.txt`: CircRNAs with annotated back-splice sites.
+* `a5bs.txt`: Alternative 5' back-splice site information file.
+* `a3bs.txt`: Alternative 3' back-splice site information file.
 * `novel_circ.txt`: CircRNAs with one or two novel back-splice site(s).
 * `all_exon_info.txt`: Cassette exon information file.
 * `all_intron_info.txt`: Retained intron information file.
@@ -75,6 +83,30 @@ denovo
 | score       | Flag of fusion junction realignment   |
 | strand      | + or - for strand                     |
 | geneName    | Name of gene                          |
+
+*Format of `a5bs.txt`:*
+
+| Field       | Description                           |
+| :---------- | :------------------------------------ |
+| chrom       | Chromosome                            |
+| start       | Start of circular RNA                 |
+| end         | End of circular RNA                   |
+| strand      | Strand of circular RNA                |
+| absSite     | Alternative back-splice site          |
+| absCount    | back-spliced read counts              |
+| PCU         | Percent Circularized-site Usage       |
+
+*Format of `a3bs.txt`:*
+
+| Field       | Description                           |
+| :---------- | :------------------------------------ |
+| chrom       | Chromosome                            |
+| start       | Start of circular RNA                 |
+| end         | End of circular RNA                   |
+| strand      | Strand of circular RNA                |
+| absSite     | Alternative back-splice site          |
+| absCount    | back-spliced read counts              |
+| PCU         | Percent Circularized-site Usage       |
 
 *Format of `novel_circ.txt`:*
 

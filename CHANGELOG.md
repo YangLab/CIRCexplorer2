@@ -1,12 +1,14 @@
-## 2.2.8 (2017-09-01)
-
-Bugfixes:
-
-* Support Python 3
+## 2.3.0 (2017-09-01)
 
 Improvements:
 
-* Add Snakemake workflows
+* reorganize inputs and outputs.
+* add alternative back-splicing analysis
+* support Python 3
+
+Bugfixes:
+
+* bug in align step
 
 ## 2.2.7 (2017-07-20)
 

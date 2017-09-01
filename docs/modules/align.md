@@ -7,7 +7,7 @@
 ### Usage:
 
 ```
-CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2 | -i INDEX1 | -j INDEX1) <fastq>...
+CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2 | -i INDEX1 | -j INDEX1) -f FQ
 ```
 
 ### Options:
@@ -20,7 +20,9 @@ CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2 | -i INDEX
 -i INDEX1 --bowtie1=INDEX1     Index files for Bowtie1 (used for TopHat-Fusion).
 -j INDEX2 --bowtie2=INDEX2     Index files for Bowtie2 (used for TopHat2).
 -p THREAD --thread=THREAD      Running threads. [default: 10]
--o OUT --output=OUT            Output directory. [default: circ_out]
+-f FQ --fastq=FQ               Input file.
+-o OUT --output=OUT            Output directory. [default: alignment]
+-b JUNC --bed=JUNC             Output file. [default: back_spliced_junction.bed]
 --bw                           Create BigWig file.
 --scale                        Scale to HPB.
 --skip-tophat                  Skip TopHat mapping.
@@ -35,21 +37,21 @@ CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2 | -i INDEX
 ). More information about HPB could be found in [this paper](http://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-14-206).
 4. If you set `--skip-tophat`, TopHat2 alignment would be skipped. It is useful for some specific conditions, please see [FAQ](../about/faq.md) for details.
 5. If you set `--skip-tophat-fusion`, TopHat-Fusion alignment would be skipped. It is useful for poly(A)+ RNA-seq.
-6. You could offer multiple fastq files (or compressed files) separated by spaces or comma.
+6. You could offer multiple fastq files (or compressed files) separated or comma.
 7. Only single-read RNA-seq is supported. It is recommended to convert paired-end RNA-seq to single-read RNA-seq before alignment.
-8. It will overwrite the output directory automatically, so please be careful when setting the path of output directory.
+8. It will overwrite the output directory and output file automatically, so please be careful when setting the path of output directory.
 
 ## Output
 
-`CIRCexplorer2 align` will create multiple folders and log files under `circ_out` (you could change output folder using `-o`) folder. The `fusion_junction.bed` would be used by other modules of CIRCexplorer2 to further annotate and characterize circular RNAs.
+`CIRCexplorer2 align` will create a folder(`alignment`) and a file(`back_spliced_junction.bed`). The `back_spliced_junction.bed` would be used by other modules of CIRCexplorer2 to further annotate and characterize circular RNAs.
 
 ```
-circ_out
+back_spliced_junction.bed
+alignment
 ├── bowtie1_index/
 ├── bowtie2_index/
 ├── tophat/
 ├── tophat_fusion/
-├── fusion_junction.bed
 ├── tophat.log
 └── tophat_fusion.log
 ```
@@ -58,11 +60,11 @@ circ_out
 * `bowtie2_index`: Index file folder for Bowtie2.
 * `tophat`: TopHat2 alignment folder.
 * `tophat_fusion`: TopHat-Fusion alignment folder.
-* `fusion_junction.bed`: Fusion junction information file.
+* `back_spliced_junction.bed`: Fusion junction information file.
 * `tophat.log`: Log file of TopHat2 alignment.
 * `tophat_fusion.log`: Log file of TopHat-Fusion alignment.
 
-*Format of `fusion_junction.bed`:*
+*Format of `back_spliced_junction.bed`:*
 
 | Field       | Description              |
 | :---------- | :----------------------- |

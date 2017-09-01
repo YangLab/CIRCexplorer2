@@ -5,7 +5,6 @@ author: Xiao-Ou Zhang <zhangxiaoou@picb.ac.cn>
 version: 1.0
 '''
 
-from builtins import object
 import copy
 
 

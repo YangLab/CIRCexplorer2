@@ -25,6 +25,7 @@ def create_dir(dir):
             print('Warning: the directory %s is not empty!' % dir)
         shutil.rmtree(dir)
     os.mkdir(dir)
+    return dir
 
 
 def create_temp():

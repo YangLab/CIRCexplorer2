@@ -2,11 +2,7 @@
 test_annotate.py: Test annotate module
 '''
 
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import object
 import os.path
-import shutil
 from .utils import check_file
 from circ2.annotate import annotate
 
@@ -22,8 +18,10 @@ class TestAnnotate(object):
         ref_path = circ_path + '/ref.txt'
         fa_path = circ_path + '/chr21.fa'
         options = {'--ref': ref_path, '--genome': fa_path,
-                   '--no-fix': False, '<circ_dir>': circ_path,
-                   '--low-confidence': True}
+                   '--no-fix': False,
+                   '--bed': circ_path+'/fusion_junction.bed',
+                   '--low-confidence': True,
+                   '--output': 'circularRNA_known.txt'}
         annotate(options, command='CIRCexplorer2 annotate', name='annotate')
 
     def testAnnotate(self):
@@ -31,18 +29,17 @@ class TestAnnotate(object):
         Check files in annotate directory
         '''
         print('#%s: Test annotate' % __name__)
-        result_path = 'data/annotate'
-        assert os.path.isdir(result_path), 'No annotate directory'
-        # check annotated_fusion.txt file
-        check_file('annotated_fusion.txt', result_path, 'data/annotate_result')
         # check circ_fusion.txt file
-        check_file('circ_fusion.txt', result_path, 'data/annotate_result')
+        check_file('circularRNA_known.txt',
+                   'data/annotate_result/circ_fusion.txt')
         # check low_circ_fusion.txt file
-        check_file('low_circ_fusion.txt', result_path, 'data/annotate_result')
+        check_file('low_conf_circularRNA_known.txt',
+                   'data/annotate_result/low_circ_fusion.txt')
 
     def teardown(self):
         '''
         Delete annotate directory
         '''
         print('#%s: End testing annotate' % __name__)
-        shutil.rmtree('data/annotate')
+        os.remove('circularRNA_known.txt')
+        os.remove('low_conf_circularRNA_known.txt')

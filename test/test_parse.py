@@ -8,7 +8,7 @@ import os
 import os.path
 import shutil
 from nose.tools import with_setup
-from .utils import check_fusion
+from .utils import check_file
 from circ2.parse import parse
 
 
@@ -25,7 +25,7 @@ def teardown_function():
     Delete circ_out directory and leave data directory
     '''
     print('#%s: Remove test files' % __name__)
-    shutil.rmtree('circ_out')
+    os.remove('back_spliced_junction.bed')
     os.chdir('..')
 
 
@@ -35,11 +35,11 @@ def test_tophat_fusion_parse():
     Test TopHat-Fusion parser
     '''
     print('#%s: Test parse TopHat-Fusion' % __name__)
-    options = {'-t': 'TopHat-Fusion', '--output': 'circ_out',
+    options = {'-t': 'TopHat-Fusion', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'tophat_fusion.bam', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (TopHat-Fusion)', name='parse')
-    assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_fusion('fusion_junction.bed', 'circ_out', 'TopHat_Fusion_out')
+    check_file('back_spliced_junction.bed',
+               'parse_TopHat_Fusion/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -48,12 +48,12 @@ def test_tophat_fusion_pe_parse():
     Test TopHat-Fusion PE parser
     '''
     print('#%s: Test parse TopHat-Fusion' % __name__)
-    options = {'-t': 'TopHat-Fusion', '--output': 'circ_out',
+    options = {'-t': 'TopHat-Fusion', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'tophat_fusion_PE.bam', '--pe': True}
     parse(options, command='CIRCexplorer2 parse (TopHat-Fusion PE)',
           name='parse')
-    assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_fusion('fusion_junction.bed', 'circ_out', 'TopHat_Fusion_PE_out')
+    check_file('back_spliced_junction.bed',
+               'parse_TopHat_Fusion_PE/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -62,11 +62,10 @@ def test_star_parse():
     Test STAR parser
     '''
     print('#%s: Test parse STAR' % __name__)
-    options = {'-t': 'STAR', '--output': 'circ_out',
+    options = {'-t': 'STAR', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'Chimeric.out.junction', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (STAR)', name='parse')
-    assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_fusion('fusion_junction.bed', 'circ_out', 'STAR_out')
+    check_file('back_spliced_junction.bed', 'parse_STAR/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -75,11 +74,11 @@ def test_mapsplice_parse():
     Test MapSplice parser
     '''
     print('#%s: Test parse MapSplice' % __name__)
-    options = {'-t': 'MapSplice', '--output': 'circ_out',
+    options = {'-t': 'MapSplice', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'fusions_raw.txt', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (Mapsplice)', name='parse')
-    assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_fusion('fusion_junction.bed', 'circ_out', 'MapSplice_out')
+    check_file('back_spliced_junction.bed',
+               'parse_MapSplice/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -88,11 +87,10 @@ def test_bwa_parse():
     Test BWA parser
     '''
     print('#%s: Test parse BWA' % __name__)
-    options = {'-t': 'BWA', '--output': 'circ_out',
+    options = {'-t': 'BWA', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'RNA_seq_bwa.sam', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (BWA)', name='parse')
-    assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_fusion('fusion_junction.bed', 'circ_out', 'BWA_out')
+    check_file('back_spliced_junction.bed', 'parse_BWA/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -101,8 +99,8 @@ def test_segemehl_parse():
     Test segemehl parser
     '''
     print('#%s: Test parse segemehl' % __name__)
-    options = {'-t': 'segemehl', '--output': 'circ_out',
+    options = {'-t': 'segemehl', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'splicesites.bed', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (segemehl)', name='parse')
-    assert os.path.isdir('circ_out'), 'No circ_out directory'
-    check_fusion('fusion_junction.bed', 'circ_out', 'segemehl_out')
+    check_file('back_spliced_junction.bed',
+               'parse_segemehl/fusion_junction.bed')

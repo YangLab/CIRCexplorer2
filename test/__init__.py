@@ -1,7 +1,6 @@
 '''
 Set up some stuff for unit testing
 '''
-from __future__ import print_function
 
 import os
 

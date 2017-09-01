@@ -24,7 +24,7 @@ Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 
 *NEWS: 
 
-From version 2.3.0, CIRCexplorer2 have very big changes in inputs and outputs.  For new structures, please see http://circexplorer2.readthedocs.org. If you want to check the information for old versions, please see http://circexplorer2.readthedocs.io/en/2.2.7 .
+From version 2.3.0, CIRCexplorer2 has very big changes in inputs and outputs.  For new structures, please see http://circexplorer2.readthedocs.org. If you want to check the information for old versions, please see http://circexplorer2.readthedocs.io/en/2.2.7 .
 
 [CIRCpedia](http://www.picb.ac.cn/rnomics/circpedia) is an integrative database, aiming to annotating alternative back-splicing and alternative splicing in circRNAs across different cell lines. Welcome to use!*
 

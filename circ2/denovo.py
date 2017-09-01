@@ -1,5 +1,5 @@
 """
-Usage: CIRCexplorer2 denovo [options] -r REF -g GENOME -b JUNC -o denovo
+Usage: CIRCexplorer2 denovo [options] -r REF -g GENOME -b JUNC [-d CUFF] [-o OUT]
 
 Options:
     -h --help                      Show help message.
@@ -10,7 +10,8 @@ Options:
 events.
     --abs=ABS                      Detect alternative back-splicing and output.
     -b JUNC --bed=JUNC             Input file.
-    -d CUFF --cuff=CUFF            Cufflinks folder.
+    -d CUFF --cuff=CUFF            assemble folder output by CIRCexplorer2 \
+assemble. [default: '']
     -m TOPHAT --tophat=TOPHAT      TopHat mapping folder.
     -n PLUS_OUT --pAplus=PLUS_OUT  TopHat mapping directory for p(A)+ RNA-seq.
     -o OUT --output=OUT            Output Folder. [default: denovo]
@@ -553,13 +554,13 @@ def analyze_abs(denovo_dir, fasta, output_dir):
             site5_set.add(site5_id)
             site3_pci = read * 1.0 / site3_total
             site5_pci = read * 1.0 / site5_total
-            if site5_pci < 1.0:
+            if site3_pci < 1.0:
                 f5.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
                                                         end, strand,
                                                         site3_id,
                                                         site3_total,
                                                         site3_pci))
-            if site3_pci < 1.0:
+            if site5_pci < 1.0:
                 f3.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
                                                         end, strand,
                                                         site5_id, 

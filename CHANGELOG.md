@@ -1,3 +1,14 @@
+## 2.3.0 (2017-08-31)
+
+Improvements:
+
+* reorganize inputs and outputs.
+* add alternative back-splicing analysis
+
+Bugfixes:
+
+* bug in align step
+
 ## 2.2.7 (2017-07-20)
 
 Bugfixes:

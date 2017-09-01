@@ -11,12 +11,12 @@ def compare_file(fn1, fn2):
         return content1 == content2
 
 
-def check_file(f, test_dir, result_dir):
+def check_file(f1, f2):
     '''
     Check if files are existed and same
     '''
-    test_f = test_dir + '/' + f
-    result_f = result_dir + '/' + f
+    test_f = f1
+    result_f = f2
     print('Check %s file...' % test_f)
     assert os.path.isfile(test_f), 'No %s file' % test_f
     assert compare_file(test_f, result_f), 'Difference in %s' % test_f

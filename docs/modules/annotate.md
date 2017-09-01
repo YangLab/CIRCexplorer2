@@ -7,7 +7,7 @@
 ### Usage:
 
 ```
-CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
+CIRCexplorer2 annotate [options] -r REF -g GENOME -b JUNC [-o OUT]
 ```
 
 ### Options:
@@ -17,6 +17,8 @@ CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 --version                      Show version.
 -r REF --ref=REF               Gene annotation.
 -g GENOME --genome=GENOME      Genome FASTA file.
+-b JUNC --bed=JUNC             Input file.
+-o OUT --output=OUT            Output file. [default: circularRNA_known.txt]
 --no-fix                       No-fix mode (useful for species with poor gene annotations).
 --low-confidence               Extract low confidence circRNAs.
 ```
@@ -25,15 +27,14 @@ CIRCexplorer2 annotate [options] -r REF -g GENOME <circ_dir>
 
 1. It would randomly report one circular RNA isoform for each back-splicing junction based on existed gene annotations.
 2. If you set `--no-fix` options, [realignment step of fusion junction reads](http://www.sciencedirect.com/science/article/pii/S0092867414011118) will be skipped. It is useful for species with poor gene annotations, but the accuracy of circular RNA prediction would decrease.
-3. `CIRCexplorer2 annotate` extracts fusion junction reads exactly matching the boundaries of exons of the same isoform by default. If you set the `--low-confidence`, it will also extract fusion junction reads matching the boundaries of exons of the different isofoms of the same gene, and output them in `low_circ_fusion.txt`.
+3. `CIRCexplorer2 annotate` extracts fusion junction reads exactly matching the boundaries of exons of the same isoform by default. If you set the `--low-confidence`, it will also extract fusion junction reads matching the boundaries of exons of the different isofoms of the same gene, and output them in `low_conf_circularRNA_known.txt`.
 
 ## Input
 
-`CIRCexplorer2 annotate` needs a gene annotation file, a reference genome sequence file and a `<circ_dir>` folder which contains `fusion_junction.bed` created by `CIRCexplorer2 parse` or `CIRCexplorer2 align`.
+`CIRCexplorer2 annotate` needs a gene annotation file, a reference genome sequence file and a `back_spliced_junction.bed` created by `CIRCexplorer2 parse` or `CIRCexplorer2 align`.
 
 ```
-<circ_dir>
-└── fusion_junction.bed
+back_spliced_junction.bed
 ```
 
 ### Format of gene annotation file:
@@ -57,19 +58,16 @@ The file is in the format of [Gene Predictions and RefSeq Genes with Gene Names]
 
 ## Output
 
-`CIRCexplorer2 annotate` will create one `annotate` folder under the `<circ_dir>` folder. The `circ_fusion.txt` contains the final circular RNA annotation information.
+`CIRCexplorer2 annotate` will create a `circularRNA_known.txt` file by default. The `circularRNA_known.txt` contains the final circular RNA annotation information.
 
 ```
-annotate
-├── annotated_fusion.txt
-├── circ_fusion.txt
-└── low_circ_fusion.txt (if set the '--low-confidence' option)
+circularRNA_known.txt
+low_conf_circularRNA_known.txt
 ```
 
-* `annotated_fusion.txt`: Annotated fusion junction information file.
-* `circ_fusion.txt`: Circular RNA annotation file.
+* `circularRNA_known.txt`: Circular RNA annotation file.
 
-*Format of `circ_fusion.txt`:*
+*Format of `circularRNA_known.txt`:*
 
 | Field       | Description                           |
 | :---------- | :------------------------------------ |
@@ -92,7 +90,7 @@ annotate
 | index       | Index of exon or intron               |
 | flankIntron | Left intron/Right intron              |
 
-*Format of `low_circ_fusion.txt`:*
+*Format of `low_conf_circularRNA_known.txt`:*
 
 | Field       | Description                           |
 | :---------- | :------------------------------------ |

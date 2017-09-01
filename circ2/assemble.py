@@ -1,5 +1,5 @@
 '''
-Usage: CIRCexplorer2 assemble [options] -r REF -m TOPHAT -o OUT
+Usage: CIRCexplorer2 assemble [options] -r REF -m TOPHAT [-o OUT]
 
 Options:
     -h --help                      Show help message.

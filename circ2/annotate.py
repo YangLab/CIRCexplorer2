@@ -1,5 +1,5 @@
 '''
-Usage: CIRCexplorer2 annotate [options] -r REF -g GENOME -b JUNC -o OUT
+Usage: CIRCexplorer2 annotate [options] -r REF -g GENOME -b JUNC [-o OUT]
 
 Options:
     -h --help                      Show help message.

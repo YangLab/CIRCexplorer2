@@ -33,7 +33,7 @@ CIRCexplorer2 parse -t segemehl splicesites.bed > CIRCexplorer2_parse.log
 
 ### Note
 
-1. `CIRCexplorer2 parse` will create a directory `circ_out` by default, and the BED file `fusion_junction.bed` under this directory is required for following analysis.
+1. `CIRCexplorer2 parse` will create a file `back_spliced_junction.bed` by default that is required for following analysis.
 2. See [Parse](../modules/parse.md) for detailed information about `CIRCexplorer2 parse`.
 
 # For paired-end datas
@@ -50,6 +50,6 @@ CIRCexplorer2 parse --pe -t TopHat-Fusion tophat_fusion/accepted_hits.bam > CIRC
 
 ### Note
 
-1. `CIRCexplorer2 parse` will create a directory `circ_out` by default, and the BED file `fusion_junction.bed` under this directory is required for following analysis.
+1. `CIRCexplorer2 parse` will create a file `back_spliced_junction.bed` by default that is required for following analysis.
 2. If you use `CIRCexplorer2 parse` to deal with paired-end data aligned by TopHat-Fusion, please refer to the one step method mentioned in [alignment tutorial](./alignment.md).
 3. See [Parse](../modules/parse.md) for detailed information about `CIRCexplorer2 parse`.

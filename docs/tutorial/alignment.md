@@ -9,18 +9,18 @@ Because TopHat2 needs gene annotation file for better alignment, you could selec
 
 * From index files (`bowtie1_index` is the prefix for bowtie1 index files, and `bowtie2_index` is the prefix for bowtie2 index files):
 ```
-CIRCexplorer2 align -G hg19_kg.gtf -i bowtie1_index -j bowtie2_index RNA_seq.fastq > CIRCexplorer2_align.log
+CIRCexplorer2 align -G hg19_kg.gtf -i bowtie1_index -j bowtie2_index -f RNA_seq.fastq > CIRCexplorer2_align.log
 ```
 
 * Or from genome sequence:
 ```
-CIRCexplorer2 align -G hg19_kg.gtf -g hg19.fa RNA_seq.fastq > CIRCexplorer2_align.log
+CIRCexplorer2 align -G hg19_kg.gtf -g hg19.fa -f RNA_seq.fastq > CIRCexplorer2_align.log
 ```
 
 ### Note
 
 1. Because Cufflinks is well compatible with TopHat2/TopHat-Fusion, it is recommended to use TopHat2/TopHat-Fusion alignment for [characterization pipeline](../tutorial/pipeline.md).
-2. `CIRCexplorer2 align` will create a directory `circ_out` by default, and the BED file `fusion_junction.bed` under this directory is required for following analysis. You could also check `tophat.log` and `tophat_fusion.log` file for detailed logs of Tophat2 and TopHat-Fusion alignment.
+2. `CIRCexplorer2 align` will create a directory `alignment`, and the BED file `fusion_junction.bed` that is required for following analysis. You could also check `tophat.log` and `tophat_fusion.log` file for detailed logs of Tophat2 and TopHat-Fusion alignment.
 3. See [Align](../modules/align.md) for detailed information about `CIRCexplorer2 align`.
 
 ## To align manually

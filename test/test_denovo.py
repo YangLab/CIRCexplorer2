@@ -20,10 +20,14 @@ class TestDenovo(object):
         fa_path = circ_path + '/chr21.fa'
         pAplus_tophat_path = circ_path + '/pAplus_tophat'
         options = {'--ref': ref_path, '--genome': fa_path,
-                   '--as': True, '--as-type': 'CE',
+                   '--as': circ_path+'/as', '--as-type': 'CE',
+                   '--abs': '',
+                   '--bed': circ_path + '/fusion_junction.bed',
+                   '--tophat': circ_path + '/tophat',
                    '--pAplus': pAplus_tophat_path,
-                   '--tophat-dir': None, '--no-fix': False,
-                   '--rpkm': False, '<circ_dir>': circ_path}
+                   '--cuff': circ_path + '/cufflinks',
+                   '--no-fix': False,
+                   '--rpkm': False, '--output': circ_path+'/denovo'}
         denovo(options, command='CIRCexplorer2 denovo', name='denovo')
 
     def testDenovo(self):
@@ -31,14 +35,22 @@ class TestDenovo(object):
         Check files in denovo directory
         '''
         print('#%s: Test denovo' % __name__)
-        result_path = 'data/denovo'
-        assert os.path.isdir(result_path), 'No denovo directory'
+        denovo_path = 'data/denovo'
+        as_path = 'data/as'
+        assert os.path.isdir(denovo_path), 'No denovo directory'
+        assert os.path.isdir(as_path), 'No as directory'
         # check files in denovo directory
-        file_list = ['annotated_fusion.txt', 'circ_fusion.txt',
+        file_list = ['circularRNA_full.txt',
                      'annotated_circ.txt', 'novel_circ.txt',
                      'all_exon_info.txt']
-        for f in file_list:
-            check_file(f, result_path, 'data/denovo_result')
+        check_file(denovo_path + '/circularRNA_full.txt', 
+                   'data/denovo_result/circularRNA_full.txt')
+        check_file(denovo_path + '/annotated_circ.txt', 
+                   'data/denovo_result/annotated_circ.txt')
+        check_file(denovo_path + '/novel_circ.txt', 
+                   'data/denovo_result/novel_circ.txt')
+        check_file(as_path + '/all_exon_info.txt', 
+                   'data/denovo_result/all_exon_info.txt')
 
     def teardown(self):
         '''
@@ -46,3 +58,4 @@ class TestDenovo(object):
         '''
         print('#%s: End testing denovo' % __name__)
         shutil.rmtree('data/denovo')
+        shutil.rmtree('data/as')

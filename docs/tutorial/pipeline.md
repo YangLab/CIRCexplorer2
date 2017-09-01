@@ -27,9 +27,8 @@ This pipeline is derived from [CIRCexplorer](http://yanglab.github.io/CIRCexplor
 
 ### Results
 
-Circular RNA infomation: `circ_out/annotate/circ_fusion.txt`  
-("circ_out" denotes the default output directory)  
-See [Annotate](../modules/annotate.md) for more details of circ_fusion.txt.
+Circular RNA infomation: `circularRNA_known.txt` or `circularRNA_full.txt`
+See [Annotate](../modules/annotate.md) and [Denovo](../modules/denovo.md) for more details.
 
 ## Characterization pipeline
 
@@ -53,11 +52,12 @@ This pipeline aims to comprehensively and systematically characterize the landsc
 
 ### Results
 
-Novel circRNA infomation: `circ_out/denovo/novel_circ.txt`  
-Annotated circRNA infomation: `circ_out/denovo/annotated_circ.txt`  
-Cassette exon information: `circ_out/denovo/all_exon_info.txt`  
-Retained intron information: `circ_out/denovo/all_intron_info.txt`  
-Alternative 5' splice site information: `circ_out/denovo/all_A5SS_info.txt`  
-Alternative 3' splice site information: `circ_out/denovo/all_A3SS_info.txt`  
-("circ_out" denotes the default output directory)  
+Novel circRNA infomation: `denovo/novel_circ.txt`  
+Annotated circRNA infomation: `denovo/annotated_circ.txt`  
+Alternative 5' back-splice site information: `abs/a5bs.txt`  
+Alternative 3' back-splice site information: `abs/a5bs.txt`  
+Cassette exon information: `as/all_exon_info.txt`  
+Retained intron information: `as/all_intron_info.txt`  
+Alternative 5' splice site information: `as/all_A5SS_info.txt`  
+Alternative 3' splice site information: `as/all_A3SS_info.txt`  
 See [Denovo](../modules/denovo.md) for more details of output files.

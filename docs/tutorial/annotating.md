@@ -5,10 +5,10 @@ This step is a clone and integration of [CIRCexplorer](http://yanglab.github.io/
 ## Command
 
 ```
-CIRCexplorer2 annotate -r hg19_ref_all.txt -g hg19.fa circ_out > CIRCexplorer2_annotate.log
+CIRCexplorer2 annotate -r hg19_ref_all.txt -g hg19.fa -b back_spliced_junction.bed -o circularRNA_known.txt > CIRCexplorer2_annotate.log
 ```
 
 ### Note:
-1. It will compare `fusion_junction.bed` (See [Alignment](../tutorial/alignment.md)) and gene annotation file (`hg19_ref_all.txt`) to determine the boundaries of circular RNAs, and also carries out realignments to fix some mis-alignments.
-2. `CIRCexplorer2 annotate` will create a directory `annotate` under the `circ_out` directory by default. All the annotation information of circular RNAs will be created under the directory `annotate`.
+1. It will compare `back_spliced_junction.bed` (See [Alignment](../tutorial/alignment.md)) and gene annotation file (`hg19_ref_all.txt`) to determine the boundaries of circular RNAs, and also carries out realignments to fix some mis-alignments.
+2. `CIRCexplorer2 annotate` will create a output file `circularRNA_known.txt` containing circRNA informations.
 3. See [Annotate](../modules/annotate.md) for detailed information about `CIRCexplorer2 annotate`.

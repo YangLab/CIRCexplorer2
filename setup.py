@@ -22,7 +22,7 @@ setup(name='CIRCexplorer2',
       keywords='circular RNAs',
       packages=find_packages(),
       install_requires=[
-          'future',
+          'requests',
           'pysam>=0.8.4',
           'pybedtools',
           'scipy',

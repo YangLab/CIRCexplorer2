@@ -23,12 +23,12 @@ def check_file(f1, f2):
     assert compare_file(test_f, result_f), 'Difference in %s' % test_f
 
 
-def check_fusion(f, test_dir, result_dir):
+def check_fusion(f1, f2):
     '''
-    Check if fusion files are existed and same
+    Check if fusion files are same
     '''
-    test_f = test_dir + '/' + f
-    result_f = result_dir + '/' + f
+    test_f = f1
+    result_f = f2
     print('Check %s file...' % test_f)
     assert os.path.isfile(test_f), 'No %s file' % test_f
     with open(test_f, 'r') as f:

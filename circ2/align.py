@@ -182,14 +182,15 @@ def tophat_map(gtf, out_dir, prefix, fastq, thread, bw=False, scale=False,
             map_bam = pybedtools.BedTool(map_bam_fname)
             bedgraph_fname = '%s/tophat/accepted_hits.bg' % out_dir
             with open(bedgraph_fname, 'w') as bedgraph_f:
-                for line in map_bam.genome_coverage(bg=True, g=chrom_size_fname,
+                for line in map_bam.genome_coverage(bg=True,
+                                                    g=chrom_size_fname,
                                                     scale=s, split=True):
                     value = str(int(float(line[3]) + 0.5))
                     bedgraph_f.write('\t'.join(line[:3]) + '\t%s\n' % value)
             bigwig_fname = '%s/tophat/accepted_hits.bw' % out_dir
             return_code = os.system('bedGraphToBigWig %s %s %s' %
                                     (bedgraph_fname, chrom_size_fname,
-                                    bigwig_fname)) >> 8
+                                     bigwig_fname)) >> 8
             if return_code:
                 sys.exit('Error: cannot convert bedGraph to BigWig!')
         else:

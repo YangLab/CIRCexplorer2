@@ -2,13 +2,10 @@
 test_parse.py: Test parse module
 '''
 
-from __future__ import print_function
-from __future__ import absolute_import
 import os
 import os.path
-import shutil
 from nose.tools import with_setup
-from .utils import check_file
+from .utils import check_fusion
 from circ2.parse import parse
 
 
@@ -38,8 +35,8 @@ def test_tophat_fusion_parse():
     options = {'-t': 'TopHat-Fusion', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'tophat_fusion.bam', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (TopHat-Fusion)', name='parse')
-    check_file('back_spliced_junction.bed',
-               'parse_TopHat_Fusion/fusion_junction.bed')
+    check_fusion('back_spliced_junction.bed',
+                 'parse_TopHat_Fusion/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -52,8 +49,8 @@ def test_tophat_fusion_pe_parse():
                '<fusion>': 'tophat_fusion_PE.bam', '--pe': True}
     parse(options, command='CIRCexplorer2 parse (TopHat-Fusion PE)',
           name='parse')
-    check_file('back_spliced_junction.bed',
-               'parse_TopHat_Fusion_PE/fusion_junction.bed')
+    check_fusion('back_spliced_junction.bed',
+                 'parse_TopHat_Fusion_PE/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -65,7 +62,7 @@ def test_star_parse():
     options = {'-t': 'STAR', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'Chimeric.out.junction', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (STAR)', name='parse')
-    check_file('back_spliced_junction.bed', 'parse_STAR/fusion_junction.bed')
+    check_fusion('back_spliced_junction.bed', 'parse_STAR/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -77,8 +74,8 @@ def test_mapsplice_parse():
     options = {'-t': 'MapSplice', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'fusions_raw.txt', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (Mapsplice)', name='parse')
-    check_file('back_spliced_junction.bed',
-               'parse_MapSplice/fusion_junction.bed')
+    check_fusion('back_spliced_junction.bed',
+                 'parse_MapSplice/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -90,7 +87,7 @@ def test_bwa_parse():
     options = {'-t': 'BWA', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'RNA_seq_bwa.sam', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (BWA)', name='parse')
-    check_file('back_spliced_junction.bed', 'parse_BWA/fusion_junction.bed')
+    check_fusion('back_spliced_junction.bed', 'parse_BWA/fusion_junction.bed')
 
 
 @with_setup(setup_function, teardown_function)
@@ -102,5 +99,5 @@ def test_segemehl_parse():
     options = {'-t': 'segemehl', '--bed': 'back_spliced_junction.bed',
                '<fusion>': 'splicesites.bed', '--pe': False}
     parse(options, command='CIRCexplorer2 parse (segemehl)', name='parse')
-    check_file('back_spliced_junction.bed',
-               'parse_segemehl/fusion_junction.bed')
+    check_fusion('back_spliced_junction.bed',
+                 'parse_segemehl/fusion_junction.bed')

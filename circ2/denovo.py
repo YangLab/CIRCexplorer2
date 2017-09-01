@@ -1,5 +1,6 @@
 """
-Usage: CIRCexplorer2 denovo [options] -r REF -g GENOME -b JUNC [-d CUFF] [-o OUT]
+Usage: CIRCexplorer2 denovo [options] -r REF -g GENOME -b JUNC [-d CUFF] \
+[-o OUT]
 
 Options:
     -h --help                      Show help message.
@@ -39,8 +40,6 @@ __all__ = ['denovo']
 
 @logger
 def denovo(options):
-    # check output directory
-    # out_dir = check_dir(options['<circ_dir>'])
     # check tophat results
     if options['--tophat']:
         tophat_dir = check_dir(options['--tophat'])
@@ -100,8 +99,9 @@ def denovo(options):
 
     if options['--abs']:
         create_dir(options['--abs'])
-        
+
         analyze_abs(denovo_dir, options['--genome'], options['--abs'])
+
 
 def extract_novel_circ(denovo_dir, ref_path):
     """
@@ -159,7 +159,8 @@ def extract_novel_circ(denovo_dir, ref_path):
     print('Fetch %d circular RNAs!' % novel_circ_num)
 
 
-def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, output_dir,rpkm_flag):
+def extract_cassette_exon(denovo_dir, tophat_dir, pAplus_dir, output_dir,
+                          rpkm_flag):
     """
     1. Check each exon and fetch PSI
     2. Calculate RPKM if needed
@@ -492,6 +493,7 @@ def parse_splice_site(denovo_dir, tophat_dir, pAplus_dir, output_dir):
         output.write(''.join(splice_site_3))
     print('Complete parsing alternative splice sites!')
 
+
 def get_strand(fa, chrom, start, end, strand):
     left = fa.fetch(chrom, start - 2, start).upper()
     right = fa.fetch(chrom, end, end + 2).upper()
@@ -501,6 +503,7 @@ def get_strand(fa, chrom, start, end, strand):
         return '-'
     else:
         return strand
+
 
 def analyze_abs(denovo_dir, fasta, output_dir):
     fa = pysam.FastaFile(fasta)
@@ -555,17 +558,17 @@ def analyze_abs(denovo_dir, fasta, output_dir):
             site3_pci = read * 1.0 / site3_total
             site5_pci = read * 1.0 / site5_total
             if site3_pci < 1.0:
-                f5.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
-                                                        end, strand,
-                                                        site3_id,
-                                                        site3_total,
-                                                        site3_pci))
+                f5.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start,
+                                                           end, strand,
+                                                           site3_id,
+                                                           site3_total,
+                                                           site3_pci))
             if site5_pci < 1.0:
-                f3.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
-                                                        end, strand,
-                                                        site5_id, 
-                                                        site5_total, 
-                                                        site5_pci))
+                f3.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start,
+                                                           end, strand,
+                                                           site5_id,
+                                                           site5_total,
+                                                           site5_pci))
         for circ in all_circ:
             if circ in main_circ:
                 continue
@@ -586,15 +589,14 @@ def analyze_abs(denovo_dir, fasta, output_dir):
             site3_pci = read * 1.0 / site3_total
             site5_pci = read * 1.0 / site5_total
             if site3_id in site3_set and site3_pci < 1.0:
-                f5.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
+                f5.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start,
                                                            end, strand,
-                                                           site3_id, 
-                                                           site3_total, 
+                                                           site3_id,
+                                                           site3_total,
                                                            site3_pci))
             if site5_id in site5_set and site5_pci < 1.0:
-                f3.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start, 
+                f3.write('%s\t%s\t%s\t%s\t%s\t%d\t%f\n' % (chrom, start,
                                                            end, strand,
-                                                           site5_id, 
-                                                           site5_total, 
+                                                           site5_id,
+                                                           site5_total,
                                                            site5_pci))
-

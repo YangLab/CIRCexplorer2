@@ -5,7 +5,6 @@
 Usage: CIRCexplorer2 (<command> | --help | --version)
 '''
 
-from __future__ import absolute_import
 from docopt import docopt
 import sys
 from .version import __version__

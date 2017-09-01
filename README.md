@@ -13,7 +13,6 @@
 [![PyPI](https://img.shields.io/pypi/v/circexplorer2.svg)](https://pypi.python.org/pypi/CIRCexplorer2)
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg)](http://bioconda.github.io/recipes/circexplorer2/README.html)
 [![Anaconda-Server Downloads](https://anaconda.org/bioconda/circexplorer2/badges/downloads.svg)](https://anaconda.org/bioconda/circexplorer2)
-[![run with snakemake](https://img.shields.io/badge/run%20with-snakemake-red.svg)](https://github.com/kepbod/CIRCexplorer2_snakemake)
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg)](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)
 
 CIRCexplorer2 is the successor of [CIRCexplorer](http://yanglab.github.io/CIRCexplorer/) with plenty of new features to facilitate circular RNA identification and characterization.
@@ -34,8 +33,6 @@ Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 * Support both single-read and paired-end sequencing.
 
 CIRCexplorer2 documentation is available through https://readthedocs.org/ from [here](http://CIRCexplorer2.readthedocs.org), including installation instructions and tutorial.
-
-You could run CIRCexplorer2 with [Snakemake](https://snakemake.readthedocs.io) system with the out-of-the-box functionality. Please check [Snakemake workflows](https://github.com/kepbod/CIRCexplorer2_snakemake) of CIRCexplorer2 for details.
 
 ## Citation
 

@@ -15,7 +15,6 @@
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg)](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)
 
 [![PyPI Downloads](https://img.shields.io/pypi/dm/circexplorer2.svg)](https://pypi.python.org/pypi/circexplorer2)
-[![run with snakemake](https://img.shields.io/badge/run%20with-snakemake-red.svg)](https://github.com/kepbod/CIRCexplorer2_snakemake)
 [![Anaconda-Server Downloads](https://anaconda.org/bioconda/circexplorer2/badges/downloads.svg)](https://anaconda.org/bioconda/circexplorer2)
 
 
@@ -51,8 +50,6 @@ We have developed a fairly comprehensive tutorial that demonstrates how CIRCexpl
 * [Alternative Splicing](tutorial/as.md)
 
 We also offered `fast_circ.py` script to help you to automatically run our pipelines in one step without any additional operations. Please check this [one-step script](tutorial/one_step.md) for more details.
-
-You could also run CIRCexplorer2 with [Snakemake](https://snakemake.readthedocs.io) system with the out-of-the-box functionality. Please check [Snakemake workflows](https://github.com/kepbod/CIRCexplorer2_snakemake) of CIRCexplorer2 for details.
 
 ## Modules
 

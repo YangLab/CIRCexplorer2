@@ -18,7 +18,10 @@ from collections import defaultdict
 from .helper import logger
 from .parser import parse_fusion_bam, Segment
 
-__author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
+__author__ = [
+    'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
+    'Xu-Kai Ma (maxukai@picb.ac.cn)'
+]
 
 __all__ = ['parse']
 

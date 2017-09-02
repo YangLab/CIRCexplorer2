@@ -30,7 +30,10 @@ from .parse import tophat_fusion_parse
 from .helper import logger, which, link_index, build_index
 from .dir_func import create_dir
 
-__author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
+__author__ = [
+    'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
+    'Xu-Kai Ma (maxukai@picb.ac.cn)'
+]
 
 __all__ = ['align']
 

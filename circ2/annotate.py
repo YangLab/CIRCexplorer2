@@ -20,7 +20,10 @@ from .parser import parse_ref, parse_bed, check_fasta
 from .helper import logger, map_fusion_to_iso, fix_bed, generate_bed
 from collections import defaultdict
 
-__author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
+__author__ = [
+    'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
+    'Xu-Kai Ma (maxukai@picb.ac.cn)'
+]
 
 __all__ = ['annotate']
 

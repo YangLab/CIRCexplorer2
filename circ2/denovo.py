@@ -33,7 +33,10 @@ import pysam
 from scipy.stats import fisher_exact, binom
 from .genomic_interval import Interval
 
-__author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
+__author__ = [
+    'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
+    'Xu-Kai Ma (maxukai@picb.ac.cn)'
+]
 
 __all__ = ['denovo']
 

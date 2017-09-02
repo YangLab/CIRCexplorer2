@@ -31,3 +31,6 @@ A: You should first convert `unmapped.bam` in TopHat2 output folder into fastq f
 Q: Why is there the TopHat2 alignment step in `CIRCexplorer2 align`? Is this step necessary?
 
 A: We first align reads onto genome and transcriptome using TopHat2 to reduce false positive reads aligned in the TopHat-Fusion alignment step. It is optional to skip the TopHat2 alignment step simply through set the `--skip-tophat` option in in `CIRCexplorer2 align` command.
+
+Q: Does CIRCexplorer2 support Python3?
+A: From version 2.3.0, the source codes of CIRCexplorer2 are compatible with Python3. However, because TopHat2 only supports Python2, you should be careful when you run `CIRCexplorer2 align`. It will call TopHat2 and require Python2 to be installed in your computer.

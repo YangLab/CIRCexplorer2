@@ -19,7 +19,7 @@ class TestAnnotate(object):
         fa_path = circ_path + '/chr21.fa'
         options = {'--ref': ref_path, '--genome': fa_path,
                    '--no-fix': False,
-                   '--bed': circ_path+'/fusion_junction.bed',
+                   '--bed': circ_path + '/fusion_junction.bed',
                    '--low-confidence': True,
                    '--output': 'circularRNA_known.txt'}
         annotate(options, command='CIRCexplorer2 annotate', name='annotate')

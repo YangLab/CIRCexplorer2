@@ -7,31 +7,29 @@ Options:
     -r REF --ref=REF               Gene annotation.
     -g GENOME --genome=GENOME      Genome FASTA file.
     -b JUNC --bed=JUNC             Input file.
-    -o OUT --output=OUT            Output file. [default: circularRNA_known.txt]
+    -o OUT --output=OUT            Output file.
+                                   [default: circularRNA_known.txt]
     --no-fix                       No-fix mode (useful for species \
 with poor gene annotations).
     --low-confidence               Extract low confidence circRNAs.
 '''
 
 import os
-from genomic_interval import Interval
-from parser import parse_ref, parse_bed, check_fasta
-from helper import logger, map_fusion_to_iso, fix_bed, generate_bed
-from dir_func import check_dir, create_dir
+from .genomic_interval import Interval
+from .parser import parse_ref, parse_bed, check_fasta
+from .helper import logger, map_fusion_to_iso, fix_bed, generate_bed
 from collections import defaultdict
 
-__author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
+__author__ = [
+    'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
+    'Xu-Kai Ma (maxukai@picb.ac.cn)'
+]
 
 __all__ = ['annotate']
 
 
 @logger
 def annotate(options):
-    # check output directory
-    # out_dir = check_dir(options['<circ_dir>'])
-    # prepare annotate directory
-    # annotate_dir = '%s/annotate' % out_dir
-    # create_dir(annotate_dir)
     # annotate fusion junctions
     annotate_fusion(options['--ref'], options['--bed'],
                     secondary_flag=options['--low-confidence'])
@@ -40,7 +38,6 @@ def annotate(options):
                options['--no-fix'], secondary_flag=options['--low-confidence'])
 
 
-# def annotate_fusion(ref_f, out_dir, secondary_flag=0, denovo_flag=0):
 def annotate_fusion(ref_f, junc_bed, secondary_flag=0, denovo_flag=0):
     """
     Align fusion juncrions to gene annotations
@@ -48,11 +45,9 @@ def annotate_fusion(ref_f, junc_bed, secondary_flag=0, denovo_flag=0):
     print('Start to annotate fusion junctions...')
     # gene annotations
     genes, novel_genes, gene_info, chrom_info = parse_ref(ref_f, 1)
-    # fusion_bed = '%s/../fusion_junction.bed' % out_dir
     fusion_bed = junc_bed
     fusions, fusion_index = parse_bed(fusion_bed)  # fusion junctions
     total = set()
-    # annotated_fusion_f = '%s/annotated_fusion.txt' % out_dir
     annotated_fusion_f = 'annotated_fusion.txt.tmp'
     with open(annotated_fusion_f, 'w') as outf:
         for chrom in chrom_info:
@@ -68,7 +63,7 @@ def annotate_fusion(ref_f, junc_bed, secondary_flag=0, denovo_flag=0):
                                                fusions[chrom])
             for itl in result:
                 # extract gene annotations
-                iso = list(filter(lambda x: x.startswith('iso'), itl[2:]))
+                iso = list([x for x in itl[2:] if x.startswith('iso')])
                 # for each overlapped fusion junction
                 for fus in itl[(2 + len(iso)):]:
                     reads = fus.split()[1]
@@ -127,9 +122,9 @@ def annotate_fusion(ref_f, junc_bed, secondary_flag=0, denovo_flag=0):
                                 right = secondary_exon['right'][gene]
                                 g, s = gene.split(':')
                                 # for avoid dup, use fus_loc_new
-                                fus_loc_new = fus_loc + '\t0\t%s' % s 
-                                outf.write('%s\t%s:%s\t%s:%s\n' % (fus_loc_new, g,
-                                                                   left, g,
+                                fus_loc_new = fus_loc + '\t0\t%s' % s
+                                outf.write('%s\t%s:%s\t%s:%s\n' % (fus_loc_new,
+                                                                   g, left, g,
                                                                    right))
     print('Annotated %d fusion junctions!' % len(total))
 
@@ -142,7 +137,6 @@ def fix_fusion(ref_f, genome_fa, out_file, no_fix, secondary_flag=0,
     print('Start to fix fusion junctions...')
     fa = check_fasta(genome_fa)
     ref = parse_ref(ref_f, 2)
-    # annotated_fusion_f = '%s/annotated_fusion.txt' % out_dir
     annotated_fusion_f = 'annotated_fusion.txt.tmp'
     fusions, fusion_names, fixed_flag = fix_bed(annotated_fusion_f, ref, fa,
                                                 no_fix, denovo_flag)
@@ -172,10 +166,10 @@ def fix_fusion(ref_f, genome_fa, out_file, no_fix, secondary_flag=0,
             if ',' in index:  # back spliced exons
                 s, e = [int(x) for x in index.split(',')]
                 if strand == '+':
-                    index_info = ','.join(str(x + 1) for x in xrange(s, e + 1))
+                    index_info = ','.join(str(x + 1) for x in range(s, e + 1))
                 else:
                     index_info = ','.join(str(exon_num - x)
-                                          for x in xrange(s, e + 1))
+                                          for x in range(s, e + 1))
                 start = str(starts[s])
                 end = str(ends[e])
                 length = str(e - s + 1)

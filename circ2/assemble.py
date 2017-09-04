@@ -18,13 +18,16 @@ human hg19).
 import sys
 import os
 import os.path
-from parser import parse_junc
-from helper import logger, which, genepred_to_bed
-from dir_func import check_dir, create_dir
+from .parser import parse_junc
+from .helper import logger, which, genepred_to_bed
+from .dir_func import create_dir
 import pybedtools
 import pysam
 
-__author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
+__author__ = [
+    'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
+    'Xu-Kai Ma (maxukai@picb.ac.cn)'
+]
 
 __all__ = ['assemble']
 
@@ -151,13 +154,10 @@ def convert_assembly_gtf(tophat_dir, cufflinks_dir, ref, bb, chrom_size):
     if bb:
         if which('bedToBigBed') is not None:
             print('Convert to BigBed file...')
-            if not chrom_size:  # no chrom size file, search it in tophat folder
-
+            if not chrom_size:  # no chromsize file, search it in tophat folder
                 chrom_size = '%s/tophat/chrom.size' % tophat_dir
-
                 if not os.path.isfile(chrom_size):
                     sys.exit('Please offer the path of chrom.size!')
-
             bed_path = '%s/transcripts_ref.bed' % cufflinks_dir
             genepred_to_bed(ref_path, bed_path)
             sorted_bed_path = '%s/transcripts_ref_sorted.bed' % cufflinks_dir
@@ -166,7 +166,8 @@ def convert_assembly_gtf(tophat_dir, cufflinks_dir, ref, bb, chrom_size):
             bed.saveas(sorted_bed_path)
             bb_path = '%s/transcripts_ref_sorted.bb' % cufflinks_dir
             return_code = os.system('bedToBigBed -type=bed12 %s %s %s' %
-                                    (sorted_bed_path, chrom_size, bb_path)) >> 8
+                                    (sorted_bed_path, chrom_size,
+                                     bb_path)) >> 8
             if return_code:
                 sys.exit('Error: cannot convert bed to BigBed!')
         else:

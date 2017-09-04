@@ -8,11 +8,14 @@ author: Xiao-Ou Zhang <zhangxiaoou@picb.ac.cn>
 '''
 
 import sys
-import urllib
+import requests
 import gzip
-import string
 import tarfile
 import pysam
+try:
+    from string import maketrans
+except ImportError:
+    maketrans = str.maketrans
 
 
 def fetch_file(options):
@@ -22,15 +25,14 @@ def fetch_file(options):
         path = 'http://hgdownload.soe.ucsc.edu/goldenPath/%s/' % options[1]
     else:
         sys.exit('Only support human or mouse!')
-    s = string.maketrans(' ', '_')
+    s = maketrans(' ', '_')
     if options[2] == 'ref':  # RefSeq gene annotations
-        urllib.urlretrieve(path + 'database/refFlat.txt.gz', 'refFlat.txt.gz')
+        download_file(path + 'database/refFlat.txt.gz', 'refFlat.txt.gz')
         with open(options[3], 'w') as outf:
             outf.write(gzip.open('refFlat.txt.gz', 'rb').read())
     elif options[2] == 'kg':  # KnownGenes gene annotations
-        urllib.urlretrieve(path + 'database/knownGene.txt.gz',
-                           'knownGene.txt.gz')
-        urllib.urlretrieve(path + 'database/kgXref.txt.gz', 'kgXref.txt.gz')
+        download_file(path + 'database/knownGene.txt.gz', 'knownGene.txt.gz')
+        download_file(path + 'database/kgXref.txt.gz', 'kgXref.txt.gz')
         kg_iso = {}
         with gzip.open('kgXref.txt.gz', 'rb') as kg_id_f:
             for line in kg_id_f:
@@ -46,9 +48,9 @@ def fetch_file(options):
     elif options[2] == 'ens':  # Ensembl gene annotations
         if options[1] == 'hg38':
             sys.exit('No Ensembl gene annotations for hg38!')
-        urllib.urlretrieve(path + 'database/ensGene.txt.gz', 'ensGene.txt.gz')
-        urllib.urlretrieve(path + 'database/ensemblToGeneName.txt.gz',
-                           'ensemblToGeneName.txt.gz')
+        download_file(path + 'database/ensGene.txt.gz', 'ensGene.txt.gz')
+        download_file(path + 'database/ensemblToGeneName.txt.gz',
+                      'ensemblToGeneName.txt.gz')
         ens_iso = {}
         with gzip.open('ensemblToGeneName.txt.gz', 'rb') as ens_id_f:
             for line in ens_id_f:
@@ -65,7 +67,7 @@ def fetch_file(options):
             fa_path = 'bigZips/hg38.chromFa.tar.gz'
         else:
             fa_path = 'bigZips/chromFa.tar.gz'
-        urllib.urlretrieve(path + fa_path, 'chromFa.tar.gz')
+        download_file(path + fa_path, 'chromFa.tar.gz')
         with tarfile.open('chromFa.tar.gz', 'r:gz') as fa:
             with open(options[3], 'w') as outf:
                 for f in fa:
@@ -74,6 +76,13 @@ def fetch_file(options):
         pysam.faidx(options[3])
     else:
         sys.exit('Only support ref/kg/ens/fa!')
+
+
+def download_file(url, dest):
+    r = requests.get(url, stream=True)
+    with open(dest, 'wb') as f:
+        for chunk in r.iter_content():
+            f.write(chunk)
 
 
 def main():

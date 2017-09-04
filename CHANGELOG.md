@@ -1,9 +1,10 @@
-## 2.3.0 (2017-08-31)
+## 2.3.0 (2017-09-01)
 
 Improvements:
 
 * reorganize inputs and outputs.
 * add alternative back-splicing analysis
+* support Python 3
 
 Bugfixes:
 

@@ -4,7 +4,7 @@ test_denovo.py: Test denovo module
 
 import os.path
 import shutil
-from utils import check_file
+from .utils import check_file
 from circ2.denovo import denovo
 
 
@@ -40,16 +40,13 @@ class TestDenovo(object):
         assert os.path.isdir(denovo_path), 'No denovo directory'
         assert os.path.isdir(as_path), 'No as directory'
         # check files in denovo directory
-        file_list = ['circularRNA_full.txt',
-                     'annotated_circ.txt', 'novel_circ.txt',
-                     'all_exon_info.txt']
-        check_file(denovo_path + '/circularRNA_full.txt', 
+        check_file(denovo_path + '/circularRNA_full.txt',
                    'data/denovo_result/circularRNA_full.txt')
-        check_file(denovo_path + '/annotated_circ.txt', 
+        check_file(denovo_path + '/annotated_circ.txt',
                    'data/denovo_result/annotated_circ.txt')
-        check_file(denovo_path + '/novel_circ.txt', 
+        check_file(denovo_path + '/novel_circ.txt',
                    'data/denovo_result/novel_circ.txt')
-        check_file(as_path + '/all_exon_info.txt', 
+        check_file(as_path + '/all_exon_info.txt',
                    'data/denovo_result/all_exon_info.txt')
 
     def teardown(self):

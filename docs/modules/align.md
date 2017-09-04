@@ -40,6 +40,7 @@ CIRCexplorer2 align [options] -G GTF (-g GENOME | -i INDEX1 -j INDEX2 | -i INDEX
 6. You could offer multiple fastq files (or compressed files) separated or comma.
 7. Only single-read RNA-seq is supported. It is recommended to convert paired-end RNA-seq to single-read RNA-seq before alignment.
 8. It will overwrite the output directory and output file automatically, so please be careful when setting the path of output directory.
+9. Because Tophat only supports Python2, you should ensure Python2 has been installed in your computer, even if you were running Python3 version of CIRCexplorer2.
 
 ## Output
 

@@ -13,7 +13,8 @@ TopHat-Fusion).
     -p THREAD --thread=THREAD      Running threads. [default: 10]
     -f FQ --fastq=FQ               Input file.
     -o OUT --output=OUT            Output directory. [default: alignment]
-    -b JUNC --bed=JUNC             Output file. [default: back_spliced_junction.bed]
+    -b JUNC --bed=JUNC             Output file.
+                                   [default: back_spliced_junction.bed]
     --bw                           Create BigWig file.
     --scale                        Scale to HPB.
     --skip-tophat                  Skip TopHat mapping.
@@ -25,11 +26,14 @@ import os
 import os.path
 import pysam
 import pybedtools
-from parse import tophat_fusion_parse
-from helper import logger, which, link_index, build_index
-from dir_func import create_dir
+from .parse import tophat_fusion_parse
+from .helper import logger, which, link_index, build_index
+from .dir_func import create_dir
 
-__author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
+__author__ = [
+    'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
+    'Xu-Kai Ma (maxukai@picb.ac.cn)'
+]
 
 __all__ = ['align']
 
@@ -181,14 +185,15 @@ def tophat_map(gtf, out_dir, prefix, fastq, thread, bw=False, scale=False,
             map_bam = pybedtools.BedTool(map_bam_fname)
             bedgraph_fname = '%s/tophat/accepted_hits.bg' % out_dir
             with open(bedgraph_fname, 'w') as bedgraph_f:
-                for line in map_bam.genome_coverage(bg=True, g=chrom_size_fname,
+                for line in map_bam.genome_coverage(bg=True,
+                                                    g=chrom_size_fname,
                                                     scale=s, split=True):
                     value = str(int(float(line[3]) + 0.5))
                     bedgraph_f.write('\t'.join(line[:3]) + '\t%s\n' % value)
             bigwig_fname = '%s/tophat/accepted_hits.bw' % out_dir
             return_code = os.system('bedGraphToBigWig %s %s %s' %
                                     (bedgraph_fname, chrom_size_fname,
-                                    bigwig_fname)) >> 8
+                                     bigwig_fname)) >> 8
             if return_code:
                 sys.exit('Error: cannot convert bedGraph to BigWig!')
         else:

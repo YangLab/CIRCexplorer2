@@ -4,9 +4,12 @@ import os.path
 import math
 import time
 from collections import defaultdict
-from string import maketrans
 from functools import wraps
 import pysam
+try:
+    from string import maketrans
+except ImportError:
+    maketrans = str.maketrans
 
 
 def which(program):

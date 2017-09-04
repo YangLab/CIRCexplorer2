@@ -6,20 +6,22 @@ Options:
     --version                      Show version.
     -t ALIGNER                     Aligner (TopHat-Fusion, STAR, MapSplice, \
 BWA, segemehl).
-    -b JUNC --bed=JUNC             Output file. [default: back_spliced_junction.bed]
+    -b JUNC --bed=JUNC             Output file.
+                                   [default: back_spliced_junction.bed]
     --pe                           Parse paired-end alignment file (only for \
 TopHat-Fusion).
 '''
 
 import sys
-import os.path
 import pysam
 from collections import defaultdict
-from dir_func import create_dir
-from helper import logger
-from parser import parse_fusion_bam, Segment
+from .helper import logger
+from .parser import parse_fusion_bam, Segment
 
-__author__ = 'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)'
+__author__ = [
+    'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
+    'Xu-Kai Ma (maxukai@picb.ac.cn)'
+]
 
 __all__ = ['parse']
 

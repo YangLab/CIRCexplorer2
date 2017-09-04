@@ -3,8 +3,7 @@ test_annotate.py: Test annotate module
 '''
 
 import os.path
-import shutil
-from utils import check_file
+from .utils import check_file
 from circ2.annotate import annotate
 
 
@@ -19,8 +18,10 @@ class TestAnnotate(object):
         ref_path = circ_path + '/ref.txt'
         fa_path = circ_path + '/chr21.fa'
         options = {'--ref': ref_path, '--genome': fa_path,
-                   '--no-fix': False, '--bed': circ_path+'/fusion_junction.bed',
-                   '--low-confidence': True, '--output':'circularRNA_known.txt'}
+                   '--no-fix': False,
+                   '--bed': circ_path + '/fusion_junction.bed',
+                   '--low-confidence': True,
+                   '--output': 'circularRNA_known.txt'}
         annotate(options, command='CIRCexplorer2 annotate', name='annotate')
 
     def testAnnotate(self):
@@ -28,11 +29,12 @@ class TestAnnotate(object):
         Check files in annotate directory
         '''
         print('#%s: Test annotate' % __name__)
-        result_file = 'circularRNA_known.txt'
         # check circ_fusion.txt file
-        check_file('circularRNA_known.txt', 'data/annotate_result/circ_fusion.txt')
+        check_file('circularRNA_known.txt',
+                   'data/annotate_result/circ_fusion.txt')
         # check low_circ_fusion.txt file
-        check_file('low_conf_circularRNA_known.txt', 'data/annotate_result/low_circ_fusion.txt')
+        check_file('low_conf_circularRNA_known.txt',
+                   'data/annotate_result/low_circ_fusion.txt')
 
     def teardown(self):
         '''

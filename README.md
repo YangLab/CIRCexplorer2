@@ -11,7 +11,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/YangLab/CIRCexplorer2/badge.svg?branch=master)](https://coveralls.io/github/YangLab/CIRCexplorer2?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/circexplorer2/badge/?version=latest)](http://circexplorer2.readthedocs.org/en/latest/?badge=latest)
 [![PyPI](https://img.shields.io/pypi/v/circexplorer2.svg)](https://pypi.python.org/pypi/CIRCexplorer2)
-[![PyPI Downloads](https://img.shields.io/pypi/dm/circexplorer2.svg)](https://pypi.python.org/pypi/CIRCexplorer2)
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg)](http://bioconda.github.io/recipes/circexplorer2/README.html)
 [![Anaconda-Server Downloads](https://anaconda.org/bioconda/circexplorer2/badges/downloads.svg)](https://anaconda.org/bioconda/circexplorer2)
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg)](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)

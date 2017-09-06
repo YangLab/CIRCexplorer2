@@ -12,11 +12,8 @@
 [![Documentation Status](https://readthedocs.org/projects/circexplorer2/badge/?version=latest)](http://circexplorer2.readthedocs.org/en/latest/?badge=latest)
 [![PyPI](https://img.shields.io/pypi/v/circexplorer2.svg)](https://pypi.python.org/pypi/CIRCexplorer2)
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)](http://bioconda.github.io/recipes/circexplorer2/README.html)
-[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg)](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)
-
-[![PyPI Downloads](https://img.shields.io/pypi/dm/circexplorer2.svg)](https://pypi.python.org/pypi/circexplorer2)
 [![Anaconda-Server Downloads](https://anaconda.org/bioconda/circexplorer2/badges/downloads.svg)](https://anaconda.org/bioconda/circexplorer2)
-
+[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg)](https://github.com/YangLab/CIRCexplorer2/blob/master/LICENSE.txt)
 
 CIRCexplorer2 is a comprehensive and integrative circular RNA analysis toolset. It is the successor of [CIRCexplorer](http://yanglab.github.io/CIRCexplorer/) with plenty of new features to facilitate circular RNA identification and characterization.
 
@@ -24,11 +21,11 @@ Authors: Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn), Li Yang (liyang@picb.ac.cn)
 
 Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 
-*NEWS: 
+*NEWS*: 
 
 From version 2.3.0, CIRCexplorer2 has very big changes in inputs and outputs.  For new structures, please see http://circexplorer2.readthedocs.org. If you want to check the information for old versions, please see http://circexplorer2.readthedocs.io/en/2.2.7 .
 
-[CIRCpedia](http://www.picb.ac.cn/rnomics/circpedia) is an integrative database, aiming to annotating alternative back-splicing and alternative splicing in circRNAs across different cell lines. Welcome to use!*
+[CIRCpedia](http://www.picb.ac.cn/rnomics/circpedia) is an integrative database, aiming to annotating alternative back-splicing and alternative splicing in circRNAs across different cell lines. Welcome to use!
 
 ## Features
 

@@ -1,3 +1,9 @@
+## 2.3.1 (2017-10-03)
+
+Bugfixes:
+
+* bug in fast_circ.py
+
 ## 2.3.0 (2017-09-01)
 
 Improvements:

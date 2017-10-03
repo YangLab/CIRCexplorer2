@@ -24,10 +24,9 @@ TopHat-Fusion).
     -o OUT --output=OUT            Output directory. [default: .]
 '''
 
-from __future__ import absolute_import
 import sys
 from docopt import docopt
-from dir_func import create_dir
+from .dir_func import create_dir
 
 __author__ = [
     'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',

@@ -76,8 +76,8 @@ def ref_filter(ref, tophat_dir, cufflinks_dir):
     with open(ref, 'r') as ref_f, open(filtered_junction_f, 'w') as out_f:
         for line in ref_f:
             chrom = line.split()[2]
-            starts = line.split()[10].split(',')[:-2]
-            ends = line.split()[9].split(',')[1:-1]
+            starts = line.split()[10].rstrip(',').split(',')[:-1]
+            ends = line.split()[9].rstrip(',').split(',')[1:]
             for s, e in zip(starts, ends):
                 junc_id = '%s\t%s\t%s' % (chrom, s, e)
                 if junc[junc_id] < 2:

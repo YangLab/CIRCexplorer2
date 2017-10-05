@@ -1,3 +1,9 @@
+## 2.3.2 (2017-10-05)
+
+Improvements:
+
+* more safe way to trim the last comma of ref file, thanks @Tong-Chen (issue #14)
+
 ## 2.3.1 (2017-10-03)
 
 Bugfixes:
@@ -8,7 +14,7 @@ Bugfixes:
 
 Improvements:
 
-* reorganize inputs and outputs.
+* reorganize inputs and outputs
 * add alternative back-splicing analysis
 * support Python 3
 
@@ -96,7 +102,7 @@ Improvements:
 
 Bugfixes:
 
-* change module name from 'circ' to 'circ2' in case of conflict with CIRCexplorer (issue #1).
+* change module name from 'circ' to 'circ2' in case of conflict with CIRCexplorer (issue #1)
 
 ## 2.0.1 (2016-06-21)
 

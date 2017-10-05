@@ -287,8 +287,8 @@ def genepred_to_bed(genepred, bed):
              start, end,
              cds_s, cds_e, n) = line.split()[:9]
             iso_id = '%s/%s' % (gene, iso)
-            starts = [int(x) for x in line.split()[9].split(',')[:-1]]
-            ends = [int(x) for x in line.split()[10].split(',')[:-1]]
+            starts = [int(x) for x in line.split()[9].rstrip(',').split(',')]
+            ends = [int(x) for x in line.split()[10].rstrip(',').split(',')]
             sizes, offsets = [], []
             for s, e in zip(starts, ends):
                 sizes.append(str(e - s))

@@ -72,8 +72,8 @@ def parse_ref(ref_file, flag):
         for line in f:
             gene_id, iso_id, chrom, strand = line.split()[:4]
             total_id = '\t'.join(['iso', gene_id, iso_id, chrom, strand])
-            starts = [int(x) for x in line.split()[9].split(',')[:-1]]
-            ends = [int(x) for x in line.split()[10].split(',')[:-1]]
+            starts = [int(x) for x in line.split()[9].rstrip(',').split(',')]
+            ends = [int(x) for x in line.split()[10].rstrip(',').split(',')]
             start = starts[0]
             end = ends[-1]
             if flag == 1:

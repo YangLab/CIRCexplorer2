@@ -132,9 +132,9 @@ def extract_novel_circ(denovo_dir, ref_path):
     with open(ref_path, 'r') as ref_f:
         for line in ref_f:
             chrom = line.split()[2]
-            for x in line.split()[9].split(',')[:-1]:
+            for x in line.split()[9].rstrip(',').split(','):
                 ref_left.add('\t'.join([chrom, x]))
-            for x in line.split()[10].split(',')[:-1]:
+            for x in line.split()[10].rstrip(',').split(','):
                 ref_right.add('\t'.join([chrom, x]))
     novel_out = '%s/novel_circ.txt' % denovo_dir
     annotated_out = '%s/annotated_circ.txt' % denovo_dir

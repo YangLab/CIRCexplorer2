@@ -28,7 +28,7 @@ def fetch_file(options):
     s = maketrans(' ', '_')
     if options[2] == 'ref':  # RefSeq gene annotations
         download_file(path + 'database/refFlat.txt.gz', 'refFlat.txt.gz')
-        with open(options[3], 'w') as outf:
+        with open(options[3], 'wb') as outf:
             outf.write(gzip.open('refFlat.txt.gz', 'rb').read())
     elif options[2] == 'kg':  # KnownGenes gene annotations
         download_file(path + 'database/knownGene.txt.gz', 'knownGene.txt.gz')

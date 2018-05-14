@@ -9,7 +9,9 @@ BWA, segemehl).
     -b JUNC --bed=JUNC             Output file.
                                    [default: back_spliced_junction.bed]
     --pe                           Parse paired-end alignment file (only for \
-TopHat-Fusion).
+TopHat-Fusion). If this is set, then -f is set automatically.
+    -f                             statistics fragment numbers rather than \
+read numbers
 '''
 
 import sys
@@ -43,7 +45,8 @@ def parse(options):
  paired-end data')
     # parse fusion junctions from other aligers
     if options['-t'] == 'TopHat-Fusion':
-        tophat_fusion_parse(options['<fusion>'], out, options['--pe'])
+        tophat_fusion_parse(options['<fusion>'], out, options['--pe'],
+                            options['-f'])
     elif options['-t'] == 'STAR':
         star_parse(options['<fusion>'], out)
     elif options['-t'] == 'MapSplice':
@@ -54,14 +57,20 @@ def parse(options):
         segemehl_parse(options['<fusion>'], out)
 
 
-def tophat_fusion_parse(fusion, out, pair_flag=False):
+def tophat_fusion_parse(fusion, out, pair_flag=False, frag_flag=False):
     '''
     Parse fusion junctions from TopHat-Fusion aligner
     '''
     print('Start parsing fusion junctions from TopHat-Fusion...')
+    if pair_flag == True:
+        frag_flag = True
     fusions = defaultdict(int)
+    # for test
+    names = defaultdict(list)
+    read_names = set()
     for i, read in enumerate(parse_fusion_bam(fusion, pair_flag)):
-        chrom, strand, start, end, xp_info = read
+        chrom, strand, start, end, xp_info, name = read
+        read_name = name.split(';')[0]
         segments = [start, end]
 
         if pair_flag is True:
@@ -83,12 +92,20 @@ def tophat_fusion_parse(fusion, out, pair_flag=False):
                 if pair_flag is True:
                     if part_pos < sta or part_pos > end:
                         continue
+                if frag_flag:
+                    if read_name in read_names:
+                        continue
 
+                read_names.add(read_name)
                 fusions['%s\t%d\t%d' % (chrom, sta, end)] += 1
+                # for test
+                names['%s\t%d\t%d' % (chrom, sta, end)].append(name)
     total = 0
     with open(out, 'w') as outf:
         for i, pos in enumerate(fusions):
-            outf.write('%s\tFUSIONJUNC_%d/%d\t0\t+\n' % (pos, i, fusions[pos]))
+            # for test
+            outf.write('%s\tFUSIONJUNC_%d/%d\t0\t+\t%s\n' % (pos, i, fusions[pos], ','.join(names[pos])))
+            # outf.write('%s\tFUSIONJUNC_%d/%d\t0\t+\n' % (pos, i, fusions[pos]))
             total += fusions[pos]
     print('Converted %d fusion reads!' % total)
 

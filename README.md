@@ -29,7 +29,7 @@ From version 2.3.0, CIRCexplorer2 has very big changes in inputs and outputs.  F
 
 ## Features
 
-* Precisely annotate circular RNAs with [high accuracy, good sensitivity and low memory consumption](http://nar.oxfordjournals.org/content/44/6/e58.abstract)
+* Precisely annotate circular RNAs with high accuracy, good sensitivity and low memory consumption [[1](http://nar.oxfordjournals.org/content/44/6/e58.abstract)][[2](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005420)][[3](https://www.frontiersin.org/articles/10.3389/fcell.2018.00020/full)]
 * Support multiple circular RNA aligners (**TopHat2/TopHat-Fusion**, **STAR**, **MapSplice**, **BWA** and **segemehl**)
 * *De novo* assemble novel circular RNA transcripts
 * Characterize various of alternative (back-)splicing events of circular RNAs

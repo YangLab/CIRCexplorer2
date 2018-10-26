@@ -1,8 +1,14 @@
+## 2.3.4 (2018-10-26)
+
+Bugfixes:
+
+* bug in fetch_ucsc.py when using python3, thanks @lardenoije
+
 ## 2.3.3 (2018-02-27)
 
 Bugfixes:
 
-* bug in fetch_ucsc.py when using python3
+* bug in fetch_ucsc.py when using python3 (issue #17)
 
 ## 2.3.2 (2017-10-05)
 

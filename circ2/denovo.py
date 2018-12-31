@@ -32,6 +32,7 @@ from .dir_func import check_dir, create_dir
 import pysam
 from scipy.stats import fisher_exact, binom
 from .genomic_interval import Interval
+import tempfile
 
 __author__ = [
     'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
@@ -66,11 +67,13 @@ def denovo(options):
         print('Warning: no cufflinks directory %s!' % options['--cuff'])
         print('Please run CIRCexplorer2 assembly before this step!')
         ref_path = options['--ref']
+    # create temporary annotated fusion file
+    fusion_tmp = tempfile.TemporaryFile(mode='w+')
     # annotate fusion junctions
-    annotate_fusion(ref_path, options['--bed'], denovo_flag=1)
+    annotate_fusion(ref_path, options['--bed'], fusion_tmp, denovo_flag=1)
     # fix fusion juncrions
     out_f = '%s/circularRNA_full.txt' % denovo_dir
-    fix_fusion(ref_path, options['--genome'], out_f,
+    fix_fusion(ref_path, options['--genome'], fusion_tmp, out_f,
                options['--no-fix'], denovo_flag=1)
     # extract novel circRNAs
     extract_novel_circ(denovo_dir, options['--ref'])

@@ -1,3 +1,8 @@
+## 2.3.5 (2018-12-30)
+
+Improvements:
+Using the temporary file to allow to run CIRCexplorer2 in the same directory simultaneously (issue #26). Thanks @egaffo. Happy New Year!
+
 ## 2.3.4 (2018-10-26)
 
 Bugfixes:

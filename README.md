@@ -38,7 +38,7 @@ From version 2.3.0, CIRCexplorer2 has very big changes in inputs and outputs.  F
 
 CIRCexplorer2 documentation is available through https://readthedocs.org/ from [here](http://CIRCexplorer2.readthedocs.org), including installation instructions and tutorial.
 
-**Protocol**: [Dong R, Ma XK, Chen LL, Yang L#. Genome-Wide annotation of circRNAs and their alternative back-splicing/splicing with CIRCexplorer pipeline. *Epitranscriptomics*, 2019, 137-149](https://link.springer.com/protocol/10.1007/978-1-4939-8808-2_10)
+**Protocol**: [Dong R, Ma XK, Chen LL, Yang L#. Genome-Wide annotation of circRNAs and their alternative back-splicing/splicing with CIRCexplorer pipeline. *Methods Mol Biol*, 2019, 1870:137-149 (Book chapter)](https://link.springer.com/protocol/10.1007/978-1-4939-8808-2_10)
 
 ## Citation
 

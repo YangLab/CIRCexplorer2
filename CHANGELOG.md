@@ -1,3 +1,9 @@
+## 2.3.6 (2019-03-19)
+
+Improvements:
+Adding -f option in parse step to count fragment numbers rather than read
+numbers.
+
 ## 2.3.5 (2018-12-30)
 
 Improvements:

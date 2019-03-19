@@ -19,6 +19,7 @@ from .genomic_interval import Interval
 from .parser import parse_ref, parse_bed, check_fasta
 from .helper import logger, map_fusion_to_iso, fix_bed, generate_bed
 from collections import defaultdict
+import tempfile
 
 __author__ = [
     'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
@@ -30,15 +31,17 @@ __all__ = ['annotate']
 
 @logger
 def annotate(options):
+    # create temporary annotated fusion file
+    fusion_tmp = tempfile.TemporaryFile(mode='w+')
     # annotate fusion junctions
-    annotate_fusion(options['--ref'], options['--bed'],
+    annotate_fusion(options['--ref'], options['--bed'], fusion_tmp,
                     secondary_flag=options['--low-confidence'])
     # fix fusion juncrions
-    fix_fusion(options['--ref'], options['--genome'], options['--output'],
+    fix_fusion(options['--ref'], options['--genome'], fusion_tmp, options['--output'],
                options['--no-fix'], secondary_flag=options['--low-confidence'])
 
 
-def annotate_fusion(ref_f, junc_bed, secondary_flag=0, denovo_flag=0):
+def annotate_fusion(ref_f, junc_bed, fusion_tmp, secondary_flag=0, denovo_flag=0):
     """
     Align fusion juncrions to gene annotations
     """
@@ -48,88 +51,87 @@ def annotate_fusion(ref_f, junc_bed, secondary_flag=0, denovo_flag=0):
     fusion_bed = junc_bed
     fusions, fusion_index = parse_bed(fusion_bed)  # fusion junctions
     total = set()
-    annotated_fusion_f = 'annotated_fusion.txt.tmp'
-    with open(annotated_fusion_f, 'w') as outf:
-        for chrom in chrom_info:
-            # overlap gene annotations with fusion juncrions
-            result = []
-            # overlap genes
-            if chrom in genes:
-                result += Interval.overlapwith(genes[chrom].interval,
-                                               fusions[chrom])
-            # overlap novel genes in denovo mode
-            if denovo_flag and chrom in novel_genes:
-                result += Interval.overlapwith(novel_genes[chrom].interval,
-                                               fusions[chrom])
-            for itl in result:
-                # extract gene annotations
-                iso = list([x for x in itl[2:] if x.startswith('iso')])
-                # for each overlapped fusion junction
-                for fus in itl[(2 + len(iso)):]:
-                    reads = fus.split()[1]
-                    fus_start, fus_end = fusion_index[fus]
-                    fus_loc = '%s\t%d\t%d\tFUSIONJUNC/%s' % (chrom, fus_start,
-                                                             fus_end, reads)
-                    edge_annotations = []  # first or last exon flag
-                    secondary_exon = defaultdict(dict)  # secondary exons
-                    annotate_flag = 0
-                    for iso_id in iso:
-                        g, i, c, s = iso_id.split()[1:]
-                        start = gene_info[iso_id][0][0]
-                        end = gene_info[iso_id][-1][-1]
-                        # fusion junction excesses boundaries of gene
-                        # annotation
-                        if fus_start < start - 10 or fus_end > end + 10:
-                            if not secondary_flag:
-                                continue
-                        (fusion_info,
-                         index,
-                         edge,
-                         secondary) = map_fusion_to_iso(fus_start,
-                                                        fus_end, s,
-                                                        gene_info[iso_id])
-                        if fusion_info:
-                            annotate_flag += 1
-                            bed_info = '\t'.join([fus_loc, '0', s,
-                                                  str(fus_start),
-                                                  str(fus_start), '0,0,0'])
-                            bed = '\t'.join([bed_info, fusion_info, g, i,
-                                             index])
-                            if not edge:  # not first or last exon
-                                outf.write(bed + '\n')
-                                total.add(fus)
-                            else:  # first or last exon
-                                edge_annotations.append(bed)
-                        elif secondary_flag and secondary is not None:
-                            li, ri = secondary
-                            gene = ':'.join([g, s])
-                            if li is not None:
-                                li = str(li)
-                                secondary_exon['left'][gene] = ':'.join([i,
-                                                                         li])
-                            if ri is not None:
-                                ri = str(ri)
-                                secondary_exon['right'][gene] = ':'.join([i,
-                                                                          ri])
-                    if edge_annotations:
-                        for bed in edge_annotations:
+    outf = fusion_tmp
+    for chrom in chrom_info:
+        # overlap gene annotations with fusion juncrions
+        result = []
+        # overlap genes
+        if chrom in genes:
+            result += Interval.overlapwith(genes[chrom].interval,
+                                            fusions[chrom])
+        # overlap novel genes in denovo mode
+        if denovo_flag and chrom in novel_genes:
+            result += Interval.overlapwith(novel_genes[chrom].interval,
+                                            fusions[chrom])
+        for itl in result:
+            # extract gene annotations
+            iso = list([x for x in itl[2:] if x.startswith('iso')])
+            # for each overlapped fusion junction
+            for fus in itl[(2 + len(iso)):]:
+                reads = fus.split()[1]
+                fus_start, fus_end = fusion_index[fus]
+                fus_loc = '%s\t%d\t%d\tFUSIONJUNC/%s' % (chrom, fus_start,
+                                                            fus_end, reads)
+                edge_annotations = []  # first or last exon flag
+                secondary_exon = defaultdict(dict)  # secondary exons
+                annotate_flag = 0
+                for iso_id in iso:
+                    g, i, c, s = iso_id.split()[1:]
+                    start = gene_info[iso_id][0][0]
+                    end = gene_info[iso_id][-1][-1]
+                    # fusion junction excesses boundaries of gene
+                    # annotation
+                    if fus_start < start - 10 or fus_end > end + 10:
+                        if not secondary_flag:
+                            continue
+                    (fusion_info,
+                        index,
+                        edge,
+                        secondary) = map_fusion_to_iso(fus_start,
+                                                    fus_end, s,
+                                                    gene_info[iso_id])
+                    if fusion_info:
+                        annotate_flag += 1
+                        bed_info = '\t'.join([fus_loc, '0', s,
+                                                str(fus_start),
+                                                str(fus_start), '0,0,0'])
+                        bed = '\t'.join([bed_info, fusion_info, g, i,
+                                            index])
+                        if not edge:  # not first or last exon
                             outf.write(bed + '\n')
-                        total.add(fus)
-                    if secondary_flag and not annotate_flag:
-                        for gene in secondary_exon['left']:
-                            if gene in secondary_exon['right']:
-                                left = secondary_exon['left'][gene]
-                                right = secondary_exon['right'][gene]
-                                g, s = gene.split(':')
-                                # for avoid dup, use fus_loc_new
-                                fus_loc_new = fus_loc + '\t0\t%s' % s
-                                outf.write('%s\t%s:%s\t%s:%s\n' % (fus_loc_new,
-                                                                   g, left, g,
-                                                                   right))
+                            total.add(fus)
+                        else:  # first or last exon
+                            edge_annotations.append(bed)
+                    elif secondary_flag and secondary is not None:
+                        li, ri = secondary
+                        gene = ':'.join([g, s])
+                        if li is not None:
+                            li = str(li)
+                            secondary_exon['left'][gene] = ':'.join([i,
+                                                                        li])
+                        if ri is not None:
+                            ri = str(ri)
+                            secondary_exon['right'][gene] = ':'.join([i,
+                                                                        ri])
+                if edge_annotations:
+                    for bed in edge_annotations:
+                        outf.write(bed + '\n')
+                    total.add(fus)
+                if secondary_flag and not annotate_flag:
+                    for gene in secondary_exon['left']:
+                        if gene in secondary_exon['right']:
+                            left = secondary_exon['left'][gene]
+                            right = secondary_exon['right'][gene]
+                            g, s = gene.split(':')
+                            # for avoid dup, use fus_loc_new
+                            fus_loc_new = fus_loc + '\t0\t%s' % s
+                            outf.write('%s\t%s:%s\t%s:%s\n' % (fus_loc_new,
+                                                                g, left, g,
+                                                                right))
     print('Annotated %d fusion junctions!' % len(total))
 
 
-def fix_fusion(ref_f, genome_fa, out_file, no_fix, secondary_flag=0,
+def fix_fusion(ref_f, genome_fa, fusion_tmp, out_file, no_fix, secondary_flag=0,
                denovo_flag=0):
     """
     Realign fusion juncrions
@@ -137,7 +139,8 @@ def fix_fusion(ref_f, genome_fa, out_file, no_fix, secondary_flag=0,
     print('Start to fix fusion junctions...')
     fa = check_fasta(genome_fa)
     ref = parse_ref(ref_f, 2)
-    annotated_fusion_f = 'annotated_fusion.txt.tmp'
+    annotated_fusion_f = fusion_tmp
+    annotated_fusion_f.seek(0)  ## from the start
     fusions, fusion_names, fixed_flag = fix_bed(annotated_fusion_f, ref, fa,
                                                 no_fix, denovo_flag)
     total = 0
@@ -216,6 +219,6 @@ def fix_fusion(ref_f, genome_fa, out_file, no_fix, secondary_flag=0,
     if secondary_flag:
         secondary_f.close()
 
-    os.remove('annotated_fusion.txt.tmp')
+    fusion_tmp.close()
 
     print('Fixed %d fusion junctions!' % total)

@@ -12,10 +12,6 @@ import requests
 import gzip
 import tarfile
 import pysam
-try:
-    from string import maketrans
-except ImportError:
-    maketrans = str.maketrans
 
 
 def fetch_file(options):
@@ -25,7 +21,7 @@ def fetch_file(options):
         path = 'http://hgdownload.soe.ucsc.edu/goldenPath/%s/' % options[1]
     else:
         sys.exit('Only support human or mouse!')
-    s = maketrans(' ', '_')
+    s = {32:95}
     if options[2] == 'ref':  # RefSeq gene annotations
         download_file(path + 'database/refFlat.txt.gz', 'refFlat.txt.gz')
         with open(options[3], 'wb') as outf:

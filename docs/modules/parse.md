@@ -18,6 +18,7 @@ CIRCexplorer2 parse [options] -t ALIGNER <fusion>
 -t ALIGNER                     Aligner (TopHat-Fusion, STAR, MapSplice, BWA, segemehl).
 -b JUNC --bed=JUNC             Output file. [default: back_spliced_junction.bed]
 --pe                           Parse paired-end alignment file (only for TopHat-Fusion).
+-f                             Statistics fragment numbers rather than read numbers.
 ```
 
 ## Notes about options

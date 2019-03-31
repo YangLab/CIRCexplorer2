@@ -10,8 +10,8 @@ BWA, segemehl).
                                    [default: back_spliced_junction.bed]
     --pe                           Parse paired-end alignment file (only for \
 TopHat-Fusion). If this is set, then -f is set automatically.
-    -f                             statistics fragment numbers rather than \
-read numbers
+    -f                             Statistics fragment numbers rather than \
+read numbers.
 '''
 
 import sys

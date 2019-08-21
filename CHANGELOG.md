@@ -1,8 +1,25 @@
+## 2.3.6 (2019-03-19)
+
+Improvements:
+Adding -f option in parse step to count fragment numbers rather than read
+numbers.
+
+## 2.3.5 (2018-12-30)
+
+Improvements:
+Using the temporary file to allow to run CIRCexplorer2 in the same directory simultaneously (issue #26). Thanks @egaffo. Happy New Year!
+
+## 2.3.4 (2018-10-26)
+
+Bugfixes:
+
+* bug in fetch_ucsc.py when using python3, thanks @lardenoije
+
 ## 2.3.3 (2018-02-27)
 
 Bugfixes:
 
-* bug in fetch_ucsc.py when using python3
+* bug in fetch_ucsc.py when using python3 (issue #17)
 
 ## 2.3.2 (2017-10-05)
 

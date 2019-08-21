@@ -64,3 +64,6 @@ target/
 tags
 .tags*
 .idea
+
+# 
+*/.ropeproject/

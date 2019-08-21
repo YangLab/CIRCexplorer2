@@ -137,110 +137,109 @@ def fix_bed(fusion_file, ref, fa, no_fix, denovo_flag):
     fusion_set = set()
     fixed_flag = defaultdict(int)  # flag to indicate realignment
     junctions = set()
-    with open(fusion_file, 'r') as f:
-        for line in f:
-            secondary_flag = False
-            chrom = line.split()[0]
-            strand = line.split()[5]
-            start, end = [int(x) for x in line.split()[1:3]]
-            junction_info = '%s\t%d\t%d' % (chrom, start, end)
-            if not denovo_flag and junction_info in junctions:
-                continue
-            reads = int(line.split()[3].split('/')[1])
-            if len(line.split()) == 8:
-                secondary_flag = True
-                flag = False
-                left_info, right_info = line.split()[6:8]
-                left_gene, left_iso, left_index = left_info.split(':')
-                right_gene, right_iso, right_index = right_info.split(':')
-                s = int(left_index)
-                e = int(right_index)
-                iso_starts = ref['\t'.join([left_gene, left_iso, chrom,
-                                            strand])][0]
-                iso_ends = ref['\t'.join([right_gene, right_iso, chrom,
-                                          strand])][1]
-                loc = '%s\t%d\t%d' % (chrom, iso_starts[s], iso_ends[e])
-                name = '|'.join(['secondary', loc, strand, left_info,
-                                 right_info])
-            else:
-                flag, gene, iso, index = line.split()[-4:]
-                flag = True if flag == 'ciRNA' else False
-                name = '\t'.join([gene, iso, chrom, strand, index])
-                iso_starts, iso_ends = ref['\t'.join([gene, iso, chrom,
-                                                      strand])]
-            if not flag:  # back spliced exons
-                if not secondary_flag:
-                    s, e = [int(x) for x in index.split(',')]
+    for line in fusion_file:
+        secondary_flag = False
+        chrom = line.split()[0]
+        strand = line.split()[5]
+        start, end = [int(x) for x in line.split()[1:3]]
+        junction_info = '%s\t%d\t%d' % (chrom, start, end)
+        if not denovo_flag and junction_info in junctions:
+            continue
+        reads = int(line.split()[3].split('/')[1])
+        if len(line.split()) == 8:
+            secondary_flag = True
+            flag = False
+            left_info, right_info = line.split()[6:8]
+            left_gene, left_iso, left_index = left_info.split(':')
+            right_gene, right_iso, right_index = right_info.split(':')
+            s = int(left_index)
+            e = int(right_index)
+            iso_starts = ref['\t'.join([left_gene, left_iso, chrom,
+                                        strand])][0]
+            iso_ends = ref['\t'.join([right_gene, right_iso, chrom,
+                                        strand])][1]
+            loc = '%s\t%d\t%d' % (chrom, iso_starts[s], iso_ends[e])
+            name = '|'.join(['secondary', loc, strand, left_info,
+                                right_info])
+        else:
+            flag, gene, iso, index = line.split()[-4:]
+            flag = True if flag == 'ciRNA' else False
+            name = '\t'.join([gene, iso, chrom, strand, index])
+            iso_starts, iso_ends = ref['\t'.join([gene, iso, chrom,
+                                                    strand])]
+        if not flag:  # back spliced exons
+            if not secondary_flag:
+                s, e = [int(x) for x in index.split(',')]
+            # not realign
+            if start == iso_starts[s] and end == iso_ends[e]:
+                fusions[name] += reads
+                if name not in fusion_set:
+                    fusion_set.add(name)
+                    fusion_names.append(name)
+                junctions.add(junction_info)
+            # no fix mode
+            elif no_fix:
+                fusions[name] += reads
+                if name not in fusion_set:
+                    fusion_set.add(name)
+                    fusion_names.append(name)
+                fixed_flag[name] += 1
+                junctions.add(junction_info)
+            # realign
+            elif check_seq(chrom, [start, iso_starts[s], end, iso_ends[e]],
+                            fa):
+                fusions[name] += reads
+                if name not in fusion_set:
+                    fusion_set.add(name)
+                    fusion_names.append(name)
+                fixed_flag[name] += 1
+                junctions.add(junction_info)
+        else:  # ciRNAs
+            index = int(index)
+            if strand == '+':
                 # not realign
-                if start == iso_starts[s] and end == iso_ends[e]:
+                if start == iso_ends[index]:
+                    name += '|'.join(['', str(start), str(end)])
                     fusions[name] += reads
                     if name not in fusion_set:
                         fusion_set.add(name)
                         fusion_names.append(name)
-                    junctions.add(junction_info)
-                # no fix mode
-                elif no_fix:
-                    fusions[name] += reads
-                    if name not in fusion_set:
-                        fusion_set.add(name)
-                        fusion_names.append(name)
-                    fixed_flag[name] += 1
                     junctions.add(junction_info)
                 # realign
-                elif check_seq(chrom, [start, iso_starts[s], end, iso_ends[e]],
-                               fa):
+                elif check_seq(chrom, [start, iso_ends[index], end], fa,
+                                intron_flag=True):
+                    fixed_start = iso_ends[index]
+                    fixed_end = end + fixed_start - start
+                    name += '|'.join(['', str(fixed_start),
+                                        str(fixed_end)])
                     fusions[name] += reads
                     if name not in fusion_set:
                         fusion_set.add(name)
                         fusion_names.append(name)
                     fixed_flag[name] += 1
                     junctions.add(junction_info)
-            else:  # ciRNAs
-                index = int(index)
-                if strand == '+':
+            else:
+                if end == iso_starts[index + 1]:
                     # not realign
-                    if start == iso_ends[index]:
-                        name += '|'.join(['', str(start), str(end)])
-                        fusions[name] += reads
-                        if name not in fusion_set:
-                            fusion_set.add(name)
-                            fusion_names.append(name)
-                        junctions.add(junction_info)
+                    name += '|'.join(['', str(start), str(end)])
+                    fusions[name] += reads
+                    if name not in fusion_set:
+                        fusion_set.add(name)
+                        fusion_names.append(name)
+                    junctions.add(junction_info)
                     # realign
-                    elif check_seq(chrom, [start, iso_ends[index], end], fa,
-                                   intron_flag=True):
-                        fixed_start = iso_ends[index]
-                        fixed_end = end + fixed_start - start
-                        name += '|'.join(['', str(fixed_start),
-                                          str(fixed_end)])
-                        fusions[name] += reads
-                        if name not in fusion_set:
-                            fusion_set.add(name)
-                            fusion_names.append(name)
-                        fixed_flag[name] += 1
-                        junctions.add(junction_info)
-                else:
-                    if end == iso_starts[index + 1]:
-                        # not realign
-                        name += '|'.join(['', str(start), str(end)])
-                        fusions[name] += reads
-                        if name not in fusion_set:
-                            fusion_set.add(name)
-                            fusion_names.append(name)
-                        junctions.add(junction_info)
-                        # realign
-                    elif check_seq(chrom, [end, iso_starts[index + 1], start],
-                                   fa, intron_flag=True):
-                        fixed_end = iso_starts[index + 1]
-                        fixed_start = start + fixed_end - end
-                        name += '|'.join(['', str(fixed_start),
-                                          str(fixed_end)])
-                        fusions[name] += reads
-                        if name not in fusion_set:
-                            fusion_set.add(name)
-                            fusion_names.append(name)
-                        fixed_flag[name] += 1
-                        junctions.add(junction_info)
+                elif check_seq(chrom, [end, iso_starts[index + 1], start],
+                                fa, intron_flag=True):
+                    fixed_end = iso_starts[index + 1]
+                    fixed_start = start + fixed_end - end
+                    name += '|'.join(['', str(fixed_start),
+                                        str(fixed_end)])
+                    fusions[name] += reads
+                    if name not in fusion_set:
+                        fusion_set.add(name)
+                        fusion_names.append(name)
+                    fixed_flag[name] += 1
+                    junctions.add(junction_info)
     return (fusions, fusion_names, fixed_flag)
 
 

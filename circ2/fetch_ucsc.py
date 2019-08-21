@@ -12,10 +12,6 @@ import requests
 import gzip
 import tarfile
 import pysam
-try:
-    from string import maketrans
-except ImportError:
-    maketrans = str.maketrans
 
 
 def fetch_file(options):
@@ -25,7 +21,7 @@ def fetch_file(options):
         path = 'http://hgdownload.soe.ucsc.edu/goldenPath/%s/' % options[1]
     else:
         sys.exit('Only support human or mouse!')
-    s = maketrans(' ', '_')
+    s = {32:95}
     if options[2] == 'ref':  # RefSeq gene annotations
         download_file(path + 'database/refFlat.txt.gz', 'refFlat.txt.gz')
         with open(options[3], 'wb') as outf:
@@ -36,13 +32,13 @@ def fetch_file(options):
         kg_iso = {}
         with gzip.open('kgXref.txt.gz', 'rb') as kg_id_f:
             for line in kg_id_f:
-                iso = line.split('\t')[0]
-                gene = line.split('\t')[4].translate(s)
+                iso = line.decode().split('\t')[0]
+                gene = line.decode().split('\t')[4].translate(s)
                 kg_iso[iso] = gene
         with gzip.open('knownGene.txt.gz', 'rb') as kg_f:
             with open(options[3], 'w') as outf:
                 for line in kg_f:
-                    entry = line.split('\t')
+                    entry = line.decode().split('\t')
                     iso = entry[0]
                     outf.write('\t'.join([kg_iso[iso]] + entry[:10]) + '\n')
     elif options[2] == 'ens':  # Ensembl gene annotations
@@ -54,12 +50,12 @@ def fetch_file(options):
         ens_iso = {}
         with gzip.open('ensemblToGeneName.txt.gz', 'rb') as ens_id_f:
             for line in ens_id_f:
-                iso, gene = line.split()
+                iso, gene = line.decode().split()
                 ens_iso[iso] = gene
         with gzip.open('ensGene.txt.gz', 'rb') as ens_f:
             with open(options[3], 'w') as outf:
                 for line in ens_f:
-                    entry = line.split()
+                    entry = line.decode().split()
                     iso = entry[1]
                     outf.write('\t'.join([ens_iso[iso]] + entry[1:11]) + '\n')
     elif options[2] == 'fa':  # Genome sequences
@@ -72,7 +68,8 @@ def fetch_file(options):
             with open(options[3], 'w') as outf:
                 for f in fa:
                     if f.isfile():
-                        outf.write(fa.extractfile(f).read())
+                        content = fa.extractfile(f).read()
+                        outf.write(content.decode())
         pysam.faidx(options[3])
     else:
         sys.exit('Only support ref/kg/ens/fa!')

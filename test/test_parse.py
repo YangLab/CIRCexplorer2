@@ -33,7 +33,7 @@ def test_tophat_fusion_parse():
     '''
     print('#%s: Test parse TopHat-Fusion' % __name__)
     options = {'-t': 'TopHat-Fusion', '--bed': 'back_spliced_junction.bed',
-               '<fusion>': 'tophat_fusion.bam', '--pe': False}
+               '<fusion>': 'tophat_fusion.bam', '--pe': False, '-f': False}
     parse(options, command='CIRCexplorer2 parse (TopHat-Fusion)', name='parse')
     check_fusion('back_spliced_junction.bed',
                  'parse_TopHat_Fusion/fusion_junction.bed')
@@ -46,7 +46,7 @@ def test_tophat_fusion_pe_parse():
     '''
     print('#%s: Test parse TopHat-Fusion' % __name__)
     options = {'-t': 'TopHat-Fusion', '--bed': 'back_spliced_junction.bed',
-               '<fusion>': 'tophat_fusion_PE.bam', '--pe': True}
+               '<fusion>': 'tophat_fusion_PE.bam', '--pe': True, '-f': True}
     parse(options, command='CIRCexplorer2 parse (TopHat-Fusion PE)',
           name='parse')
     check_fusion('back_spliced_junction.bed',

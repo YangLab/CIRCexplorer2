@@ -180,8 +180,7 @@ def fix_fusion(ref_f, genome_fa, fusion_tmp, out_file, no_fix, secondary_flag=0,
                                               ends[s:(e + 1)])
                 annotation_info = '\t'.join([chrom, start, end, sizes,
                                              offsets])
-                # remove circular RNA info duplications in denovo mode
-                if denovo_flag and annotation_info in annotations:
+                if annotation_info in annotations:
                     continue
                 if s == 0:
                     left_intron = 'None'
@@ -200,8 +199,7 @@ def fix_fusion(ref_f, genome_fa, fusion_tmp, out_file, no_fix, secondary_flag=0,
                 index, start, end = index.split('|')
                 size = str(int(end) - int(start))
                 annotation_info = '\t'.join([chrom, start, end, size, '0'])
-                # remove circular RNA info duplications in denovo mode
-                if denovo_flag and annotation_info in annotations:
+                if annotation_info in annotations:
                     continue
                 index = int(index)
                 if strand == '+':
@@ -213,8 +211,7 @@ def fix_fusion(ref_f, genome_fa, fusion_tmp, out_file, no_fix, secondary_flag=0,
                                  start, '0,0,0', '1', size, '0',
                                  reads, 'ciRNA', gene, iso, index_info,
                                  intron])
-            if denovo_flag:  # in denovo mode
-                annotations.add(annotation_info)
+            annotations.add(annotation_info)
             outf.write(bed + '\n')
     if secondary_flag:
         secondary_f.close()

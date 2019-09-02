@@ -1,3 +1,9 @@
+## 2.3.7 (2019-09-01)
+
+Bugfixes:
+
+* bug in ciRNA annotating
+
 ## 2.3.6 (2019-03-19)
 
 Improvements:

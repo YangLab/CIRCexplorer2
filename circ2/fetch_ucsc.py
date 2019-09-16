@@ -42,8 +42,8 @@ def fetch_file(options):
                     iso = entry[0]
                     outf.write('\t'.join([kg_iso[iso]] + entry[:10]) + '\n')
     elif options[2] == 'ens':  # Ensembl gene annotations
-        if options[1] == 'hg38':
-            sys.exit('No Ensembl gene annotations for hg38!')
+        if options[1] == 'hg38' or options[1] == 'mm10':
+            sys.exit('No Ensembl gene annotations for hg38 or mm10!')
         download_file(path + 'database/ensGene.txt.gz', 'ensGene.txt.gz')
         download_file(path + 'database/ensemblToGeneName.txt.gz',
                       'ensemblToGeneName.txt.gz')

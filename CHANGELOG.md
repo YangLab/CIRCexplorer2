@@ -1,3 +1,9 @@
+## 2.3.8 (2019-09-16)
+
+Bugfixes:
+
+* bug in fetching mm10 ensembl gene annotations (issue #37), thanks @sambhav2mishra
+
 ## 2.3.7 (2019-09-01)
 
 Bugfixes:

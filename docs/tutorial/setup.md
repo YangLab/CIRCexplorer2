@@ -123,7 +123,7 @@ cut -f2-11 hg19_ens.txt|genePredToGtf file stdin hg19_ens.gtf
 
 ###Notes:
 
-1 hg38 only has RefSeq and KnownGenes (GENCODE) gene annotations, and does not support Ensembl gene annotations.
+1 hg38 and mm10 only have RefSeq and KnownGenes (GENCODE) gene annotations, and does not support Ensembl gene annotations.
 
 2 You could select one gene annotation file among `hg19_ref.txt`, `hg19_kg.txt` or `hg19_ens.txt` at your choice. In addition, you could concatenate all these gene annotation file as a single file for CIRCexplorer2.
 ```

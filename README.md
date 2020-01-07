@@ -25,9 +25,9 @@ Maintainer: Xu-Kai Ma (maxukai@picb.ac.cn)
 
 From version 2.3.0, CIRCexplorer2 has very big changes in inputs and outputs.  For new structures, please see http://circexplorer2.readthedocs.org. If you want to check the information for old versions, please see http://circexplorer2.readthedocs.io/en/2.2.7.
 
-[CLEAR](https://github.com/YangLab/CLEAR) is a newly developped pipeline compatible with CIRCexplorer2 to help better quantify and compare the expression of circRNAs.[(Ma et al., 2020)](https://www.sciencedirect.com/science/article/pii/S1672022919301664)
+[CLEAR](https://github.com/YangLab/CLEAR) is a newly developped pipeline compatible with CIRCexplorer2 to help better quantify and compare the expression of circRNAs. [(Ma et al., 2020)](https://www.sciencedirect.com/science/article/pii/S1672022919301664)
 
-[CIRCpedia](http://www.picb.ac.cn/rnomics/circpedia) is an integrative database, aiming to annotating alternative back-splicing and alternative splicing in circRNAs across different cell lines. Welcome to use![(Dong et al., 2018)](https://www.sciencedirect.com/science/article/pii/S1672022918302596)
+[CIRCpedia](http://www.picb.ac.cn/rnomics/circpedia) is an integrative database, aiming to annotating alternative back-splicing and alternative splicing in circRNAs across different cell lines. Welcome to use! [(Dong et al., 2018)](https://www.sciencedirect.com/science/article/pii/S1672022918302596)
 
 ## Features
 

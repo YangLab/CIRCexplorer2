@@ -2,7 +2,7 @@
 
 Q: Comparied with other circular RNA identification tools, what is the performance of CIRCexplorer2?
 
-A: CIRCexplorer2 is based on our previous circular RNA identification tool CIRCexplorer, and it inherits all the advantages of CIRCexplorer such as [high accuracy, good sensitivity and low memory consumption](http://nar.oxfordjournals.org/content/44/6/e58.abstract).
+A: CIRCexplorer2 is based on our previous circular RNA identification tool CIRCexplorer, and it inherits all the advantages of CIRCexplorer such as high accuracy, good sensitivity and low memory consumption. and it performs well single-handedly and the combination with other circRNA identification algorithm only results in subtle improvements. [[1](http://nar.oxfordjournals.org/content/44/6/e58.abstract)][[2](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005420)][[3](https://www.frontiersin.org/articles/10.3389/fcell.2018.00020/full)]
 
 Q: CIRCexplorer2 is too slow with large data. How could I improve it?
 
@@ -18,7 +18,7 @@ A: If you only use the [annotating pipeline](../tutorial/pipeline.md), the [poly
 
 Q: What is the criterion to define high-expressed/high-confidence circular RNAs.
 
-A: There is no common rule to define which circular RNAs belong to high-expressed/high-confidence circular RNAs. In practice, we use circular RNA fusion junction cutoff (**RPM≥0.1**, RPM: Reads Per Million mapped reads) to define them. This cutoff was used in our previous [Cell paper](http://www.sciencedirect.com/science/article/pii/S0092867414011118), and it works well for our current research.
+A: There is no common rule to define which circular RNAs belong to high-expressed/high-confidence circular RNAs. In practice, we use circular RNA fusion junction cutoff (**RPM≥0.1**, RPM: Reads Per Million mapped reads) to define them. This cutoff was used in our previous [Cell paper](http://www.sciencedirect.com/science/article/pii/S0092867414011118), and it works well for our current research. A new pipeline [CLEAR](https://github.com/YangLab/CLEAR) was developped to help better quantify and compare the expression of circRNAs.
 
 Q: which aligner should I use when aligning circular RNA fusion junction reads?
 
@@ -33,4 +33,5 @@ Q: Why is there the TopHat2 alignment step in `CIRCexplorer2 align`? Is this ste
 A: We first align reads onto genome and transcriptome using TopHat2 to reduce false positive reads aligned in the TopHat-Fusion alignment step. It is optional to skip the TopHat2 alignment step simply through set the `--skip-tophat` option in in `CIRCexplorer2 align` command.
 
 Q: Does CIRCexplorer2 support Python3?
+
 A: From version 2.3.0, the source codes of CIRCexplorer2 are compatible with Python3. However, because TopHat2 only supports Python2, you should be careful when you run `CIRCexplorer2 align`. It will call TopHat2 and require Python2 to be installed in your computer.

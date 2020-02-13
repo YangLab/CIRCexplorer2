@@ -39,7 +39,7 @@ back_spliced_junction.bed
 
 ### Format of gene annotation file:
 
-The file is in the format of [Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9) below.
+The file is in the format of [Gene Predictions and RefSeq Genes with Gene Names](https://genome.ucsc.edu/FAQ/FAQformat.html#format9) below. (See [example file](https://raw.githubusercontent.com/YangLab/CIRCexplorer2/master/test/data/ref.txt))
 
 | Field       | Description                   |
 | :---------: | :---------------------------- |

@@ -1,8 +1,11 @@
 import os
+import sys
 import pysam
 from collections import defaultdict
 from itertools import groupby
-from .genomic_interval import Interval
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from genomic_interval import Interval
 
 
 class Segment(object):

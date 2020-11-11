@@ -26,9 +26,11 @@ import os
 import os.path
 import pysam
 import pybedtools
-from .parse import tophat_fusion_parse
-from .helper import logger, which, link_index, build_index
-from .dir_func import create_dir
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from parse import tophat_fusion_parse
+from helper import logger, which, link_index, build_index
+from dir_func import create_dir
 
 __author__ = [
     'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',

@@ -25,13 +25,15 @@ with poor gene annotations).
 import sys
 import os.path
 from collections import defaultdict, deque
-from .annotate import annotate_fusion, fix_fusion
-from .parser import parse_junc
-from .helper import logger, fetch_psi, fetch_read, Expression
-from .dir_func import check_dir, create_dir
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from annotate import annotate_fusion, fix_fusion
+from parser import parse_junc
+from helper import logger, fetch_psi, fetch_read, Expression
+from dir_func import check_dir, create_dir
 import pysam
 from scipy.stats import fisher_exact, binom
-from .genomic_interval import Interval
+from genomic_interval import Interval
 import tempfile
 
 __author__ = [

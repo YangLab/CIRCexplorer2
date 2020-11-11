@@ -15,10 +15,14 @@ read numbers.
 '''
 
 import sys
+import os
 import pysam
 from collections import defaultdict
-from .helper import logger
-from .parser import parse_fusion_bam, Segment
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+import parser
+
+from helper import logger
+from parser import parse_fusion_bam, Segment
 
 __author__ = [
     'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',

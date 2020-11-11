@@ -15,9 +15,11 @@ with poor gene annotations).
 '''
 
 import os
-from .genomic_interval import Interval
-from .parser import parse_ref, parse_bed, check_fasta
-from .helper import logger, map_fusion_to_iso, fix_bed, generate_bed
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from genomic_interval import Interval
+from parser import parse_ref, parse_bed, check_fasta
+from helper import logger, map_fusion_to_iso, fix_bed, generate_bed
 from collections import defaultdict
 import tempfile
 

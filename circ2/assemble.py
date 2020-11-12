@@ -18,11 +18,13 @@ human hg19).
 import sys
 import os
 import os.path
-from .parser import parse_junc
-from .helper import logger, which, genepred_to_bed
-from .dir_func import create_dir
 import pybedtools
 import pysam
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from parser import parse_junc
+from helper import logger, which, genepred_to_bed
+from dir_func import create_dir
 
 __author__ = [
     'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',

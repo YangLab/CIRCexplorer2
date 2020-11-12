@@ -29,7 +29,7 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
 from annotate import annotate_fusion, fix_fusion
 from parser import parse_junc
-from helper import logger, fetch_psi, fetch_read, Expression
+from helper import logger, fetch_psi, fetch_read, Expression, hisat_to_tophat
 from dir_func import check_dir, create_dir
 import pysam
 from scipy.stats import fisher_exact, binom
@@ -47,11 +47,13 @@ __all__ = ['denovo']
 @logger
 def denovo(options):
     # check tophat results
-    if options['--tophat']:
-        tophat_dir = check_dir(options['--tophat'])
+    # if options['--tophat']:
+        # tophat_dir = check_dir(options['--tophat'])
+
     # prepare denovo directory
     denovo_dir = options['--output']
     create_dir(denovo_dir)
+
     # combine ref files
     cufflinks_ref_path = '%s/transcripts_ref.txt' % options['--cuff']
     if os.path.isfile(cufflinks_ref_path):
@@ -84,13 +86,17 @@ def denovo(options):
 
         if options['--pAplus'] and os.path.isdir(options['--pAplus']):
             pAplus_dir = os.path.abspath(options['--pAplus'])
+        elif options['--pAplus'] and os.path.isfile(options['--pAplus']):
+            pAplus_dir = hisat_to_tophat(options['--pAplus'], denovo_dir)
         else:
             sys.exit('You should offer --pAplus option in --as mode!')
 
         if options['--tophat'] and os.path.isdir(options['--tophat']):
-            pass
+            tophat_dir = os.path.abspath(options['--tophat_dir'])
+        elif options['--tophat'] and os.path.isfile(options['--tophat']):
+            tophat_dir = hisat_to_tophat(options['--tophat'], denovo_dir)
         else:
-            sys.exit('You should offer p(A)minus dir in --as mode!')
+            sys.exit('You should offer p(A)minus dir/file in --as mode!')
 
         if not options['--as-type'] or options['--as-type'] == 'CE':
             # extract cassette exons

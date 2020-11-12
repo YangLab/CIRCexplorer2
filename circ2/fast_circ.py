@@ -25,8 +25,11 @@ TopHat-Fusion).
 '''
 
 import sys
+import os
 from docopt import docopt
-from .dir_func import create_dir
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from dir_func import create_dir
 
 __author__ = [
     'Xiao-Ou Zhang (zhangxiaoou@picb.ac.cn)',
@@ -72,12 +75,12 @@ def main():
 
 
 def parse_command(options, command_log):
-    from .parse import parse
+    from parse import parse
     parse(options, command=command_log, name='parse')
 
 
 def align_command(options, command_log):
-    from .align import align
+    from align import align
     options['--bw'] = True
     options['--scale'] = True
     options['--skip-tophat'] = False
@@ -86,14 +89,14 @@ def align_command(options, command_log):
 
 
 def annotate_command(options, command_log):
-    from .annotate import annotate
+    from annotate import annotate
     options['--no-fix'] = False
     options['--low-confidence'] = False
     annotate(options, command=command_log, name='annotate')
 
 
 def assemble_command(options, command_log):
-    from .assemble import assemble
+    from assemble import assemble
     options['--bb'] = False
     options['--chrom-size'] = None
     options['--remove-rRNA'] = False
@@ -102,7 +105,7 @@ def assemble_command(options, command_log):
 
 
 def denovo_command(options, work_dir, command_log):
-    from .denovo import denovo
+    from denovo import denovo
     if options['--pAplus']:
         options['--as'] = '%s/as' % work_dir
         options['--rpkm'] = True

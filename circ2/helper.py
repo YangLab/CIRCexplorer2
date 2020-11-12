@@ -11,6 +11,8 @@ try:
 except ImportError:
     maketrans = str.maketrans
 
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+from dir_func import create_dir
 
 def which(program):
     '''
@@ -418,3 +420,25 @@ def build_index(i, genome_file, prefix, out_dir, thread):
                              i)) >> 8
     if return_code:
         sys.exit('Error: cannot build index for bowtie%d!' % i)
+
+def hisat_to_tophat(bam_f, denovo_dir):
+    if which('regtools') is None:
+        sys.exit('regtools is required "as" analysis when use hisat2 mapping \
+                 results!')
+    o_dir = create_dir('%s/temp%f' % (denovo_dir, time.time()) )
+    os.symlink(os.path.realpath(bam_f),
+               "%s/accepted_hits.bam" % o_dir )
+    pysam.index("%s/accepted_hits.bam" % o_dir)
+
+    # creat junctions.bed file
+    regtools_cmd = 'regtools junctions extract -s 0 '
+    regtools_cmd += '-o %s %s' % ("%s/junctions.bed" % o_dir,
+                                  "%s/accepted_hits.bam" % o_dir)
+    regtools_cmd += ' 2> %s/regtools.log' % o_dir
+    print('Creating junctions.bed command:')
+    print(regtools_cmd)
+    return_code = os.system(regtools_cmd) >> 8
+    if return_code:
+        sys.exit('Error: cannot create junctions.bed file!')
+
+    return o_dir

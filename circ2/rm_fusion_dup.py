@@ -4,7 +4,7 @@ import sys
 import pysam
 
 if len(sys.argv) != 3:
-    sys.exit('rm_dup.py in.bam out.bam')
+    sys.exit('rm_fusion_dup.py in.bam out.bam')
 
 bam_file = pysam.AlignmentFile(sys.argv[1], 'rb')
 out_bam = pysam.AlignmentFile(sys.argv[2], 'wb', template=bam_file)

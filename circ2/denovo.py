@@ -92,7 +92,7 @@ def denovo(options):
             sys.exit('You should offer --pAplus option in --as mode!')
 
         if options['--tophat'] and os.path.isdir(options['--tophat']):
-            tophat_dir = os.path.abspath(options['--tophat_dir'])
+            tophat_dir = os.path.abspath(options['--tophat'])
         elif options['--tophat'] and os.path.isfile(options['--tophat']):
             tophat_dir = hisat_to_tophat(options['--tophat'], denovo_dir)
         else:
@@ -339,8 +339,10 @@ def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir, output_dir):
     for chrom in excluded_region:
         intron_region = []
         # retain introns covered by novel assembled transcripts
-        combined_region = Interval(novel_region[chrom]).interval
-        for region in Interval.overlapwith(combined_region, intron[chrom]):
+        # combined_region = Interval(novel_region[chrom]).interval
+        # for region in Interval.overlapwith(combined_region, intron[chrom]):
+        # retain all intron regions in this step
+        for region in intron[chrom]:
             if len(region) >= 3:
                 for intron_info in region[2:]:
                     chrom, start, end = intron_info.split()[:3]
@@ -353,7 +355,10 @@ def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir, output_dir):
                 for intron_info in region[2:]:
                     intron_set.discard(intron_info)
     output_f = '%s/all_intron_info.txt' % output_dir
+    # import pdb;pdb.set_trace()
     with open(output_f, 'w') as output:
+        total_i_n = len(intron_set)
+        finished_n = 0
         for intron in intron_set:
             chrom, sta, end, strand = intron.split()
             intron_info = '\t'.join([chrom, sta, end])
@@ -408,6 +413,10 @@ def extract_retained_intron(denovo_dir, tophat_dir, pAplus_dir, output_dir):
             output.write('\t'.join([chrom, str(sta), str(end), 'Intron', '0',
                                     strand, other_info, info]))
             output.write('\n')
+
+            finished_n += 1
+            sys.stdout.write("Progress: %d/%d   \r" % (finished_n, total_i_n) )
+            sys.stdout.flush()
     print('Complete parsing circular RNA introns!')
 
 

@@ -1,0 +1,27 @@
+name: Python Package using Conda
+
+on: [push]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up conda environment
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        activate-environment: circ2
+        environment-file: conda_environment.yml
+        miniforge-variant: Mambaforge
+        miniforge-version: 4.10.1-5
+        use-mamba: true
+    - name: Test with nosetests
+      shell: bash -l {0}
+      run: |
+        make test
+    - name: Upload coverage to Codecov  
+      uses: codecov/codecov-action@v1

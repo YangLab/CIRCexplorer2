@@ -25,6 +25,7 @@ jobs:
         make test
     - name: Coveralls
       run: |
+        pip install coveralls
         coveralls --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,17 @@
+name: circ2
+channels:
+  - conda-forge
+  - defaults
+  - r
+  - bioconda
+ dependencies:
+  - requests
+  - pysam>=0.8.4
+  - pybedtools==0.7.5
+  - docopt
+  - scipy
+  - pip
+  - pip:
+    - nose
+    - python-coveralls
+    - cython

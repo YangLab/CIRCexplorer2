@@ -1,8 +1,9 @@
 CIRCexplorer2
 -------------
 
-.. image:: https://travis-ci.org/YangLab/CIRCexplorer2.svg?branch=master
-    :target: https://travis-ci.org/YangLab/CIRCexplorer2
+[![Build](https://github.com/Yanglab/CIRCexplorer2/actions/workflows/python-package-conda.yml/badge.svg?branch=master)](https://github.com/YangLab/CIRCexplorer2/actions?query=workflow%3ABuild)
+.. image:: https://github.com/Yanglab/CIRCexplorer2/actions/workflows/python-package-conda.yml/badge.svg?branch=master
+    :target: https://github.com/YangLab/CIRCexplorer2/actions?query=workflow%3ABuild
 .. image:: https://coveralls.io/repos/github/YangLab/CIRCexplorer2/badge.svg?branch=master
     :target: https://coveralls.io/github/YangLab/CIRCexplorer2?branch=master
 .. image:: https://readthedocs.org/projects/circexplorer2/badge/?version=latest

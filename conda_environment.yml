@@ -4,7 +4,7 @@ channels:
   - defaults
   - r
   - bioconda
- dependencies:
+dependencies:
   - requests
   - pysam>=0.8.4
   - pybedtools==0.7.5

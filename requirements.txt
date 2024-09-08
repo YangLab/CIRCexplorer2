@@ -1,4 +1,4 @@
 requests
 pysam>=0.8.4
-pybedtools==0.7.5
+pybedtools>=0.7.5
 docopt
